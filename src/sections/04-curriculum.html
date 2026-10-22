@@ -1,0 +1,124 @@
+<!-- title: 區塊4 特色課程模組 | body: is-paper | plugins: -->
+<style>
+#s4 .bento { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: var(--space-md); margin-top: var(--space-xl); }
+#s4 .card {
+  position: relative; display: flex; flex-direction: column; gap: var(--space-md);
+  padding: var(--space-xl); border-radius: var(--radius-md);
+  background: var(--color-surface); border: 1px solid var(--color-rule);
+  box-shadow: 0 1px 2px rgba(30, 41, 59, 0.06);
+  transition: transform var(--dur-med) var(--ease-out), box-shadow var(--dur-med) var(--ease-out);
+}
+#s4 .card:hover { transform: translateY(-3px); box-shadow: 0 10px 24px -12px rgba(30, 41, 59, 0.28); }
+#s4 .c1 { grid-column: span 7; }
+#s4 .c2 { grid-column: span 5; background: var(--color-paper-2); }
+#s4 .c3 { grid-column: span 5; background: var(--color-paper-2); }
+#s4 .c4 { grid-column: span 7; }
+#s4 .c1, #s4 .c4 { background: var(--color-ink); color: var(--color-on-ink); border-color: transparent; }
+#s4 .top { display: flex; align-items: center; justify-content: space-between; gap: var(--space-sm); }
+#s4 .ic { display: grid; place-items: center; width: 52px; height: 52px; border-radius: 14px; background: var(--color-yellow); color: var(--color-ink); }
+#s4 .c1 .ic, #s4 .c4 .ic { background: var(--color-orange); }
+#s4 .ic .icon { width: 28px; height: 28px; }
+#s4 h3 { font-family: var(--font-display); font-weight: 900; font-size: var(--text-2xl); line-height: 1.3; }
+#s4 h3 .mod { display: block; font: 700 var(--text-sm)/1.6 var(--font-body); color: var(--color-ink-2); }
+#s4 .c1 h3 .mod, #s4 .c4 h3 .mod { color: var(--color-on-ink-muted); }
+#s4 dl { display: grid; gap: var(--space-sm); }
+#s4 dt { font: 600 var(--text-xs)/1.4 var(--font-mono); letter-spacing: 0.12em; color: var(--color-orange-ink); }
+#s4 .c1 dt, #s4 .c4 dt { color: var(--color-orange); }
+#s4 dd { margin-top: 2px; }
+#s4 .c1 dd, #s4 .c4 dd { color: var(--color-on-ink); }
+#s4 .c1 .pill-line, #s4 .c4 .pill-line { border-color: var(--color-rule-on-ink); color: var(--color-on-ink); }
+#s4 { overflow-x: clip; }
+#s4 .head { display: flex; flex-wrap: wrap; align-items: end; justify-content: space-between; gap: var(--space-md); }
+#s4 .hud { display: none; align-items: center; gap: var(--space-md); font: 600 var(--text-sm)/1 var(--font-mono); font-variant-numeric: tabular-nums; }
+#s4 .hud b { color: var(--color-orange-ink); }
+#s4 .hud .track { width: 120px; height: 2px; background: var(--color-rule); }
+#s4 .hud .track i { display: block; height: 100%; background: var(--color-ink); transform-origin: left center; transform: scaleX(0); }
+#s4 .hud .hint { font-size: var(--text-xs); letter-spacing: 0.1em; color: var(--color-ink-2); }
+/* Desktop: the four modules scroll sideways while the section stays pinned */
+#s4.is-h .hud { display: flex; }
+#s4.is-h .bento { display: flex; width: max-content; gap: var(--space-lg); }
+#s4.is-h .bento > .card { flex: none; width: min(480px, 40vw); }
+@media (max-width: 860px) {
+  #s4 .bento > .card { grid-column: 1 / -1; padding: var(--space-lg); }
+}
+</style>
+
+<section id="s4" class="sec is-paper">
+  <div class="wrap pin">
+    <div class="head">
+      <h2 class="sec-title">特色<span class="mark">課程模組</span>設計</h2>
+      <div class="hud" aria-hidden="true"><span class="count"><b>01</b> / 04</span><span class="track"><i></i></span><span class="hint">繼續往下捲動</span></div>
+    </div>
+    <div class="bento">
+      <article class="card c1">
+        <div class="top"><span class="ic">{{icon:flask}}</span><span class="pill pill-line">生晚組主責</span></div>
+        <h3><span class="mod">模組一</span>趣味生活科學實驗室</h3>
+        <dl>
+          <div><dt>實驗內容</dt><dd>空氣砲壓力傳導、聲音放大共振機構、連桿動力機械組裝。</dd></div>
+          <div><dt>培育能力</dt><dd>培養觀察力、假設驗證習慣，打破對理化公式的恐懼。</dd></div>
+        </dl>
+      </article>
+      <article class="card c2">
+        <div class="top"><span class="ic">{{icon:chef-hat}}</span><span class="pill pill-line">公輔組主責</span></div>
+        <h3><span class="mod">模組二</span>生活美育烘焙工坊</h3>
+        <dl>
+          <div><dt>實作內容</dt><dd>杯子蛋糕烘烤、天然棉花糖翻糖造型塑形、食品衛生常識。</dd></div>
+          <div><dt>培育能力</dt><dd>建立廚房安全紀律、動手細膩度與生活美學感受力。</dd></div>
+        </dl>
+      </article>
+      <article class="card c3">
+        <div class="top"><span class="ic">{{icon:search}}</span><span class="pill pill-line">活動組主責</span></div>
+        <h3><span class="mod">模組三</span>柯南實境邏輯解謎</h3>
+        <dl>
+          <div><dt>遊戲內容</dt><dd>柯南辦案任務線索卡、暗號密碼破解、團隊線索拼湊。</dd></div>
+          <div><dt>培育能力</dt><dd>訓練批判性思考、邏輯推理能力，學習傾聽小隊夥伴意見。</dd></div>
+        </dl>
+      </article>
+      <article class="card c4">
+        <div class="top"><span class="ic">{{icon:palette}}</span><span class="pill pill-line">美宣組主責</span></div>
+        <h3><span class="mod">模組四</span>創意視覺美學手作</h3>
+        <dl>
+          <div><dt>創作內容</dt><dd>小隊專屬識別旗幟、立體卡片設計、特色手作道具。</dd></div>
+          <div><dt>培育能力</dt><dd>激發學童空間感知與色彩搭配創意，建立自我肯定。</dd></div>
+        </dl>
+      </article>
+    </div>
+  </div>
+</section>
+
+<script>
+(function () {
+  var root = document.getElementById("s4");
+  var pin = root.querySelector(".pin");
+  var bento = root.querySelector(".bento");
+  var cards = root.querySelectorAll(".card");
+  CC.register();
+  CC.motion(function () {
+    gsap.set(cards, { autoAlpha: 0, y: 28 });
+    CC.onView(bento, function () {
+      gsap.to(cards, { autoAlpha: 1, y: 0, duration: 0.6, stagger: 0.1, ease: "power3.out", clearProps: "transform" });
+    }, 0.15);
+  });
+  if (!window.gsap || !window.ScrollTrigger) return;
+  var mm = gsap.matchMedia();
+  mm.add("(min-width: 1024px) and (prefers-reduced-motion: no-preference)", function () {
+    root.classList.add("is-h");
+    var count = root.querySelector(".hud b"), bar = root.querySelector(".hud .track i");
+    function dist() { return Math.max(0, bento.scrollWidth - pin.clientWidth); }
+    function head() { var h = document.querySelector(".site-head"); return h ? h.offsetHeight : 0; }
+    gsap.to(bento, {
+      x: function () { return -dist(); }, ease: "none",
+      scrollTrigger: {
+        trigger: pin, pin: true, scrub: 0.6, invalidateOnRefresh: true,
+        start: function () { return "center " + (window.innerHeight + head()) / 2; },
+        end: function () { return "+=" + dist(); },
+        onUpdate: function (self) {
+          count.textContent = "0" + Math.min(4, Math.floor(self.progress * 3.999) + 1);
+          bar.style.transform = "scaleX(" + self.progress + ")";
+        }
+      }
+    });
+    return function () { root.classList.remove("is-h"); };
+  });
+})();
+</script>

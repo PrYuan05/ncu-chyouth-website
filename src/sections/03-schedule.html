@@ -1,0 +1,149 @@
+<!-- title: 區塊3 營期三日時程 | body: is-paper-2 | plugins: Flip -->
+<style>
+#s3 .head { display: flex; flex-wrap: wrap; align-items: end; justify-content: space-between; gap: var(--space-lg); }
+#s3 .legend { display: flex; flex-wrap: wrap; gap: var(--space-xs); }
+#s3 [role="tablist"] { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); margin-top: var(--space-xl); border-bottom: 1px solid var(--color-rule-strong); }
+#s3 [role="tab"] {
+  position: relative; display: grid; gap: 2px; justify-items: start; text-align: left;
+  min-height: 64px; padding: var(--space-sm) var(--space-md) var(--space-md);
+  background: none; border: 0; color: var(--color-ink-2); cursor: pointer;
+  font: 700 var(--text-lg)/1.3 var(--font-body);
+  transition: color var(--dur-fast) var(--ease-out), background-color var(--dur-fast) var(--ease-out);
+}
+#s3 [role="tab"] .d { font: 600 var(--text-xs)/1.4 var(--font-mono); letter-spacing: 0.14em; }
+#s3 [role="tab"]:hover { color: var(--color-ink); background: rgba(255, 255, 255, 0.55); }
+#s3 [role="tab"][aria-selected="true"] { color: var(--color-ink); }
+#s3 [role="tab"]:focus-visible { outline: 3px solid var(--color-focus); outline-offset: -3px; transition: none; }
+#s3 .bar { position: absolute; left: 0; right: 0; bottom: -1px; height: 4px; background: var(--color-orange); }
+#s3 .panels { display: grid; margin-top: var(--space-lg); }
+#s3 .panel { grid-area: 1 / 1; }
+#s3 .panel:not(.is-on) { visibility: hidden; }
+#s3 .panel h3 { font-size: var(--text-base); font-weight: 700; color: var(--color-ink-2); margin-bottom: var(--space-sm); }
+#s3 .row { display: grid; grid-template-columns: 9.5em minmax(0, 1fr) auto; gap: var(--space-md); align-items: center; padding: var(--space-sm) 0; border-bottom: 1px solid var(--color-rule); }
+#s3 .row time { font-family: var(--font-mono); font-variant-numeric: tabular-nums; font-size: var(--text-sm); font-weight: 600; color: var(--color-orange-ink); }
+#s3 .row .what { font-weight: 500; }
+#s3 .row.is-key { background: var(--color-ink); color: var(--color-on-ink); padding-left: var(--space-md); padding-right: var(--space-md); border-radius: var(--radius-sm); border: 0; margin: var(--space-2xs) 0; }
+#s3 .row.is-key time { color: var(--color-orange); }
+#s3 .row.is-key .what { font-weight: 700; }
+#s3 .row.is-key .what span { display: block; font-weight: 400; font-size: var(--text-sm); color: var(--color-on-ink-muted); }
+#s3 .pill-ink { background: var(--color-yellow); color: var(--color-ink); }
+@media (max-width: 640px) {
+  #s3 [role="tab"] { font-size: var(--text-base); padding-left: var(--space-xs); padding-right: var(--space-xs); }
+  #s3 .row { grid-template-columns: minmax(0, 1fr) auto; row-gap: 2px; }
+  #s3 .row time { grid-column: 1 / -1; }
+}
+</style>
+
+<section id="s3" class="sec is-paper-2">
+  <div class="wrap">
+    <div class="head">
+      <h2 class="sec-title">營期<span class="mark">三日</span>時程規劃</h2>
+      <p class="legend" aria-label="課程類型">
+        <span class="pill pill-yellow">科學實作</span>
+        <span class="pill pill-yellow">烘焙美學</span>
+        <span class="pill pill-line">團隊解謎</span>
+        <span class="pill pill-orange">免費供餐</span>
+      </p>
+    </div>
+
+    <div role="tablist" aria-label="營期日程">
+      <button role="tab" id="s3-t1" aria-controls="s3-p1" aria-selected="true"><span class="d">DAY 1</span>1/27 啟程破冰<span class="bar" aria-hidden="true"></span></button>
+      <button role="tab" id="s3-t2" aria-controls="s3-p2" aria-selected="false" tabindex="-1"><span class="d">DAY 2</span>1/28 冒險推進</button>
+      <button role="tab" id="s3-t3" aria-controls="s3-p3" aria-selected="false" tabindex="-1"><span class="d">DAY 3</span>1/29 榮耀結業</button>
+    </div>
+
+    <div class="panels">
+      <div role="tabpanel" id="s3-p1" aria-labelledby="s3-t1" class="panel is-on" tabindex="0">
+        <h3>第一天（1/27 啟程與科學破冰）</h3>
+        <ol>
+          <li class="row"><time>08:00～08:30</time><span class="what">學員報到與相見歡</span><span class="pill pill-line">報到接送</span></li>
+          <li class="row"><time>08:30～09:10</time><span class="what">小隊破冰時間與始業式</span><span class="pill pill-line">團隊活動</span></li>
+          <li class="row"><time>09:10～10:15</time><span class="what">柯南主題劇開場、值星官時間、營歌傳唱</span><span class="pill pill-line">團隊解謎</span></li>
+          <li class="row"><time>10:15～11:45</time><span class="what">創意美勞課 / 趣味生活科學實驗（一）</span><span class="pill pill-yellow">科學實作</span></li>
+          <li class="row"><time>11:45～13:35</time><span class="what">營養便當午餐（營隊補助免費供應）與午休充電</span><span class="pill pill-orange">免費供餐</span></li>
+          <li class="row"><time>13:50～14:50</time><span class="what">小隊趣味對戰遊戲</span><span class="pill pill-line">團隊活動</span></li>
+          <li class="row"><time>15:00～16:40</time><span class="what">趣味生活科學實驗（一）/ 創意美勞課（分組輪替）</span><span class="pill pill-yellow">科學實作</span></li>
+          <li class="row"><time>16:40～17:00</time><span class="what">小隊溫馨回顧與首日平安放學</span><span class="pill pill-line">報到接送</span></li>
+        </ol>
+      </div>
+      <div role="tabpanel" id="s3-p2" aria-labelledby="s3-t2" class="panel" tabindex="0">
+        <h3>第二天（1/28 冒險推進與營火狂歡）</h3>
+        <ol>
+          <li class="row"><time>08:00～08:30</time><span class="what">學員報到與晨間關懷</span><span class="pill pill-line">報到接送</span></li>
+          <li class="row"><time>08:45～10:20</time><span class="what">活力晨間操與小隊團康遊戲</span><span class="pill pill-line">團隊活動</span></li>
+          <li class="row"><time>10:30～12:00</time><span class="what">柯南實境主題解謎探索任務</span><span class="pill pill-line">團隊解謎</span></li>
+          <li class="row"><time>12:00～13:30</time><span class="what">營養便當午餐與午休放鬆</span><span class="pill pill-orange">免費供餐</span></li>
+          <li class="row"><time>13:30～14:40</time><span class="what">搞笑情境劇演出與益智競標遊戲</span><span class="pill pill-line">團隊活動</span></li>
+          <li class="row"><time>14:50～18:00</time><span class="what">戶外團隊大地遊戲闖關大挑戰</span><span class="pill pill-line">團隊解謎</span></li>
+          <li class="row"><time>18:00～18:50</time><span class="what">留校享用營養晚餐（營隊專案補助免費供應）</span><span class="pill pill-orange">免費供餐</span></li>
+          <li class="row is-key"><time>19:00～21:00</time><span class="what">營火晚會狂歡夜<span>戲劇演出、營火舞蹈、熱力交流</span></span><span class="pill pill-ink">營火晚會</span></li>
+          <li class="row"><time>21:00～</time><span class="what">放學由家長於校門口親筆簽名接回</span><span class="pill pill-line">報到接送</span></li>
+        </ol>
+      </div>
+      <div role="tabpanel" id="s3-p3" aria-labelledby="s3-t3" class="panel" tabindex="0">
+        <h3>第三天（1/29 榮耀結業與成果展現）</h3>
+        <ol>
+          <li class="row"><time>08:00～08:30</time><span class="what">學員報到與小隊整理</span><span class="pill pill-line">報到接送</span></li>
+          <li class="row"><time>08:45～11:00</time><span class="what">生活烘焙手作坊 / 進階科學實驗（二）</span><span class="pill pill-yellow">烘焙美學</span></li>
+          <li class="row"><time>11:10～11:40</time><span class="what">小隊學習成長回饋座談</span><span class="pill pill-line">團隊活動</span></li>
+          <li class="row"><time>11:40～13:20</time><span class="what">營養便當午餐與午休</span><span class="pill pill-orange">免費供餐</span></li>
+          <li class="row"><time>13:20～15:00</time><span class="what">進階科學實驗（二）/ 生活烘焙手作坊（分組輪替）</span><span class="pill pill-yellow">科學實作</span></li>
+          <li class="row"><time>15:10～16:00</time><span class="what">營歌大合唱、成果回顧與值星時間</span><span class="pill pill-line">團隊活動</span></li>
+          <li class="row"><time>16:00～16:30</time><span class="what">柯南主題劇完結篇、結業榮譽證書頒發典禮</span><span class="pill pill-line">團隊解謎</span></li>
+          <li class="row"><time>16:30～17:00</time><span class="what">依依不捨惜別合影、平安賦歸</span><span class="pill pill-line">報到接送</span></li>
+        </ol>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+(function () {
+  CC.register();
+  var root = document.getElementById("s3");
+  var tabs = Array.prototype.slice.call(root.querySelectorAll('[role="tab"]'));
+  var bar = root.querySelector(".bar");
+  var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var current = 0;
+
+  function select(i, focus) {
+    if (i === current) { if (focus) tabs[i].focus(); return; }
+    var oldPanel = document.getElementById(tabs[current].getAttribute("aria-controls"));
+    var newPanel = document.getElementById(tabs[i].getAttribute("aria-controls"));
+    tabs.forEach(function (t, k) {
+      t.setAttribute("aria-selected", k === i ? "true" : "false");
+      t.tabIndex = k === i ? 0 : -1;
+    });
+    var state = window.Flip && !reduce ? Flip.getState(bar) : null;
+    tabs[i].appendChild(bar);
+    if (state) Flip.from(state, { duration: 0.45, ease: "power3.inOut" });
+    oldPanel.classList.remove("is-on");
+    newPanel.classList.add("is-on");
+    if (window.gsap && !reduce) {
+      gsap.killTweensOf(newPanel.querySelectorAll(".row, h3"));
+      gsap.fromTo(newPanel.querySelectorAll("h3, .row"), { autoAlpha: 0, y: 10 },
+        { autoAlpha: 1, y: 0, duration: 0.35, stagger: 0.035, ease: "power2.out", clearProps: "transform,visibility,opacity" });
+    }
+    current = i;
+    if (focus) tabs[i].focus();
+  }
+
+  tabs.forEach(function (t, i) {
+    t.addEventListener("click", function () { select(i, false); });
+    t.addEventListener("keydown", function (e) {
+      var n = { ArrowRight: i + 1, ArrowLeft: i - 1, Home: 0, End: tabs.length - 1 }[e.key];
+      if (n == null) return;
+      e.preventDefault();
+      select((n + tabs.length) % tabs.length, true);
+    });
+  });
+
+  CC.motion(function () {
+    var rows = root.querySelectorAll(".panel.is-on .row");
+    gsap.set(rows, { autoAlpha: 0, x: -12 });
+    CC.onView(root.querySelector(".panels"), function () {
+      gsap.to(rows, { autoAlpha: 1, x: 0, duration: 0.4, stagger: 0.05, ease: "power2.out", clearProps: "transform,visibility,opacity" });
+    });
+  });
+})();
+</script>

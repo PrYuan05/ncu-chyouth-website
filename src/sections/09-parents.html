@@ -1,0 +1,126 @@
+<!-- title: 區塊9 家長安心專區 | body: is-paper-2 | plugins: -->
+<style>
+#s9 .form-cta {
+  display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: var(--space-lg); align-items: center;
+  margin-top: var(--space-xl); padding: var(--space-xl);
+  background: var(--color-surface); border: 3px solid var(--color-orange); border-radius: var(--radius-md);
+}
+#s9 .form-cta p { color: var(--color-ink-2); }
+#s9 .form-cta p strong { color: var(--color-ink); }
+#s9 .deadline { color: var(--color-orange-ink); white-space: nowrap; }
+#s9 .form-link {
+  display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: var(--space-md); align-items: center;
+  min-height: 72px; padding: var(--space-md) var(--space-lg); border-radius: var(--radius-md);
+  background: var(--color-ink); color: var(--color-on-ink); text-decoration: none;
+  font-weight: 700; font-size: var(--text-lg); line-height: 1.45; max-width: 30em;
+  transition: transform var(--dur-fast) var(--ease-out), background-color var(--dur-fast) var(--ease-out);
+}
+#s9 .form-link:hover { transform: translateY(-2px); background: var(--color-ink-3); }
+#s9 .form-link:active { transform: scale(0.99); }
+#s9 .form-link:focus-visible, #s9 .album:focus-visible { outline: 3px solid var(--color-focus); outline-offset: 3px; transition: none; }
+#s9 .form-link .icon { color: var(--color-orange); }
+#s9 .form-link small { display: block; font-size: var(--text-xs); font-weight: 500; color: var(--color-on-ink-muted); }
+#s9 [aria-disabled="true"] { opacity: 0.55; cursor: not-allowed; }
+#s9 [aria-disabled="true"]:hover { transform: none; }
+#s9 .two { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: var(--space-lg); margin-top: var(--space-lg); }
+#s9 .box { padding: var(--space-xl); background: var(--color-surface); border: 1px solid var(--color-rule); border-radius: var(--radius-md); }
+#s9 .box h3 { display: flex; align-items: center; gap: var(--space-sm); font-size: var(--text-lg); font-weight: 700; margin-bottom: var(--space-md); }
+#s9 .box h3 .icon { color: var(--color-orange-ink); }
+#s9 .times li { display: grid; grid-template-columns: 11em minmax(0, 1fr); gap: var(--space-md); padding: var(--space-sm) 0; border-top: 1px solid var(--color-rule); }
+#s9 .times .when { font-weight: 700; }
+#s9 .times b { font-family: var(--font-mono); font-variant-numeric: tabular-nums; font-size: var(--text-lg); white-space: nowrap; }
+#s9 .times .rule { grid-column: 1 / -1; color: var(--color-ink-2); font-size: var(--text-sm); }
+#s9 .items { display: flex; flex-wrap: wrap; gap: var(--space-xs); }
+#s9 .items li { display: inline-flex; align-items: center; gap: 6px; padding: var(--space-xs) var(--space-md); border-radius: var(--radius-pill); background: var(--color-paper-2); font-weight: 500; }
+#s9 .items .icon { width: 16px; height: 16px; color: var(--color-orange-ink); stroke-width: 2.5; }
+#s9 .albums-title { margin-top: var(--space-2xl); font-size: var(--text-lg); font-weight: 700; }
+#s9 .albums { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-md); margin-top: var(--space-md); }
+#s9 .album {
+  display: grid; gap: var(--space-xs); min-height: 140px; padding: var(--space-lg);
+  border-radius: var(--radius-md); background: var(--color-surface); border: 1.5px solid var(--color-rule-strong);
+  text-decoration: none; color: var(--color-ink);
+  transition: transform var(--dur-fast) var(--ease-out), border-color var(--dur-fast) var(--ease-out);
+}
+#s9 .album:hover { transform: translateY(-3px); border-color: var(--color-ink); }
+#s9 .album .icon { width: 32px; height: 32px; color: var(--color-orange-ink); }
+#s9 .album .k { font-size: var(--text-xs); font-weight: 700; color: var(--color-ink-2); }
+#s9 .album .t { font-weight: 700; font-size: var(--text-lg); line-height: 1.4; }
+#s9 .album .u { font-size: var(--text-sm); color: var(--color-ink-2); }
+@media (max-width: 860px) {
+  #s9 .form-cta { grid-template-columns: minmax(0, 1fr); padding: var(--space-lg); }
+  #s9 .form-link { max-width: none; }
+  #s9 .two { grid-template-columns: minmax(0, 1fr); }
+  #s9 .box { padding: var(--space-lg); }
+  #s9 .albums { grid-template-columns: minmax(0, 1fr); }
+  #s9 .album { min-height: 0; grid-template-columns: 32px minmax(0, 1fr); column-gap: var(--space-md); }
+  #s9 .album .icon { grid-row: span 3; }
+}
+@media (max-width: 480px) {
+  #s9 .times li { grid-template-columns: minmax(0, 1fr); gap: 0; }
+}
+</style>
+
+<section id="s9" class="sec is-paper-2">
+  <div class="wrap">
+    <h2 class="sec-title">家長安心專區・<span class="mark">營期生活與線上同意書</span></h2>
+
+    <div class="form-cta">
+      <p>為落實《保險法》第 107 條規定與營期投保，請家長於 <strong class="deadline">2027 年 1 月 15 日前</strong> 完成線上填寫。個資僅用於投保與營期緊急醫療聯繫。</p>
+      <a class="form-link" data-link="form" target="_blank" rel="noopener">
+        {{icon:clipboard}}
+        <span>點此填寫【線上家長同意書暨學員健康調查表】<small>Google 表單・開新分頁</small></span>
+        {{icon:external icon-sm}}
+      </a>
+    </div>
+
+    <div class="two">
+      <div class="box">
+        <h3>{{icon:clock}}每日接送時程提醒</h3>
+        <ul class="times">
+          <li><span class="when">每日早晨報到</span><span><b>08:00～08:30</b><br>於新民國小大門口集合</span></li>
+          <li><span class="when">1/27（三）與 1/29（五）放學</span><span><b>17:00 整</b><br>校門口接送簽到</span></li>
+          <li><span class="when">1/28（四・營火晚會）放學</span><span><b>21:00 整</b><br>學童留校享用免費晚餐便當，晚會結束後接回</span></li>
+          <li><span class="rule">接送規範：實施家長親筆簽到退，如委託親友代接請提前告知營本部。</span></li>
+        </ul>
+      </div>
+      <div class="box">
+        <h3>{{icon:backpack}}學童每日攜帶物品清單</h3>
+        <ul class="items">
+          <li>{{icon:check}}水壺</li>
+          <li>{{icon:check}}健保卡</li>
+          <li>{{icon:check}}個人常備藥物</li>
+          <li>{{icon:check}}環保餐具</li>
+          <li>{{icon:check}}保暖外套</li>
+        </ul>
+      </div>
+    </div>
+
+    <h3 class="albums-title">營期每日精選即時相簿（點擊即時查看下載）</h3>
+    <div class="albums">
+      <a class="album" data-link="album1" target="_blank" rel="noopener">{{icon:image}}<span class="k">【相簿】</span><span class="t">第一天精彩實錄</span><span class="u">1/27 晚間更新</span></a>
+      <a class="album" data-link="album2" target="_blank" rel="noopener">{{icon:image}}<span class="k">【相簿】</span><span class="t">第二天營火晚會</span><span class="u">1/28 晚間更新</span></a>
+      <a class="album" data-link="album3" target="_blank" rel="noopener">{{icon:image}}<span class="k">【相簿】</span><span class="t">第三天結業合影</span><span class="u">1/29 晚間更新</span></a>
+    </div>
+  </div>
+</section>
+
+<script>
+(function () {
+  // 表單與相簿網址貼在這裡；留空時按鈕會顯示為「尚未開放」。
+  var LINKS = {
+    form: "",    // Google 表單：線上家長同意書暨學員健康調查表
+    album1: "",  // Google 相簿：第一天
+    album2: "",  // Google 相簿：第二天
+    album3: ""   // Google 相簿：第三天
+  };
+  var root = document.getElementById("s9");
+  root.querySelectorAll("[data-link]").forEach(function (a) {
+    var url = LINKS[a.dataset.link];
+    if (url) { a.href = url; return; }
+    a.href = "#";
+    a.setAttribute("aria-disabled", "true");
+    a.title = "尚未開放";
+    a.addEventListener("click", function (e) { e.preventDefault(); });
+  });
+})();
+</script>

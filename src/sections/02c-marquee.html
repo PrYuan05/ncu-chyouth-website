@@ -1,0 +1,50 @@
+<!-- title: 首頁 跑馬燈 | body: | plugins: -->
+<style>
+#s12 { padding: var(--space-lg) 0; overflow: hidden; background: var(--color-orange); color: var(--color-ink); border-block: 2px solid var(--color-ink); }
+#s12 .track { display: flex; width: max-content; }
+#s12 .run { display: flex; align-items: center; flex: none; }
+#s12 .run span { padding: 0 var(--space-lg); font-family: var(--font-display); font-weight: 900; font-size: clamp(1.75rem, 1.2rem + 2.6vw, 3.25rem); line-height: 1.2; white-space: nowrap; }
+#s12 .run svg { width: clamp(22px, 2.4vw, 34px); height: auto; flex: none; }
+</style>
+
+<section id="s12" class="is-orange" aria-label="營隊特色">
+  <p class="sr-only">1:1 陪伴、科學實作、柯南解謎、營火晚會、學員全程免費</p>
+  <div class="track" aria-hidden="true">
+    <div class="run">
+      <span>1:1 陪伴</span><svg viewBox="0 0 24 24"><path d="M12 2l2.6 7.4L22 12l-7.4 2.6L12 22l-2.6-7.4L2 12l7.4-2.6z" fill="currentColor"/></svg>
+      <span>科學實作</span><svg viewBox="0 0 24 24"><path d="M12 2l2.6 7.4L22 12l-7.4 2.6L12 22l-2.6-7.4L2 12l7.4-2.6z" fill="currentColor"/></svg>
+      <span>柯南解謎</span><svg viewBox="0 0 24 24"><path d="M12 2l2.6 7.4L22 12l-7.4 2.6L12 22l-2.6-7.4L2 12l7.4-2.6z" fill="currentColor"/></svg>
+      <span>營火晚會</span><svg viewBox="0 0 24 24"><path d="M12 2l2.6 7.4L22 12l-7.4 2.6L12 22l-2.6-7.4L2 12l7.4-2.6z" fill="currentColor"/></svg>
+      <span>學員全程免費</span><svg viewBox="0 0 24 24"><path d="M12 2l2.6 7.4L22 12l-7.4 2.6L12 22l-2.6-7.4L2 12l7.4-2.6z" fill="currentColor"/></svg>
+    </div>
+  </div>
+</section>
+
+<script>
+(function () {
+  var root = document.getElementById("s12");
+  var track = root.querySelector(".track");
+  var run = track.querySelector(".run");
+  // Three runs in a row keep the loop seamless on wide screens.
+  track.appendChild(run.cloneNode(true));
+  track.appendChild(run.cloneNode(true));
+  CC.motion(function () {
+    var loop = gsap.to(track, { xPercent: -100 / 3, duration: 22, ease: "none", repeat: -1 });
+    loop.totalTime(loop.duration() * 100); // room to run backwards
+    var dir = 1;
+    // Scrolling speeds the band up and flips its direction with the scroll.
+    var st = window.ScrollTrigger && ScrollTrigger.create({
+      trigger: root, start: "top bottom", end: "bottom top",
+      onUpdate: function (self) {
+        dir = self.direction;
+        var boost = Math.min(Math.abs(self.getVelocity()) / 250, 5);
+        gsap.to(loop, { timeScale: dir * (1 + boost), duration: 0.2, overwrite: true,
+          onComplete: function () { gsap.to(loop, { timeScale: dir, duration: 0.8 }); } });
+      }
+    });
+    root.addEventListener("pointerenter", function () { gsap.to(loop, { timeScale: 0, duration: 0.5 }); });
+    root.addEventListener("pointerleave", function () { gsap.to(loop, { timeScale: dir, duration: 0.5 }); });
+    return function () { if (st) st.kill(); loop.kill(); };
+  });
+})();
+</script>

@@ -1,0 +1,235 @@
+<!-- title: 區塊6 歷屆足跡與里程碑 | body: is-paper | plugins: -->
+<style>
+#s6 .stats { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); margin-top: var(--space-xl); border-top: 2px solid var(--color-ink); }
+#s6 .stat { padding: var(--space-lg) var(--space-lg) var(--space-lg) 0; border-right: 1px solid var(--color-rule); }
+#s6 .stat + .stat { padding-left: var(--space-lg); }
+#s6 .stat:last-child { border-right: 0; }
+#s6 .stat dt { font-size: var(--text-sm); font-weight: 700; color: var(--color-ink-2); }
+#s6 .stat dd { margin-top: var(--space-xs); font-family: var(--font-display); font-weight: 900; font-size: var(--text-stat); line-height: 1; font-variant-numeric: tabular-nums; white-space: nowrap; }
+#s6 .stat dd small { font-family: var(--font-body); font-size: var(--text-base); font-weight: 700; color: var(--color-orange-ink); margin-left: 4px; }
+#s6 .stat dd .pre { font-size: 0.42em; vertical-align: 0.9em; margin-right: 4px; color: var(--color-ink-2); font-family: var(--font-body); }
+#s6 h3 { margin-top: var(--space-3xl); font-size: var(--text-lg); font-weight: 700; }
+#s6 .files { margin-top: var(--space-md); border-top: 2px solid var(--color-ink); }
+#s6 .file { position: relative; isolation: isolate; display: grid; grid-template-columns: 9em 5em minmax(0, 7em) minmax(0, 1fr); gap: var(--space-lg); align-items: baseline; padding: var(--space-lg) 0; border-bottom: 1px solid var(--color-rule-strong); }
+#s6 .file::before { content: ""; position: absolute; inset: 0 calc(var(--space-md) * -1); z-index: -1; background: var(--color-paper-2); transform: scaleY(0); transform-origin: bottom center; transition: transform var(--dur-med) var(--ease-out); }
+#s6 .file:hover::before { transform: scaleY(1); }
+#s6 .file .no { font: 600 var(--text-xs)/1.4 var(--font-mono); letter-spacing: 0.12em; color: var(--color-ink-2); }
+#s6 .file .yr { font-family: var(--font-display); font-weight: 900; font-size: var(--text-2xl); line-height: 1; font-variant-numeric: tabular-nums; }
+#s6 .file .school { font-weight: 700; }
+#s6 .file .camp { display: block; font-family: var(--font-display); font-weight: 900; font-size: var(--text-xl); line-height: 1.35; color: var(--color-orange-ink); transition: transform var(--dur-med) var(--ease-out); }
+#s6 .file:hover .camp { transform: translateX(8px); }
+#s6 .file p { margin-top: 4px; font-size: var(--text-sm); color: var(--color-ink-2); }
+#s6 .file.is-now .yr { color: var(--color-orange-ink); }
+#s6 .file.is-now .pill { margin-left: var(--space-xs); vertical-align: 0.2em; }
+#s6 .peek { position: fixed; left: 0; top: 0; z-index: 60; width: 260px; aspect-ratio: 4 / 3; margin: -140px 0 0 24px; border-radius: var(--radius-sm); overflow: hidden; pointer-events: none; visibility: hidden; box-shadow: 0 18px 40px -16px rgba(15, 23, 42, 0.5); }
+#s6 .peek img { width: 100%; height: 100%; object-fit: cover; }
+#s6 .peek .card { display: grid; align-content: end; height: 100%; padding: var(--space-md); background: var(--color-ink); color: var(--color-on-ink); }
+#s6 .peek .card b { font: 600 var(--text-xs)/1.4 var(--font-mono); letter-spacing: 0.14em; color: var(--color-yellow); }
+#s6 .peek .card span { font-family: var(--font-display); font-weight: 900; font-size: var(--text-xl); line-height: 1.3; }
+#s6 .album-head { display: flex; flex-wrap: wrap; align-items: end; justify-content: space-between; gap: var(--space-md); margin-top: var(--space-3xl); }
+#s6 .album-head h3 { margin-top: 0; }
+#s6 .album-head p { font: 600 var(--text-xs)/1.5 var(--font-mono); letter-spacing: 0.12em; color: var(--color-ink-2); }
+#s6 .ctrl { display: flex; align-items: center; gap: var(--space-sm); }
+#s6 .count { font: 600 var(--text-sm)/1 var(--font-mono); font-variant-numeric: tabular-nums; min-width: 5.5em; text-align: center; }
+#s6 .count b { color: var(--color-orange-ink); }
+#s6 .arrow { display: grid; place-items: center; width: 48px; height: 48px; padding: 0; border-radius: 50%; border: 2px solid var(--color-ink); background: transparent; color: var(--color-ink); cursor: pointer; transition: background-color var(--dur-fast) var(--ease-out), color var(--dur-fast) var(--ease-out), opacity var(--dur-fast); }
+#s6 .arrow:hover { background: var(--color-ink); color: var(--color-on-ink); }
+#s6 .arrow:focus-visible { outline: 3px solid var(--color-focus); outline-offset: 3px; }
+#s6 .arrow:disabled { opacity: 0.3; cursor: default; background: transparent; color: var(--color-ink); }
+#s6 .viewport { margin-top: var(--space-md); overflow: hidden; touch-action: pan-y; border-radius: var(--radius-sm); }
+#s6 .viewport:focus-visible { outline: 3px solid var(--color-focus); outline-offset: 4px; }
+#s6 .reel { display: flex; gap: var(--space-md); width: max-content; }
+#s6 .photo { position: relative; flex: none; width: min(520px, 78vw); aspect-ratio: 4 / 3; margin: 0; overflow: hidden; border-radius: var(--radius-sm); background: var(--color-paper-2); border: 1px solid var(--color-rule); user-select: none; }
+#s6 .photo img { width: 100%; height: 100%; object-fit: cover; pointer-events: none; -webkit-user-drag: none; }
+#s6 .photo figcaption { position: absolute; left: var(--space-xs); bottom: var(--space-xs); padding: 2px 8px; border-radius: var(--radius-sm); background: var(--color-ink); color: var(--color-on-ink); font: 600 var(--text-xs)/1.6 var(--font-mono); letter-spacing: 0.06em; }
+#s6 .photo.is-missing { display: grid; place-items: center; padding: var(--space-md); text-align: center; color: var(--color-ink-2); font-size: var(--text-sm); }
+#s6 .photo.is-missing .icon { width: 28px; height: 28px; margin: 0 auto var(--space-xs); color: var(--color-orange-ink); }
+#s6 .progress { height: 2px; margin-top: var(--space-md); background: var(--color-rule); }
+#s6 .progress i { display: block; height: 100%; background: var(--color-ink); transform-origin: left center; transform: scaleX(0.2); }
+@media (max-width: 860px) {
+  #s6 .file { grid-template-columns: 5em minmax(0, 1fr); gap: var(--space-2xs) var(--space-md); }
+  #s6 .file .no { grid-column: 1 / -1; }
+  #s6 .file .school { grid-column: 2; grid-row: 2; }
+  #s6 .file .body { grid-column: 1 / -1; }
+}
+@media (max-width: 960px) {
+  #s6 .stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  #s6 .stat:nth-child(2) { border-right: 0; }
+  #s6 .stat:nth-child(3) { padding-left: 0; }
+  #s6 .stat:nth-child(n+3) { border-top: 1px solid var(--color-rule); }
+}
+</style>
+
+<section id="s6" class="sec is-paper">
+  <div class="wrap">
+    <h2 class="sec-title">深耕彰化・<span class="mark">歷屆服務足跡</span></h2>
+
+    <dl class="stats" aria-label="服務里程碑統計">
+      <div class="stat"><dt>服務傳承</dt><dd><span class="pre">第</span><span data-to="21">21</span><small>屆</small></dd></div>
+      <div class="stat"><dt>累積志工</dt><dd><span data-to="500">500</span>+<small>位青年</small></dd></div>
+      <div class="stat"><dt>服務學童</dt><dd><span data-to="1200">1,200</span>+<small>位孩子</small></dd></div>
+      <div class="stat"><dt>堅持理念</dt><dd><span data-to="100">100</span>%<small>學員免費</small></dd></div>
+    </dl>
+
+    <h3>近三年服務成果一覽</h3>
+    <ol class="files">
+      <li class="file" data-peek="18"><span class="no">ARCHIVE No.18</span><span class="yr">2024</span><span class="school">伸仁國小</span><div class="body"><span class="camp">《啟動吧！春日部大作戰》</span><p>結合在地風力與海洋生態教育，深獲在地師生好評。</p></div></li>
+      <li class="file" data-peek="19"><span class="no">ARCHIVE No.19</span><span class="yr">2025</span><span class="school">復興國小</span><div class="body"><span class="camp">《集合！比奇堡小英雄》</span><p>導入生活烘焙與物理解謎，落實 1:1 分組照護陪伴。</p></div></li>
+      <li class="file" data-peek="20"><span class="no">ARCHIVE No.20</span><span class="yr">2026</span><span class="school">永興國小</span><div class="body"><span class="camp">《動感永者大進擊：興之助の成長計劃》</span><p>結合生活科學與園藝美學，三方滿意度達 98.5%。</p></div></li>
+      <li class="file is-now" data-peek="21"><span class="no">ARCHIVE No.21</span><span class="yr">2027</span><span class="school">新民國小<span class="pill pill-orange">本屆</span></span><div class="body"><span class="camp">《名偵探柯南——真相與科學探險記》</span><p>擴大科學實作與烘焙課程，持續傳遞溫暖。</p></div></li>
+    </ol>
+    <div class="peek" aria-hidden="true"></div>
+
+    <div class="album-head">
+      <div>
+        <h3>2026 永興國小・營期現場</h3>
+        <p>FROM THE 20TH CAMP ALBUM</p>
+      </div>
+      <div class="ctrl">
+        <button class="arrow prev" type="button" aria-label="上一張照片">{{icon:arrow-left icon-sm}}</button>
+        <span class="count" aria-live="polite"><b>01</b> / 05</span>
+        <button class="arrow next" type="button" aria-label="下一張照片">{{icon:arrow-right icon-sm}}</button>
+      </div>
+    </div>
+    <div class="viewport" data-cursor="拖曳 DRAG" tabindex="0" aria-label="營期照片，可左右拖曳或用方向鍵切換">
+      <div class="reel" aria-label="2026 第 20 屆營期照片"></div>
+    </div>
+    <div class="progress" aria-hidden="true"><i></i></div>
+  </div>
+</section>
+
+<script>
+(function () {
+  // 照片來自第 20 屆雲端相簿（需設為「知道連結的任何人可檢視」）。換照片只要改 id。
+  var PHOTOS = [
+    { id: "1zNXTx1f30SMj77cOujF4GXGSFtOe117x", cap: "1/29 15:16" },
+    { id: "1coWBk7yB6z3Y7BEh7FH3K74MTh2bSEHU", cap: "1/29 09:47" },
+    { id: "1KTAATbPouhyjN0BJm7M6HyNojLD9DQ2K", cap: "1/29 09:58" },
+    { id: "19F3x56dJE16FXh7n4S7-vwa7WjRFXgI9", cap: "1/30 09:29" },
+    { id: "16yxD8596ZfuhNibp8NWUl8w1s59sGgEf", cap: "1/30 14:09" }
+  ];
+  // 清單滑過時浮出的預覽：有照片的屆數放照片 id，沒有的顯示檔案卡。
+  var PEEK = { 20: PHOTOS[0].id };
+  function thumb(id) { return "https://drive.google.com/thumbnail?id=" + id + "&sz=w1200"; }
+
+  var root = document.getElementById("s6");
+  var reel = root.querySelector(".reel");
+  var figs = PHOTOS.map(function (p, i) {
+    var fig = document.createElement("figure");
+    fig.className = "photo";
+    var img = new Image();
+    img.loading = "lazy";
+    img.referrerPolicy = "no-referrer";
+    img.draggable = false;
+    img.alt = "2026 永興國小營期活動照片（" + p.cap + "）";
+    img.onerror = function () {
+      fig.classList.add("is-missing");
+      fig.innerHTML = '<div>{{icon:image}}照片 ' + p.cap + '<br>網站上線後顯示</div>';
+    };
+    img.src = thumb(p.id);
+    var cap = document.createElement("figcaption");
+    cap.textContent = String(i + 1).padStart(2, "0") + " · " + p.cap;
+    fig.appendChild(img);
+    fig.appendChild(cap);
+    reel.appendChild(fig);
+    return fig;
+  });
+
+  /* Photo reel: drag with inertia, arrows, counter */
+  var viewport = root.querySelector(".viewport");
+  var count = root.querySelector(".count b");
+  var bar = root.querySelector(".progress i");
+  var prev = root.querySelector(".prev"), next = root.querySelector(".next");
+  var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var index = 0;
+  // Every photo can reach the left edge, so the last one leaves empty space after it.
+  function maxX() { return figs[figs.length - 1].offsetLeft; }
+  function stops() { return figs.map(function (f) { return -f.offsetLeft; }); }
+  function nearest(x) {
+    var s = stops(), best = 0;
+    s.forEach(function (v, i) { if (Math.abs(v - x) < Math.abs(s[best] - x)) best = i; });
+    return best;
+  }
+  function paint(i) {
+    index = i;
+    count.textContent = String(i + 1).padStart(2, "0");
+    prev.disabled = i === 0;
+    next.disabled = i === figs.length - 1;
+    if (window.gsap) gsap.to(bar, { scaleX: (i + 1) / figs.length, duration: 0.4, ease: "power2.out" });
+    else bar.style.transform = "scaleX(" + (i + 1) / figs.length + ")";
+  }
+  function goTo(i) {
+    i = Math.max(0, Math.min(figs.length - 1, i));
+    var x = stops()[i];
+    if (window.gsap) gsap.to(reel, { x: x, duration: reduce ? 0 : 0.7, ease: "power3.out" });
+    else reel.style.transform = "translateX(" + x + "px)";
+    paint(i);
+  }
+  prev.addEventListener("click", function () { goTo(index - 1); });
+  next.addEventListener("click", function () { goTo(index + 1); });
+  viewport.addEventListener("keydown", function (e) {
+    if (e.key === "ArrowLeft") goTo(index - 1);
+    if (e.key === "ArrowRight") goTo(index + 1);
+  });
+  if (window.Draggable) {
+    Draggable.create(reel, {
+      type: "x", inertia: !!window.InertiaPlugin && !reduce, edgeResistance: 0.85,
+      bounds: { minX: -maxX(), maxX: 0 },
+      snap: function (x) { return stops()[nearest(x)]; },
+      onPress: function () { this.applyBounds({ minX: -maxX(), maxX: 0 }); },
+      onDragEnd: function () { paint(nearest(this.endX)); },
+      onThrowComplete: function () { paint(nearest(this.x)); }
+    });
+  }
+  window.addEventListener("resize", function () { goTo(index); });
+  paint(0);
+
+  /* Archive list: a preview follows the pointer on hover */
+  var peek = root.querySelector(".peek");
+  var fine = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
+  if (window.gsap && fine && !reduce) {
+    var px = gsap.quickTo(peek, "x", { duration: 0.45, ease: "power3" });
+    var py = gsap.quickTo(peek, "y", { duration: 0.45, ease: "power3" });
+    var rot = gsap.quickTo(peek, "rotation", { duration: 0.6, ease: "power3" });
+    var lastX = 0;
+    root.querySelectorAll(".file").forEach(function (row) {
+      var no = row.dataset.peek;
+      row.addEventListener("pointerenter", function (e) {
+        var id = PEEK[no];
+        var card = '<div class="card"><b>ARCHIVE No.' + no + '</b><span>' + row.querySelector(".camp").textContent + '</span></div>';
+        peek.innerHTML = id ? '<img alt="" referrerpolicy="no-referrer" src="' + thumb(id) + '">' : card;
+        var img = peek.querySelector("img");
+        if (img) img.onerror = function () { peek.innerHTML = card; };
+        gsap.set(peek, { x: e.clientX, y: e.clientY });
+        gsap.to(peek, { autoAlpha: 1, scale: 1, duration: 0.3, ease: "power3.out", overwrite: "auto" });
+      });
+      row.addEventListener("pointermove", function (e) {
+        px(e.clientX); py(e.clientY);
+        rot(Math.max(-8, Math.min(8, (e.clientX - lastX) * 0.6)));
+        lastX = e.clientX;
+      });
+      row.addEventListener("pointerleave", function () {
+        gsap.to(peek, { autoAlpha: 0, scale: 0.9, duration: 0.25, overwrite: "auto" });
+      });
+    });
+    gsap.set(peek, { scale: 0.9 });
+  }
+
+  CC.motion(function () {
+    var nums = root.querySelectorAll("[data-to]");
+    var rows = root.querySelectorAll(".file");
+    nums.forEach(function (n) { n.textContent = "0"; });
+    gsap.set(rows, { autoAlpha: 0, y: 20 });
+    CC.onView(root.querySelector(".stats"), function () {
+      nums.forEach(function (n) {
+        var o = { v: 0 }, to = +n.dataset.to;
+        gsap.to(o, { v: to, duration: 1.6, ease: "power3.out", onUpdate: function () { n.textContent = Math.round(o.v).toLocaleString("en-US"); } });
+      });
+    }, 0.4);
+    CC.onView(root.querySelector(".files"), function () {
+      gsap.to(rows, { autoAlpha: 1, y: 0, duration: 0.6, stagger: 0.08, ease: "power3.out", clearProps: "transform" });
+    }, 0.2);
+    return function () { nums.forEach(function (n) { n.textContent = (+n.dataset.to).toLocaleString("en-US"); }); };
+  });
+})();
+</script>

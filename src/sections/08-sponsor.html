@@ -1,0 +1,57 @@
+<!-- title: 區塊8 企業贊助回饋承諾 | body: is-paper | plugins: -->
+<style>
+#s8 .cols { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-lg); margin-top: var(--space-xl); }
+#s8 .col { padding: var(--space-xl); border: 1.5px solid var(--color-ink); border-radius: var(--radius-md); background: var(--color-surface); }
+#s8 .col h3 { display: flex; align-items: center; justify-content: space-between; gap: var(--space-sm); padding-bottom: var(--space-md); border-bottom: 1.5px solid var(--color-ink); font-size: var(--text-xl); font-weight: 700; }
+#s8 .col h3 .mono { font-size: var(--text-xs); letter-spacing: 0.14em; color: var(--color-ink-2); font-weight: 600; }
+#s8 li { display: grid; grid-template-columns: 28px minmax(0, 1fr); gap: var(--space-md); padding: var(--space-md) 0; border-bottom: 1px solid var(--color-rule); }
+#s8 li:last-child { border-bottom: 0; padding-bottom: 0; }
+#s8 .tick { display: grid; place-items: center; width: 28px; height: 28px; border-radius: 50%; background: var(--color-yellow); color: var(--color-ink); margin-top: 2px; }
+#s8 .tick .icon { width: 16px; height: 16px; stroke-width: 3; }
+#s8 h4 { font-size: var(--text-base); font-weight: 700; }
+#s8 li p { margin-top: 2px; color: var(--color-ink-2); font-size: var(--text-sm); line-height: 1.8; }
+#s8 .date { font-weight: 700; color: var(--color-orange-ink); white-space: nowrap; }
+@media (max-width: 860px) {
+  #s8 .cols { grid-template-columns: minmax(0, 1fr); }
+  #s8 .col { padding: var(--space-lg); }
+}
+</style>
+
+<section id="s8" class="sec is-paper">
+  <div class="wrap">
+    <h2 class="sec-title">企業夥伴<span class="mark">合作效益</span>與曝光回饋承諾</h2>
+    <div class="cols">
+      <div class="col">
+        <h3>實體文宣與現場品牌曝光<span class="mono">ON-SITE</span></h3>
+        <ul>
+          <li><span class="tick">{{icon:check}}</span><div><h4>手冊封底全頁致謝</h4><p>48 本學員手冊與 48 本志工手冊封面置入 Logo，封底刊登贊助銘謝全頁。</p></div></li>
+          <li><span class="tick">{{icon:check}}</span><div><h4>大禮堂舞台主視覺大螢幕投影</h4><p>大禮堂中央 16:9 投影背板全彩顯著標記企業識別標誌，結業全體大合照清晰曝光。</p></div></li>
+          <li><span class="tick">{{icon:check}}</span><div><h4>結業證書榮譽聯名</h4><p>48 位完成營隊學童的官方結業證書上，聯名加註「贊助單位：○○○」，由學童帶回家庭永久保存。</p></div></li>
+          <li><span class="tick">{{icon:check}}</span><div><h4>招生海報與家長通知手冊</h4><p>發送全校學童宣傳品下方，全彩印刷贊助單位標準 Logo。</p></div></li>
+        </ul>
+      </div>
+      <div class="col">
+        <h3>數位傳播與成果結案保證<span class="mono">DIGITAL</span></h3>
+        <ul>
+          <li><span class="tick">{{icon:check}}</span><div><h4>官方社群專文致謝</h4><p>中央彰友會官方 FB 粉專與 IG 發布專題感謝貼文，標註合作企業並推播。</p></div></li>
+          <li><span class="tick">{{icon:check}}</span><div><h4>營期精華紀錄片片頭片尾致謝</h4><p>3～5 分鐘營期精華影片置入全螢幕企業感謝卡與商標，影片公開推廣。</p></div></li>
+          <li><span class="tick">{{icon:check}}</span><div><h4>合法核銷與成果報告專函呈送</h4><p>營期結束後一個月內（<span class="date">2027 年 2 月 28 日前</span>），專函送達正式成果報告書、實體燙金感謝狀及合格單據發票。</p></div></li>
+          <li><span class="tick">{{icon:check}}</span><div><h4>彈性增額合作方案</h4><p>若企業有意願擴大支持待籌經費，團隊可全力配合課程冠名、特製紀念品或專屬回饋活動。</p></div></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+(function () {
+  var root = document.getElementById("s8");
+  CC.motion(function () {
+    var ticks = root.querySelectorAll(".tick");
+    gsap.set(ticks, { scale: 0, autoAlpha: 0 });
+    CC.onView(root.querySelector(".cols"), function () {
+      gsap.to(ticks, { scale: 1, autoAlpha: 1, duration: 0.35, stagger: 0.07, ease: "back.out(2.2)" });
+    }, 0.25);
+  });
+})();
+</script>

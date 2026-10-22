@@ -1,0 +1,60 @@
+<!-- title: 區塊2 關於我們與核心價值 | body: is-paper | plugins: -->
+<style>
+#s2 .grid { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); gap: var(--space-3xl); }
+#s2 .lead { margin-top: var(--space-lg); font-size: var(--text-lg); line-height: 1.85; color: var(--color-ink); max-width: 30em; }
+#s2 .lead strong { color: var(--color-orange-ink); }
+#s2 .to-contact { display: inline-flex; align-items: center; gap: 6px; min-height: 44px; margin-top: var(--space-lg); color: var(--color-orange-ink); font-weight: 700; text-decoration: underline; text-underline-offset: 4px; text-decoration-thickness: 1.5px; border-radius: var(--radius-sm); }
+#s2 .to-contact:hover { color: var(--color-ink); }
+#s2 .to-contact:focus-visible { outline: 3px solid var(--color-focus); outline-offset: 2px; }
+#s2 .values { display: grid; gap: var(--space-xl); }
+#s2 .value { border-top: 3px solid var(--color-orange); padding-top: var(--space-md); }
+#s2 .value:nth-child(2) { margin-left: 8%; }
+#s2 .value:nth-child(3) { margin-left: 16%; }
+#s2 .value .no { font-family: var(--font-mono); font-size: var(--text-sm); font-weight: 600; color: var(--color-orange-ink); letter-spacing: 0.1em; }
+#s2 .value h3 { font-family: var(--font-display); font-weight: 900; font-size: var(--text-2xl); line-height: 1.3; margin: var(--space-2xs) 0 var(--space-xs); }
+#s2 .value p { color: var(--color-ink-2); }
+@media (max-width: 860px) {
+  #s2 .grid { grid-template-columns: minmax(0, 1fr); gap: var(--space-2xl); }
+  #s2 .value:nth-child(n) { margin-left: 0; }
+}
+</style>
+
+<section id="s2" class="sec is-paper" data-cursor="Contact Us ↓" data-cursor-href="#s10">
+  <div class="wrap grid">
+    <div>
+      <h2 class="sec-title">關於我們・<br><span class="mark">守護初心的返鄉實踐</span></h2>
+      <p class="lead">中央大學彰化校友會深耕家鄉服務<strong>逾 20 年</strong>，每年寒假號召彰化大專青年返鄉，秉持「陪伴家鄉孩子」的熱忱，於偏鄉國小辦理<strong>全程免費</strong>之育樂營隊，為家長減輕寒假照顧壓力，給孩子充滿探索與歡笑的童年。</p>
+      <a class="to-contact" href="#s10" data-scroll>有任何問題，歡迎聯絡我們{{icon:arrow-down icon-sm}}</a>
+    </div>
+    <ol class="values">
+      <li class="value">
+        <span class="no">01</span>
+        <h3>1:1 黃金陪伴比例</h3>
+        <p>48 位大專青年志工全程守護 48 位新民國小學童，維持 1:1 細緻照護，密切關注每位孩子的安全、生活自理與情緒狀態。</p>
+      </li>
+      <li class="value">
+        <span class="no">02</span>
+        <h3>手作實踐與科學啟蒙</h3>
+        <p>打破傳統單向背誦，結合空氣動力實驗、機構連桿與生活烘焙，讓孩子在「動手做」中理解科學原理與生活美學。</p>
+      </li>
+      <li class="value">
+        <span class="no">03</span>
+        <h3>正向品格與團隊協作</h3>
+        <p>透過沉浸式名偵探柯南解謎任務與大型大地闖關，引導學童建立運動家精神、尊重他人與團隊合作素養。</p>
+      </li>
+    </ol>
+  </div>
+</section>
+
+<script>
+(function () {
+  var root = document.getElementById("s2");
+  CC.motion(function () {
+    var items = root.querySelectorAll(".value");
+    gsap.set(items, { autoAlpha: 0, y: 24 });
+    CC.onView(root.querySelector(".values"), function () {
+      gsap.to(items, { autoAlpha: 1, y: 0, duration: 0.6, stagger: 0.12, ease: "power3.out" });
+    });
+  });
+})();
+</script>

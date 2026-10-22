@@ -1,0 +1,144 @@
+/* Hallmark · macrostructure: Manifesto + Stat-Led hybrid (per spec) · tone: editorial-warm · anchor hue: orange #F58027
+ * theme: custom (vibe: "detective night, hometown warmth, archive index") · paper #FFFBEB · ink #1E293B · accent #F58027 / #D69E2E
+ * display: Noto Serif TC 900 · body: Noto Sans TC · data: IBM Plex Mono
+ * Hallmark · pre-emit critique: P4 H5 E4 S5 R4 V4
+ * contrast: ink on orange 5.57 · ink on yellow 6.12 · orange on ink 5.57 · orange-ink on paper 5.72 · muted on paper 7.31
+ */
+:root {
+  --color-paper: #FFFBEB;
+  --color-paper-2: #FDF1D3;
+  --color-surface: #FFFFFF;
+  --color-ink: #1E293B;
+  --color-ink-2: #475569;
+  --color-ink-3: #0F172A;
+  --color-on-ink: #FFFBEB;
+  --color-on-ink-muted: #CBD5E1;
+  --color-orange: #F58027;
+  --color-yellow: #D69E2E;
+  --color-orange-ink: #A34A0B;
+  --color-orange-soft: #F8963F;
+  --color-orange-tint: #FFF4E6;
+  --color-rule: rgba(30, 41, 59, 0.16);
+  --color-rule-strong: rgba(30, 41, 59, 0.42);
+  --color-rule-on-ink: rgba(255, 251, 235, 0.18);
+  --color-focus: #1E293B;
+  --color-focus-on-ink: #D69E2E;
+
+  --font-display: "Noto Serif TC", "Songti TC", serif;
+  --font-body: "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", system-ui, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", monospace;
+
+  --text-xs: 0.8125rem;
+  --text-sm: 0.9375rem;
+  --text-base: 1rem;
+  --text-lg: 1.125rem;
+  --text-xl: 1.375rem;
+  --text-2xl: clamp(1.5rem, 1.2rem + 1.2vw, 2rem);
+  --text-3xl: clamp(1.75rem, 1.3rem + 2vw, 2.75rem);
+  --text-display: clamp(2.75rem, 1.6rem + 6vw, 6rem);
+  --text-stat: clamp(2.5rem, 1.8rem + 3.4vw, 4.5rem);
+
+  --space-2xs: 4px;
+  --space-xs: 8px;
+  --space-sm: 12px;
+  --space-md: 16px;
+  --space-lg: 24px;
+  --space-xl: 32px;
+  --space-2xl: 48px;
+  --space-3xl: 72px;
+
+  --radius-sm: 4px;
+  --radius-md: 10px;
+  --radius-pill: 999px;
+
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --dur-fast: 160ms;
+  --dur-med: 260ms;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+html, body { margin: 0; overflow-x: clip; }
+body {
+  font-family: var(--font-body);
+  font-size: var(--text-base);
+  line-height: 1.7;
+  color: var(--color-ink);
+  background: var(--color-paper);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+body.is-ink { background: var(--color-ink); color: var(--color-on-ink); }
+body.is-paper-2 { background: var(--color-paper-2); }
+
+h1, h2, h3, h4, p, ul, ol, dl, dd, figure { margin: 0; }
+ul, ol { padding: 0; list-style: none; }
+a { color: inherit; }
+img, svg { display: block; }
+
+.sec { padding: var(--space-3xl) var(--space-lg); }
+.sec.is-ink { background: var(--color-ink); color: var(--color-on-ink); }
+.sec.is-paper { background: var(--color-paper); }
+.sec.is-paper-2 { background: var(--color-paper-2); }
+.wrap { max-width: 1160px; margin: 0 auto; }
+@media (max-width: 640px) { .sec { padding: var(--space-2xl) var(--space-md); } }
+
+.sec-title {
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: var(--text-3xl);
+  line-height: 1.25;
+  letter-spacing: 0.01em;
+  overflow-wrap: anywhere;
+  min-width: 0;
+  text-wrap: balance;
+}
+[data-title="off"] .sec-title { display: none; }
+.sec-title .mark { color: var(--color-orange-ink); }
+.is-ink .sec-title .mark { color: var(--color-orange); }
+
+.mono { font-family: var(--font-mono); font-variant-numeric: tabular-nums; }
+.num { font-variant-numeric: tabular-nums; }
+.muted { color: var(--color-ink-2); }
+.is-ink .muted { color: var(--color-on-ink-muted); }
+
+.icon { width: 24px; height: 24px; flex: none; fill: none; stroke: currentColor; stroke-width: 1.75; stroke-linecap: round; stroke-linejoin: round; }
+.icon-sm { width: 18px; height: 18px; }
+
+/* Buttons and link-cards: all 8 states where applicable */
+.btn {
+  display: inline-flex; align-items: center; gap: var(--space-xs);
+  min-height: 48px; padding: 0 var(--space-lg);
+  border-radius: var(--radius-pill);
+  border: 2px solid var(--color-ink);
+  background: var(--color-ink); color: var(--color-on-ink);
+  font: 700 var(--text-base)/1.2 var(--font-body);
+  text-decoration: none; white-space: nowrap; cursor: pointer;
+  touch-action: manipulation;
+  transition: transform var(--dur-fast) var(--ease-out), background-color var(--dur-fast) var(--ease-out), color var(--dur-fast) var(--ease-out), border-color var(--dur-fast) var(--ease-out);
+}
+.btn:hover { transform: translateY(-2px); }
+.btn:active { transform: translateY(0) scale(0.98); }
+.btn:focus-visible { outline: 3px solid var(--color-focus); outline-offset: 3px; transition: none; }
+.is-ink .btn:focus-visible, .btn.on-ink:focus-visible { outline-color: var(--color-focus-on-ink); }
+.btn[aria-disabled="true"] { opacity: 0.45; cursor: not-allowed; transform: none; }
+.btn-orange { background: var(--color-orange); border-color: var(--color-orange); color: var(--color-ink); }
+.btn-orange:hover { background: var(--color-yellow); border-color: var(--color-yellow); }
+.btn-ghost-ink { background: transparent; color: var(--color-on-ink); border-color: var(--color-rule-on-ink); }
+.btn-ghost-ink:hover { border-color: var(--color-orange); color: var(--color-orange); }
+.btn-ghost { background: transparent; color: var(--color-ink); border-color: var(--color-rule-strong); }
+.btn-ghost:hover { border-color: var(--color-ink); background: var(--color-surface); }
+
+.pill {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 3px 12px; border-radius: var(--radius-pill);
+  font-size: var(--text-xs); font-weight: 700; line-height: 1.5;
+  white-space: nowrap;
+}
+.pill-orange { background: var(--color-orange); color: var(--color-ink); }
+.pill-yellow { background: var(--color-yellow); color: var(--color-ink); }
+.pill-line { border: 1.5px solid var(--color-rule-strong); color: var(--color-ink); }
+.is-ink .pill-line { border-color: var(--color-rule-on-ink); color: var(--color-on-ink); }
+
+.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
+@media (prefers-reduced-motion: no-preference) { html:not(.lenis) { scroll-behavior: smooth; } }
