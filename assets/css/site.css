@@ -76,6 +76,9 @@ html.lenis, html.lenis body { height: auto; }
 /* Footer */
 .site-foot { padding: var(--space-2xl) var(--space-lg); background: var(--color-ink-3); color: var(--color-on-ink-muted); font-size: var(--text-sm); text-align: center; line-height: 1.9; }
 .site-foot strong { color: var(--color-on-ink); }
+.site-foot .follow a { display: inline-block; padding: 10px 4px; color: var(--color-on-ink); text-underline-offset: 3px; }
+.site-foot .follow a:hover { color: var(--color-orange); }
+.site-foot .follow a:focus-visible { outline: 3px solid var(--color-focus-on-ink); outline-offset: 2px; border-radius: var(--radius-sm); }
 .site-foot .top { display: inline-flex; align-items: center; gap: 6px; min-height: 44px; margin-top: var(--space-md); padding: 0 var(--space-md); border: 1px solid var(--color-rule-on-ink); border-radius: var(--radius-pill); color: var(--color-on-ink); text-decoration: none; font-weight: 700; }
 .site-foot .top .icon { transform: rotate(180deg); }
 .site-foot .top:hover { border-color: var(--color-orange); color: var(--color-orange); }

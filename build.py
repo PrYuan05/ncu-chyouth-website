@@ -105,6 +105,7 @@ SHELL_BOTTOM = """<footer class="site-foot">
   <p>© 2027 <strong>國立中央大學彰化校友會第 21 屆返鄉服務隊</strong> 版權所有</p>
   <p>服務學校：彰化縣田中鎮新民國民小學｜活動企劃執行：中央彰友會返服籌備團隊</p>
   <p>本活動已投保特定活動平安險與公共意外責任險</p>
+  <p class="follow">追蹤彰友會：<a href="https://www.facebook.com/ncuch" target="_blank" rel="noopener">Facebook</a> · <a href="https://www.instagram.com/ncu.ch/" target="_blank" rel="noopener">Instagram</a></p>
   <a class="top" href="#top" data-scroll="top">{{icon:arrow-down icon-sm}}回到頂端</a>
 </footer>
 <div class="curtain" aria-hidden="true"><div class="in">LENS<p class="k">CASE FILE</p><div style="overflow:hidden"><p class="t"></p></div></div></div>

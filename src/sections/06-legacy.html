@@ -87,7 +87,7 @@
       </div>
       <div class="ctrl">
         <button class="arrow prev" type="button" aria-label="上一張照片">{{icon:arrow-left icon-sm}}</button>
-        <span class="count" aria-live="polite"><b>01</b> / <span class="total">05</span></span>
+        <span class="count" aria-live="polite"><b>01</b> / <span class="total">12</span></span>
         <button class="arrow next" type="button" aria-label="下一張照片">{{icon:arrow-right icon-sm}}</button>
       </div>
     </div>
@@ -102,9 +102,22 @@
 <script>
 (function () {
   // 營期照片放在 assets/photos/，學童臉部已用表情貼遮住。要換照片：把處理好的圖放進資料夾，再改這份清單。
-  var PHOTOS = [];
+  var PHOTOS = [
+    { file: "camp20-01.jpg", cap: "烘焙課成果", alt: "學童圍坐長桌，手上拿著自己做的杯子蛋糕" },
+    { file: "camp20-02.jpg", cap: "小隊破冰", alt: "小隊在走廊席地圍坐，隊輔帶學童玩破冰遊戲" },
+    { file: "camp20-03.jpg", cap: "全體大地遊戲", alt: "學童和隊輔在操場排成一列，準備開始傳球遊戲" },
+    { file: "camp20-04.jpg", cap: "湯匙運球接力", alt: "學童用湯匙托著乒乓球在球場上奔跑" },
+    { file: "camp20-05.jpg", cap: "關卡任務卡", alt: "隊輔拿著任務卡，向學童說明關卡規則" },
+    { file: "camp20-06.jpg", cap: "排隊等闖關", alt: "學童掛著自己畫的名牌，排隊等待闖關" },
+    { file: "camp20-07.jpg", cap: "彎下腰聽你說", alt: "隊輔彎下腰，貼近學童聽他們說話" },
+    { file: "camp20-08.jpg", cap: "一起攪麵糊", alt: "隊輔陪學童一起攪拌烘焙用的麵糊", pos: "50% 40%" },
+    { file: "camp20-09.jpg", cap: "烘焙步驟講解", alt: "隊輔拿著麥克風講解烘焙步驟", pos: "50% 30%" },
+    { file: "camp20-10.jpg", cap: "傍晚闖關站", alt: "傍晚的操場關卡，學童圍在關主身邊", pos: "50% 55%" },
+    { file: "camp20-11.jpg", cap: "猜拳闖關", alt: "學童和關主在關卡桌前猜拳" },
+    { file: "camp20-12.jpg", cap: "營火道具", alt: "用紙捲和色紙做成的營火道具" }
+  ];
   // 清單滑過時浮出的預覽：有照片的屆數放照片檔名，沒有的顯示檔案卡。
-  var PEEK = {};
+  var PEEK = { 20: "camp20-01.jpg" };
   function src(file) { return "assets/photos/" + file; }
 
   var root = document.getElementById("s6");
@@ -118,6 +131,7 @@
     img.draggable = false;
     img.alt = p.alt;
     img.src = src(p.file);
+    if (p.pos) img.style.objectPosition = p.pos;
     var cap = document.createElement("figcaption");
     cap.textContent = String(i + 1).padStart(2, "0") + " · " + p.cap;
     fig.appendChild(img);
