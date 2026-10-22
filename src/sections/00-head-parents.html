@@ -19,7 +19,9 @@
 #h-parents .toc a:hover { color: var(--color-on-ink); }
 #h-parents .toc a:focus-visible { outline: 3px solid var(--color-focus-on-ink); outline-offset: 2px; }
 #h-parents .toc li::before { content: counter(toc, decimal-leading-zero) " "; font-family: var(--font-mono); color: var(--color-yellow); }
-#h-parents .ask { margin-top: var(--space-2xl); padding: var(--space-lg); border-radius: var(--radius-md); background: var(--color-ink-3); border: 1px solid var(--color-rule-on-ink); }
+#h-parents .ask { position: relative; margin-top: var(--space-2xl); padding: var(--space-lg); border-radius: var(--radius-md); background: var(--color-ink-3); border: 1px solid var(--color-rule-on-ink); }
+#h-parents .ask .xz { position: absolute; right: var(--space-md); bottom: calc(100% - 26px); width: 92px; height: auto; pointer-events: none; transform-origin: 50% 90%; }
+#h-parents .ask-label { padding-right: 96px; }
 #h-parents .ask-label { display: flex; align-items: center; gap: var(--space-xs); font-weight: 700; }
 #h-parents .ask-label .icon { color: var(--color-orange); }
 #h-parents kbd { margin-left: auto; padding: 2px 8px; border: 1px solid var(--color-rule-on-ink); border-radius: var(--radius-sm); font: 600 var(--text-xs)/1.6 var(--font-mono); color: var(--color-on-ink-muted); }
@@ -62,6 +64,7 @@
       </dl>
     </div>
     <div class="ask" role="search">
+      <img class="xz" src="{{asset:mascot/xiaozhang-magnify.webp}}" alt="" width="120" height="112">
       <label class="ask-label" for="ask-q">{{icon:search icon-sm}}家長快速查詢<kbd class="kbd" aria-hidden="true">Ctrl K</kbd></label>
       <input id="ask-q" type="search" autocomplete="off" enterkeyhint="search" placeholder="輸入「接送」「帶什麼」「保險」…">
       <div class="chips" aria-label="常見問題"></div>
@@ -115,9 +118,20 @@
     if (hits >= 2) s += hits / q.length;
     return s;
   }
+  // 小章助手：找到答案點頭、找不到搖頭。
+  var xz = root.querySelector(".xz"), mood = "magnify";
+  function react(next) {
+    if (next === mood) return;
+    xz.src = CC.sprite(next); mood = next;
+    if (!window.gsap || matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    gsap.killTweensOf(xz);
+    gsap.set(xz, { rotation: 0, x: 0, y: 0 });
+    if (next === "glint") gsap.to(xz, { y: 6, duration: 0.14, yoyo: true, repeat: 3, ease: "power1.inOut" });
+    else if (next === "surprise") gsap.to(xz, { keyframes: { x: [0, -8, 8, -6, 6, 0], rotation: [0, -6, 6, -4, 4, 0] }, duration: 0.6, ease: "none" });
+  }
   function render() {
     var q = input.value.trim();
-    if (!q) { list.innerHTML = ""; status.textContent = ""; return; }
+    if (!q) { list.innerHTML = ""; status.textContent = ""; react("magnify"); return; }
     var found = FAQ.map(function (item) { return { item: item, s: score(item, q) }; })
       .filter(function (r) { return r.s > 0.5; })
       .sort(function (a, b) { return b.s - a.s; })
@@ -125,6 +139,7 @@
     if (!found.length) {
       list.innerHTML = '<li class="none"><p class="q">找不到相關問題</p><p class="a">請直接聯絡營隊執行長李元皓 <a href="tel:0908805897">0908-805-897</a>。</p></li>';
       status.textContent = "找不到相關問題";
+      react("surprise");
       return;
     }
     var mark = new RegExp("(" + q.replace(/[.*+?^${}()|[\]\\]/g, "\\$&") + ")", "g");
@@ -132,6 +147,7 @@
       return '<li><p class="q">' + esc(r.item.q).replace(mark, "<mark>$1</mark>") + '</p><p class="a">' + esc(r.item.a).replace(mark, "<mark>$1</mark>") + "</p></li>";
     }).join("");
     status.textContent = "找到 " + found.length + " 個相關問題";
+    react("glint");
     if (window.gsap && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
       gsap.from(list.children, { y: 8, autoAlpha: 0, duration: 0.3, stagger: 0.05, ease: "power2.out" });
     }

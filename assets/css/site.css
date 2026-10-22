@@ -10,7 +10,7 @@ html.lenis, html.lenis body { height: auto; }
 .skip:focus { top: var(--space-md); outline: 3px solid var(--color-ink); outline-offset: 2px; }
 
 /* Header: brand, page nav, live status */
-.site-head { position: sticky; top: 0; z-index: 100; background: var(--color-ink-3); color: var(--color-on-ink); border-bottom: 1px solid var(--color-rule-on-ink); }
+.site-head { position: sticky; top: 0; z-index: 100; background: rgba(15, 23, 42, 0.82); -webkit-backdrop-filter: blur(16px) saturate(1.5); backdrop-filter: blur(16px) saturate(1.5); color: var(--color-on-ink); border-bottom: 1px solid var(--color-rule-on-ink); }
 .site-head .bar { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: var(--space-lg); max-width: 1160px; height: 60px; margin: 0 auto; padding: 0 var(--space-lg); }
 .brand { display: inline-flex; align-items: center; gap: var(--space-xs); min-height: 44px; color: var(--color-on-ink); text-decoration: none; font-weight: 700; font-size: var(--text-sm); white-space: nowrap; border-radius: var(--radius-sm); }
 .brand .icon { color: var(--color-orange); }
@@ -47,13 +47,26 @@ html.lenis, html.lenis body { height: auto; }
 .pages:focus { outline: none; }
 .sec { scroll-margin-top: var(--header-h); }
 
-/* Page-change curtain */
-.curtain { position: fixed; inset: 0; z-index: 200; display: grid; place-items: center; background: var(--color-ink-3); color: var(--color-on-ink); visibility: hidden; pointer-events: none; }
-.curtain::before { content: ""; position: absolute; left: 0; right: 0; top: 0; height: 6px; background: var(--color-orange); }
-.curtain .in { text-align: center; padding: 0 var(--space-lg); }
+/* Page change: 小章 swims up and squirts ink; the ink forms a shadow suspect, then clears */
+.curtain { position: fixed; inset: 0; z-index: 200; overflow: hidden; visibility: hidden; pointer-events: none; color: var(--color-on-ink); }
+.curtain .ink { position: absolute; left: 50%; bottom: 12vh; width: 40vmax; height: 40vmax; margin-left: -20vmax; border-radius: 46% 54% 48% 52% / 55% 45% 55% 45%; background: radial-gradient(circle at 40% 35%, #1E293B, var(--color-ink-3) 60%); transform: scale(0); }
+.curtain .drop { position: absolute; left: 50%; bottom: 18vh; width: 22px; height: 22px; border-radius: 50%; background: var(--color-ink-3); opacity: 0; }
+.curtain .in { position: absolute; inset: 0; display: grid; place-content: center; justify-items: center; text-align: center; padding: 0 var(--space-lg); }
+.curtain .sil { width: clamp(84px, 12vw, 128px); fill: #020617; filter: drop-shadow(0 0 18px rgba(245, 128, 39, 0.35)); margin-bottom: var(--space-md); }
+.curtain .sil .eye { fill: #FFFBEB; }
 .curtain .k { font: 600 var(--text-xs)/1.5 var(--font-mono); letter-spacing: 0.2em; color: var(--color-yellow); }
 .curtain .t { margin-top: var(--space-xs); font-family: var(--font-display); font-weight: 900; font-size: var(--text-display); line-height: 1.1; }
-.curtain .lens { width: 64px; margin: 0 auto var(--space-lg); color: var(--color-orange); }
+.curtain .swim { position: absolute; left: 50%; bottom: 0; width: clamp(140px, 18vw, 220px); height: auto; margin-left: calc(clamp(140px, 18vw, 220px) / -2); transform: translateY(110%); }
+
+/* Scroll progress: a tentacle reaches down the left edge (wide screens), a thin bar elsewhere */
+.tentacle { position: fixed; left: 10px; top: calc(var(--header-h) + 12px); bottom: 12px; z-index: 50; width: 40px; pointer-events: none; display: none; }
+.tentacle svg { display: block; width: 100%; height: 100%; overflow: visible; }
+.progress-top { position: fixed; left: 0; right: 0; top: var(--header-h); z-index: 99; height: 3px; pointer-events: none; }
+.progress-top i { display: block; height: 100%; background: linear-gradient(90deg, var(--color-orange), #F6B49A); transform-origin: left center; transform: scaleX(0); }
+@media (min-width: 1240px) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  .tentacle { display: block; }
+  .progress-top { display: none; }
+}
 
 /* Custom cursor (fine pointers, motion allowed) */
 .has-cursor, .has-cursor * { cursor: none !important; }
@@ -79,7 +92,9 @@ html.lenis, html.lenis body { height: auto; }
 .site-foot .follow a { display: inline-block; padding: 10px 4px; color: var(--color-on-ink); text-underline-offset: 3px; }
 .site-foot .follow a:hover { color: var(--color-orange); }
 .site-foot .follow a:focus-visible { outline: 3px solid var(--color-focus-on-ink); outline-offset: 2px; border-radius: var(--radius-sm); }
-.site-foot .top { display: inline-flex; align-items: center; gap: 6px; min-height: 44px; margin-top: var(--space-md); padding: 0 var(--space-md); border: 1px solid var(--color-rule-on-ink); border-radius: var(--radius-pill); color: var(--color-on-ink); text-decoration: none; font-weight: 700; }
+.site-foot .top-wrap { position: relative; display: inline-block; margin-top: 64px; }
+.site-foot .xz-top { position: absolute; left: 50%; bottom: calc(100% - 22px); width: 96px; height: auto; margin-left: -48px; pointer-events: none; }
+.site-foot .top { position: relative; display: inline-flex; align-items: center; gap: 6px; min-height: 44px; background: var(--color-ink-3); padding: 0 var(--space-md); border: 1px solid var(--color-rule-on-ink); border-radius: var(--radius-pill); color: var(--color-on-ink); text-decoration: none; font-weight: 700; }
 .site-foot .top .icon { transform: rotate(180deg); }
 .site-foot .top:hover { border-color: var(--color-orange); color: var(--color-orange); }
 .site-foot .top:focus-visible { outline: 3px solid var(--color-focus-on-ink); outline-offset: 2px; }
@@ -89,7 +104,8 @@ html.lenis, html.lenis body { height: auto; }
 .intro .preloader { display: grid; }
 .preloader .row { display: flex; justify-content: space-between; gap: var(--space-md); font: 600 var(--text-xs)/1.5 var(--font-mono); letter-spacing: 0.16em; color: var(--color-on-ink-muted); }
 .preloader .mid { display: grid; justify-items: center; align-content: center; gap: var(--space-md); text-align: center; }
-.preloader .lens { width: 56px; color: var(--color-orange); }
+.preloader .xz { width: clamp(120px, 16vw, 180px); height: auto; }
+.preloader .flash { position: absolute; inset: 0; background: #fff; opacity: 0; pointer-events: none; }
 .preloader .num { font: 600 clamp(4.5rem, 3rem + 9vw, 10rem)/1 var(--font-mono); font-variant-numeric: tabular-nums; color: var(--color-orange); letter-spacing: -0.02em; }
 .preloader .say { min-height: 1.4em; font-family: var(--font-display); font-weight: 900; font-size: var(--text-2xl); }
 .preloader .line { height: 2px; background: var(--color-rule-on-ink); }

@@ -8,7 +8,7 @@ Each src/sections/NN-name.html starts with a line like
 <!-- title: 主視覺 | body: is-ink | plugins: SplitText -->
 and {{icon:name}} tokens are swapped for inline Lucide SVG.
 """
-import pathlib, re, shutil, sys
+import base64, json, pathlib, re, shutil, sys
 
 ROOT = pathlib.Path(__file__).parent
 SRC = ROOT / "src"
@@ -65,12 +65,15 @@ def parse(path):
         for k, v in (p.split(":", 1) for p in meta_line.strip("<!-> \n").split("|"))
     )
     body = re.sub(r"\{\{icon:([a-z\- ]+)\}\}", icon, body)
+    body = re.sub(r"\{\{asset:([\w./-]+)\}\}", lambda m: asset(m.group(1)), body)
     return meta, body
 
 
 GSAP = ["gsap", "ScrollTrigger", "ScrambleTextPlugin", "Draggable", "InertiaPlugin", "SplitText", "Flip"]
 CDN_GSAP = "https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/"
 CDN_LENIS = "https://cdn.jsdelivr.net/npm/lenis@1.3.26/dist/lenis.min.js"
+CDN_THREE = "https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.min.js"
+SPRITES = ["wave", "magnify", "glint", "surprise", "celebrate"]
 
 TITLE = "2027 中央大學彰友會第21屆返鄉服務隊"
 DESC = "名偵探柯南——真相與科學探險記｜2027/1/27–1/29 於彰化縣田中鎮新民國小，48 位大專志工陪伴 48 位學童，學員全程免費。"
@@ -80,7 +83,8 @@ LENS = """<svg class="lens" viewBox="0 0 120 120" aria-hidden="true" fill="none"
 SHELL_TOP = """<a class="skip" href="#main" data-scroll="#main">跳到主要內容</a>
 <div class="preloader" aria-hidden="true">
   <div class="row"><span>CASE No.21 · 新民國小</span><span>NCU · CHANGHUA</span></div>
-  <div class="mid">LENS<div class="num">000</div><p class="say">調查中</p></div>
+  <div class="mid"><img class="xz" src="{{asset:mascot/xiaozhang-magnify.webp}}" alt="" width="240" height="224"><div class="num">000</div><p class="say">調查中</p></div>
+  <div class="flash"></div>
   <div><div class="line"><i></i></div><div class="row" style="margin-top:12px"><span>INVESTIGATING</span><span>2027.01.27–29</span></div></div>
 </div>
 <header class="site-head">
@@ -99,6 +103,8 @@ SHELL_TOP = """<a class="skip" href="#main" data-scroll="#main">跳到主要內�
     </div>
   </div>
 </header>
+<div class="tentacle" aria-hidden="true"></div>
+<div class="progress-top" aria-hidden="true"><i></i></div>
 """
 
 SHELL_BOTTOM = """<footer class="site-foot">
@@ -106,9 +112,16 @@ SHELL_BOTTOM = """<footer class="site-foot">
   <p>服務學校：彰化縣田中鎮新民國民小學｜活動企劃執行：中央彰友會返服籌備團隊</p>
   <p>本活動已投保特定活動平安險與公共意外責任險</p>
   <p class="follow">追蹤彰友會：<a href="https://www.facebook.com/ncuch" target="_blank" rel="noopener">Facebook</a> · <a href="https://www.instagram.com/ncu.ch/" target="_blank" rel="noopener">Instagram</a></p>
-  <a class="top" href="#top" data-scroll="top">{{icon:arrow-down icon-sm}}回到頂端</a>
+  <div class="top-wrap"><img class="xz-top" src="{{asset:mascot/xiaozhang-wave.webp}}" alt="" width="120" height="112"><a class="top" href="#top" data-scroll="top">{{icon:arrow-down icon-sm}}回到頂端</a></div>
 </footer>
-<div class="curtain" aria-hidden="true"><div class="in">LENS<p class="k">CASE FILE</p><div style="overflow:hidden"><p class="t"></p></div></div></div>
+<div class="curtain" aria-hidden="true">
+  <div class="ink"></div><i class="drop"></i><i class="drop"></i><i class="drop"></i><i class="drop"></i>
+  <div class="in">
+    <svg class="sil" viewBox="0 0 120 150"><path d="M60 8c19 0 33 15 33 34 0 13-7 24-17 30 21 6 36 22 40 44 2 12-6 24-19 24H23c-13 0-21-12-19-24 4-22 19-38 40-44-10-6-17-17-17-30C27 23 41 8 60 8z"/><ellipse class="eye" cx="48" cy="42" rx="7" ry="4.5"/><ellipse class="eye" cx="72" cy="42" rx="7" ry="4.5"/></svg>
+    <p class="k">CASE FILE</p><div style="overflow:hidden"><p class="t"></p></div>
+  </div>
+  <img class="swim" src="{{asset:mascot/xiaozhang-wave.webp}}" alt="" width="240" height="224">
+</div>
 <div class="cursor" aria-hidden="true"><div class="ring"></div><div class="dot"></div><div class="label"></div></div>
 """
 
@@ -121,7 +134,17 @@ INTRO_FLAG = """<script>
 </script>"""
 
 
+def asset(path):
+    """assets/ path, or a data URI in the single-file preview build."""
+    if not INLINE:
+        return "assets/" + path
+    f = ROOT / "assets" / path
+    mime = {".webp": "image/webp", ".png": "image/png", ".jpg": "image/jpeg"}[f.suffix]
+    return f"data:{mime};base64," + base64.b64encode(f.read_bytes()).decode()
+
+
 def icons(text):
+    text = re.sub(r"\{\{asset:([\w./-]+)\}\}", lambda m: asset(m.group(1)), text)
     return re.sub(r"\{\{icon:([a-z\- ]+)\}\}", icon, text).replace("LENS", LENS)
 
 
@@ -142,15 +165,25 @@ def main():
         _, body = parse(path)
         bodies.append(body.strip())
 
+    js_mascot = (SRC / "mascot.js").read_text()
+    js_game_data = (SRC / "game-data.js").read_text()
+    js_game = (SRC / "game.js").read_text()
+    game_html = icons((SRC / "game.html").read_text())
+    if LOCAL:
+        js_mascot = js_mascot.replace(CDN_THREE, "../vendor/three.module.min.js")
+
     if INLINE:
+        sprites = {f"mascot/xiaozhang-{n}.webp": asset(f"mascot/xiaozhang-{n}.webp") for n in SPRITES}
         styles = f"<style>\n{css_base}\n{css_site}\n</style>"
-        common = f"<script>\n{js_common}\n</script>"
-        site = f"<script>\n{js_site}\n</script>"
+        common = f"<script>\nwindow.CC_ASSETS = {json.dumps(sprites)};\n{js_common}\n</script>"
+        site = (f"<script>\n{js_site}\n</script>\n<script type=\"module\">\n{js_mascot}\n</script>\n"
+                f"<script>\n{js_game_data}\n</script>\n<script>\n{js_game}\n</script>")
     else:
         styles = ('<link rel="stylesheet" href="assets/css/base.css">\n'
                   '<link rel="stylesheet" href="assets/css/site.css">')
         common = '<script src="assets/js/common.js"></script>'
-        site = '<script src="assets/js/site.js"></script>'
+        site = ('<script src="assets/js/site.js"></script>\n<script type="module" src="assets/js/mascot.js"></script>\n'
+                '<script src="assets/js/game-data.js"></script>\n<script src="assets/js/game.js"></script>')
 
     page = f"""<!doctype html>
 <html lang="zh-Hant">
@@ -160,6 +193,7 @@ def main():
 <title>{TITLE}</title>
 <meta name="description" content="{DESC}">
 <meta name="theme-color" content="#0F172A">
+<link rel="icon" type="image/png" href="{asset("mascot/favicon.png")}">
 <meta property="og:type" content="website">
 <meta property="og:title" content="{TITLE}">
 <meta property="og:description" content="{DESC}">
@@ -175,7 +209,8 @@ def main():
 {icons(SHELL_TOP)}<main id="main" class="pages" tabindex="-1">
 {chr(10).join(bodies)}
 </main>
-{icons(SHELL_BOTTOM)}{site}
+{icons(SHELL_BOTTOM)}{game_html}
+{site}
 </body>
 </html>
 """
@@ -188,6 +223,11 @@ def main():
         (OUT / "assets/css/site.css").write_text(css_site)
         (OUT / "assets/js/common.js").write_text(js_common)
         (OUT / "assets/js/site.js").write_text(js_site)
+        (OUT / "assets/js/mascot.js").write_text(js_mascot)
+        (OUT / "assets/js/game-data.js").write_text(js_game_data)
+        (OUT / "assets/js/game.js").write_text(js_game)
+        if OUT != ROOT:
+            shutil.copytree(ROOT / "assets/mascot", OUT / "assets/mascot", dirs_exist_ok=True)
         if LOCAL:
             shutil.copytree(SRC / "vendor", OUT / "assets/vendor", dirs_exist_ok=True)
     print("built site ->", OUT / "index.html", f"({len(page) // 1024} KB)")

@@ -19,10 +19,10 @@
 #s3 .panel { grid-area: 1 / 1; }
 #s3 .panel:not(.is-on) { visibility: hidden; }
 #s3 .panel h3 { font-size: var(--text-base); font-weight: 700; color: var(--color-ink-2); margin-bottom: var(--space-sm); }
-#s3 .row { display: grid; grid-template-columns: 9.5em minmax(0, 1fr) auto; gap: var(--space-md); align-items: center; padding: var(--space-sm) 0; border-bottom: 1px solid var(--color-rule); }
+#s3 .row { display: grid; grid-template-columns: 9.5em minmax(0, 1fr) auto; gap: var(--space-md); align-items: center; padding: var(--space-sm) var(--space-md); border-bottom: 1px solid var(--color-rule); }
 #s3 .row time { font-family: var(--font-mono); font-variant-numeric: tabular-nums; font-size: var(--text-sm); font-weight: 600; color: var(--color-orange-ink); }
 #s3 .row .what { font-weight: 500; }
-#s3 .row.is-key { background: var(--color-ink); color: var(--color-on-ink); padding-left: var(--space-md); padding-right: var(--space-md); border-radius: var(--radius-sm); border: 0; margin: var(--space-2xs) 0; }
+#s3 .row.is-key { background: var(--color-ink); color: var(--color-on-ink); border-radius: var(--radius-sm); }
 #s3 .row.is-key time { color: var(--color-orange); }
 #s3 .row.is-key .what { font-weight: 700; }
 #s3 .row.is-key .what span { display: block; font-weight: 400; font-size: var(--text-sm); color: var(--color-on-ink-muted); }

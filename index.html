@@ -6,6 +6,7 @@
 <title>2027 中央大學彰友會第21屆返鄉服務隊</title>
 <meta name="description" content="名偵探柯南——真相與科學探險記｜2027/1/27–1/29 於彰化縣田中鎮新民國小，48 位大專志工陪伴 48 位學童，學員全程免費。">
 <meta name="theme-color" content="#0F172A">
+<link rel="icon" type="image/png" href="assets/mascot/favicon.png">
 <meta property="og:type" content="website">
 <meta property="og:title" content="2027 中央大學彰友會第21屆返鄉服務隊">
 <meta property="og:description" content="名偵探柯南——真相與科學探險記｜2027/1/27–1/29 於彰化縣田中鎮新民國小，48 位大專志工陪伴 48 位學童，學員全程免費。">
@@ -35,7 +36,8 @@
 <a class="skip" href="#main" data-scroll="#main">跳到主要內容</a>
 <div class="preloader" aria-hidden="true">
   <div class="row"><span>CASE No.21 · 新民國小</span><span>NCU · CHANGHUA</span></div>
-  <div class="mid"><svg class="lens" viewBox="0 0 120 120" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round"><circle cx="50" cy="50" r="34"/><path d="M75 75 L106 106" stroke-width="9"/></svg><div class="num">000</div><p class="say">調查中</p></div>
+  <div class="mid"><img class="xz" src="assets/mascot/xiaozhang-magnify.webp" alt="" width="240" height="224"><div class="num">000</div><p class="say">調查中</p></div>
+  <div class="flash"></div>
   <div><div class="line"><i></i></div><div class="row" style="margin-top:12px"><span>INVESTIGATING</span><span>2027.01.27–29</span></div></div>
 </div>
 <header class="site-head">
@@ -54,6 +56,8 @@
     </div>
   </div>
 </header>
+<div class="tentacle" aria-hidden="true"></div>
+<div class="progress-top" aria-hidden="true"><i></i></div>
 <main id="main" class="pages" tabindex="-1">
 <style>
 #h-parents { padding-top: var(--space-2xl); padding-bottom: var(--space-2xl); }
@@ -75,7 +79,9 @@
 #h-parents .toc a:hover { color: var(--color-on-ink); }
 #h-parents .toc a:focus-visible { outline: 3px solid var(--color-focus-on-ink); outline-offset: 2px; }
 #h-parents .toc li::before { content: counter(toc, decimal-leading-zero) " "; font-family: var(--font-mono); color: var(--color-yellow); }
-#h-parents .ask { margin-top: var(--space-2xl); padding: var(--space-lg); border-radius: var(--radius-md); background: var(--color-ink-3); border: 1px solid var(--color-rule-on-ink); }
+#h-parents .ask { position: relative; margin-top: var(--space-2xl); padding: var(--space-lg); border-radius: var(--radius-md); background: var(--color-ink-3); border: 1px solid var(--color-rule-on-ink); }
+#h-parents .ask .xz { position: absolute; right: var(--space-md); bottom: calc(100% - 26px); width: 92px; height: auto; pointer-events: none; transform-origin: 50% 90%; }
+#h-parents .ask-label { padding-right: 96px; }
 #h-parents .ask-label { display: flex; align-items: center; gap: var(--space-xs); font-weight: 700; }
 #h-parents .ask-label .icon { color: var(--color-orange); }
 #h-parents kbd { margin-left: auto; padding: 2px 8px; border: 1px solid var(--color-rule-on-ink); border-radius: var(--radius-sm); font: 600 var(--text-xs)/1.6 var(--font-mono); color: var(--color-on-ink-muted); }
@@ -118,6 +124,7 @@
       </dl>
     </div>
     <div class="ask" role="search">
+      <img class="xz" src="assets/mascot/xiaozhang-magnify.webp" alt="" width="120" height="112">
       <label class="ask-label" for="ask-q"><svg class="icon icon-sm" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>家長快速查詢<kbd class="kbd" aria-hidden="true">Ctrl K</kbd></label>
       <input id="ask-q" type="search" autocomplete="off" enterkeyhint="search" placeholder="輸入「接送」「帶什麼」「保險」…">
       <div class="chips" aria-label="常見問題"></div>
@@ -171,9 +178,20 @@
     if (hits >= 2) s += hits / q.length;
     return s;
   }
+  // 小章助手：找到答案點頭、找不到搖頭。
+  var xz = root.querySelector(".xz"), mood = "magnify";
+  function react(next) {
+    if (next === mood) return;
+    xz.src = CC.sprite(next); mood = next;
+    if (!window.gsap || matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    gsap.killTweensOf(xz);
+    gsap.set(xz, { rotation: 0, x: 0, y: 0 });
+    if (next === "glint") gsap.to(xz, { y: 6, duration: 0.14, yoyo: true, repeat: 3, ease: "power1.inOut" });
+    else if (next === "surprise") gsap.to(xz, { keyframes: { x: [0, -8, 8, -6, 6, 0], rotation: [0, -6, 6, -4, 4, 0] }, duration: 0.6, ease: "none" });
+  }
   function render() {
     var q = input.value.trim();
-    if (!q) { list.innerHTML = ""; status.textContent = ""; return; }
+    if (!q) { list.innerHTML = ""; status.textContent = ""; react("magnify"); return; }
     var found = FAQ.map(function (item) { return { item: item, s: score(item, q) }; })
       .filter(function (r) { return r.s > 0.5; })
       .sort(function (a, b) { return b.s - a.s; })
@@ -181,6 +199,7 @@
     if (!found.length) {
       list.innerHTML = '<li class="none"><p class="q">找不到相關問題</p><p class="a">請直接聯絡營隊執行長李元皓 <a href="tel:0908805897">0908-805-897</a>。</p></li>';
       status.textContent = "找不到相關問題";
+      react("surprise");
       return;
     }
     var mark = new RegExp("(" + q.replace(/[.*+?^${}()|[\]\\]/g, "\\$&") + ")", "g");
@@ -188,6 +207,7 @@
       return '<li><p class="q">' + esc(r.item.q).replace(mark, "<mark>$1</mark>") + '</p><p class="a">' + esc(r.item.a).replace(mark, "<mark>$1</mark>") + "</p></li>";
     }).join("");
     status.textContent = "找到 " + found.length + " 個相關問題";
+    react("glint");
     if (window.gsap && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
       gsap.from(list.children, { y: 8, autoAlpha: 0, duration: 0.3, stagger: 0.05, ease: "power2.out" });
     }
@@ -343,14 +363,19 @@
 #s1 .facts dd { font-weight: 500; }
 #s1 .facts .pill { margin-top: 2px; }
 #s1 .main { position: relative; }
-#s1 .lens { position: absolute; right: 0; top: 8px; width: clamp(140px, 16vw, 210px); color: var(--color-yellow); pointer-events: none; }
-#s1 .lens .glass { fill: var(--color-orange); fill-opacity: 0.08; }
+#s1 .side { display: grid; gap: var(--space-md); }
+#s1 .stage { position: relative; width: min(100%, 360px); aspect-ratio: 1 / 0.92; margin: 0 auto; }
+#s1 .stage::before { content: ""; position: absolute; left: 12%; right: 12%; bottom: 6%; height: 14%; border-radius: 50%; background: radial-gradient(closest-side, rgba(245, 128, 39, 0.35), transparent); filter: blur(6px); }
+#s1 .stage canvas, #s1 .stage .xz-still { position: relative; width: 100%; height: 100%; object-fit: contain; }
+#s1 .stage button { position: absolute; inset: 8% 14%; border: 0; border-radius: 50%; background: none; cursor: pointer; }
+#s1 .stage button:focus-visible { outline: 3px solid var(--color-focus-on-ink); outline-offset: 2px; }
+#s1 .bubble { position: absolute; left: 50%; top: 2%; z-index: 2; padding: 6px 14px; border-radius: var(--radius-pill); background: rgba(255, 251, 235, 0.92); color: var(--color-ink); font: 900 var(--text-base)/1.4 var(--font-display); white-space: nowrap; transform: translateX(-50%); opacity: 0; pointer-events: none; box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25); }
 #s1 .cta { display: flex; flex-wrap: wrap; gap: var(--space-sm); margin-top: var(--space-2xl); padding-top: var(--space-xl); border-top: 1px solid var(--color-rule-on-ink); }
 #s1 .cta .btn { gap: var(--space-sm); }
 #s1 .cta small { font-size: var(--text-xs); font-weight: 700; opacity: 0.85; }
 @media (max-width: 860px) {
   #s1 .hero-grid { grid-template-columns: minmax(0, 1fr); gap: var(--space-xl); }
-  #s1 .lens { right: -8px; top: 40px; width: 110px; opacity: 0.85; }
+  #s1 .stage { width: min(72%, 280px); }
 }
 @media (max-width: 480px) {
   #s1 .cta { flex-direction: column; }
@@ -362,12 +387,6 @@
   <div class="wrap">
     <div class="hero-grid">
       <div class="main">
-        <svg class="lens" viewBox="0 0 120 120" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round">
-        <circle class="glass" cx="50" cy="50" r="34"/>
-        <circle cx="50" cy="50" r="34"/>
-        <path d="M30 40 a24 24 0 0 1 14-14" stroke-width="2" opacity="0.6"/>
-        <path d="M75 75 L106 106" stroke-width="8"/>
-      </svg>
         <p class="kicker mono">NCU · CHANGHUA · 21ST · 2027</p>
         <h1 aria-label="名偵探柯南——真相與科學探險記">
           <span class="t1" aria-hidden="true">名偵探柯南</span>
@@ -377,12 +396,18 @@
         <p class="sub">2027 國立中央大學彰友會第 21 屆返鄉服務隊寒假育樂營</p>
         <p class="tag">用愛與陪伴守護家鄉孩子・激發偏鄉學童科學好奇心</p>
       </div>
+      <div class="side">
+      <div class="stage">
+        <p class="bubble" aria-live="polite"></p>
+        <button type="button" aria-label="點小章：真相只有一個" data-cursor="點我 CLICK"></button>
+      </div>
       <dl class="facts" aria-label="營隊資訊">
         <div><dt>營期</dt><dd class="num">2027／1／27（三）～ 1／29（五）</dd></div>
         <div><dt>地點</dt><dd>彰化縣田中鎮新民國民小學</dd></div>
         <div><dt>陪伴</dt><dd class="num">48 位大專志工 × 48 位學童</dd></div>
         <div><dt>費用</dt><dd><span class="pill pill-orange">學員全程免費</span></dd></div>
       </dl>
+      </div>
     </div>
     <nav class="cta" aria-label="依身分進入專區">
       <a class="btn btn-orange" data-role="parents"><small>我是家長</small>家長專區<svg class="icon icon-sm" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></a>
@@ -403,12 +428,32 @@
     var tl = gsap.timeline({ paused: true, defaults: { ease: "power3.out" } });
     if (split) tl.from(split.chars, { yPercent: 110, duration: 0.7, stagger: 0.045 }, 0.1);
     tl.from(root.querySelector(".dash"), { scaleX: 0, duration: 0.6 }, 0.35)
-      .from(root.querySelector(".lens"), { x: -260, y: 30, rotation: -12, autoAlpha: 0, duration: 1.3, ease: "power2.out" }, 0)
+      .from(root.querySelector(".stage"), { y: 40, scale: 0.85, autoAlpha: 0, duration: 1.1, ease: "back.out(1.6)" }, 0.2)
       .from(root.querySelectorAll(".sub, .tag"), { y: 16, autoAlpha: 0, duration: 0.5, stagger: 0.08 }, 0.7)
       .from(root.querySelectorAll(".facts > div"), { x: 16, autoAlpha: 0, duration: 0.45, stagger: 0.06 }, 0.8)
       .from(root.querySelectorAll(".cta .btn"), { y: 12, autoAlpha: 0, duration: 0.4, stagger: 0.06 }, 1.0);
     CC.intro(function () { tl.play(); });
     return function () { if (split) split.revert(); };
+  });
+
+  /* 小章：眼睛跟著滑鼠，點一下推眼鏡說「真相只有一個」 */
+  var stage = root.querySelector(".stage");
+  var bubble = stage.querySelector(".bubble");
+  var LINES = ["真相只有一個！", "線索就在營隊裡！", "1/28 營火晚會見！", "一起來當小偵探！"];
+  var said = 0;
+  CC.mascot(stage, { pose: "wave" }, function (api) {
+    if (api) stage.insertBefore(api.renderer.domElement, bubble);
+    window.addEventListener("pointermove", function (e) {
+      if (!api) return;
+      var r = stage.getBoundingClientRect();
+      api.look((e.clientX - (r.left + r.width / 2)) / (window.innerWidth / 2), (e.clientY - (r.top + r.height / 2)) / (window.innerHeight / 2));
+    }, { passive: true });
+    stage.querySelector("button").addEventListener("click", function () {
+      bubble.textContent = LINES[said++ % LINES.length];
+      if (api) { api.pose("glint"); api.glint(); setTimeout(function () { api.pose("wave"); }, 1600); }
+      if (window.gsap) gsap.fromTo(bubble, { autoAlpha: 0, y: 8, xPercent: -50, x: 0 }, { autoAlpha: 1, y: 0, duration: 0.35, ease: "back.out(2)", onComplete: function () { gsap.to(bubble, { autoAlpha: 0, delay: 1.6, duration: 0.3 }); } });
+      else bubble.style.opacity = 1;
+    });
   });
 })();
 </script>
@@ -585,6 +630,128 @@
 })();
 </script>
 <style>
+#s13 { position: relative; padding: var(--space-2xl) 0; overflow: hidden; background: linear-gradient(120deg, #FDF1D3 0%, #FFE7CC 45%, #E6EEF9 100%); }
+#s13::before, #s13::after { content: ""; position: absolute; border-radius: 50%; filter: blur(48px); opacity: 0.55; pointer-events: none; }
+#s13::before { width: 340px; height: 340px; left: -80px; top: -140px; background: #F8963F; }
+#s13::after { width: 300px; height: 300px; right: -60px; bottom: -160px; background: #8FB4E8; }
+#s13 > .wrap { width: calc(100% - 2 * var(--space-lg)); }
+@media (max-width: 640px) { #s13 > .wrap { width: calc(100% - 2 * var(--space-md)); } }
+#s13 .head { position: relative; z-index: 1; display: flex; flex-wrap: wrap; align-items: end; justify-content: space-between; gap: var(--space-sm) var(--space-lg); }
+#s13 .head p { font: 600 var(--text-xs)/1.5 var(--font-mono); letter-spacing: 0.16em; color: var(--color-orange-ink); }
+#s13 .head h2 { margin-top: 2px; font-family: var(--font-display); font-weight: 900; font-size: var(--text-2xl); line-height: 1.3; }
+#s13 .head a { display: inline-flex; align-items: center; gap: 6px; min-height: 44px; font-weight: 700; color: var(--color-ink); text-underline-offset: 4px; border-radius: var(--radius-sm); }
+#s13 .head a:focus-visible { outline: 3px solid var(--color-focus); outline-offset: 2px; }
+#s13 .band { position: relative; z-index: 1; margin-top: var(--space-lg); -webkit-mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent); mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent); }
+#s13 .track { display: flex; width: max-content; }
+#s13 .run { display: flex; flex: none; gap: var(--space-md); padding-right: var(--space-md); }
+#s13 .chip {
+  display: flex; align-items: center; gap: var(--space-sm); flex: none; min-height: 84px; padding: var(--space-sm) var(--space-lg);
+  border-radius: 18px; border: 1px solid rgba(255, 255, 255, 0.85);
+  background: rgba(255, 255, 255, 0.5); -webkit-backdrop-filter: blur(14px) saturate(1.4); backdrop-filter: blur(14px) saturate(1.4);
+  box-shadow: 0 10px 30px rgba(30, 41, 59, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.9);
+  color: var(--color-ink); text-decoration: none; transition: background-color var(--dur-med) var(--ease-out), transform var(--dur-med) var(--ease-out);
+}
+#s13 a.chip:hover { background: rgba(255, 255, 255, 0.8); transform: translateY(-3px); }
+#s13 a.chip:focus-visible { outline: 3px solid var(--color-focus); outline-offset: 3px; }
+#s13 .chip img { display: block; height: 48px; width: auto; max-width: 160px; object-fit: contain; }
+#s13 .chip .mark { display: grid; place-items: center; width: 48px; height: 48px; flex: none; border-radius: 14px; background: linear-gradient(140deg, var(--color-orange-soft), var(--color-orange)); color: var(--color-ink); font: 900 var(--text-xl)/1 var(--font-display); }
+#s13 .chip b { display: block; font-weight: 700; font-size: var(--text-base); white-space: nowrap; }
+#s13 .chip small { display: block; margin-top: 2px; font: 600 var(--text-xs)/1.4 var(--font-mono); letter-spacing: 0.1em; color: var(--color-ink-2); white-space: nowrap; }
+#s13 .chip.is-open { border-style: dashed; border-color: rgba(163, 74, 11, 0.45); background: rgba(255, 244, 230, 0.55); }
+#s13 .chip.is-open .mark { background: transparent; border: 1.5px dashed var(--color-orange-ink); color: var(--color-orange-ink); }
+#s13 .list { position: relative; z-index: 1; display: flex; flex-wrap: wrap; gap: var(--space-sm); margin-top: var(--space-lg); }
+@media (prefers-reduced-motion: reduce) { #s13 .band { -webkit-mask-image: none; mask-image: none; } }
+</style>
+
+<section id="s13" class="sec" aria-labelledby="s13-title">
+  <div class="wrap">
+    <div class="head">
+      <div>
+        <p>PARTNERS · 感謝支持</p>
+        <h2 id="s13-title">一起守護家鄉孩子的夥伴</h2>
+      </div>
+      <a href="#s10" data-scroll="#s10">合作洽詢<svg class="icon icon-sm" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></a>
+    </div>
+  </div>
+  <div class="band" aria-hidden="true"><div class="track"></div></div>
+  <ul class="list wrap sr-only"></ul>
+</section>
+
+<script>
+(function () {
+  // 合作夥伴清單：新增一家就多加一行。logo 放 assets/partners/ 後填檔名，沒有 logo 會用名稱第一個字當標誌；url 可留空。
+  var PARTNERS = [
+    { name: "教育部 教育優先區計畫", role: "指導補助單位" },
+    { name: "國立中央大學 課外活動組", role: "補助單位" },
+    { name: "彰化縣田中鎮新民國民小學", role: "合作學校" },
+    { name: "國立中央大學彰化校友會", role: "主辦單位" }
+  ];
+  var OPEN = { name: "虛位以待", role: "成為下一位夥伴 →" };
+
+  var root = document.getElementById("s13");
+  var track = root.querySelector(".track");
+  var list = root.querySelector(".list");
+
+  function chip(p, open) {
+    var el = document.createElement(p.url ? "a" : "div");
+    el.className = "chip" + (open ? " is-open" : "");
+    if (p.url) { el.href = p.url; el.target = "_blank"; el.rel = "noopener"; el.tabIndex = -1; }
+    if (p.logo) {
+      var img = new Image(); img.alt = ""; img.src = "assets/partners/" + p.logo; el.appendChild(img);
+    } else {
+      var m = document.createElement("span"); m.className = "mark"; m.textContent = open ? "＋" : p.name.charAt(0); el.appendChild(m);
+    }
+    var t = document.createElement("span");
+    t.innerHTML = "<b></b><small></small>";
+    t.querySelector("b").textContent = p.name;
+    t.querySelector("small").textContent = p.role;
+    el.appendChild(t);
+    return el;
+  }
+
+  PARTNERS.forEach(function (p) {
+    var li = document.createElement("li");
+    li.textContent = p.role + "：" + p.name;
+    list.appendChild(li);
+  });
+
+  var run = document.createElement("div");
+  run.className = "run";
+  PARTNERS.forEach(function (p) { run.appendChild(chip(p)); });
+  run.appendChild(chip(OPEN, true));
+  track.appendChild(run);
+
+  // Repeat the run until one copy is wider than the screen, then double it so the loop is seamless.
+  function fill() {
+    while (track.children.length > 1) track.removeChild(track.lastChild);
+    var w = run.getBoundingClientRect().width || 1;
+    var copies = Math.max(1, Math.ceil(window.innerWidth / w));
+    for (var i = 1; i < copies * 2; i++) track.appendChild(run.cloneNode(true));
+    return copies;
+  }
+
+  var copies = fill();
+  CC.motion(function () {
+    var loop;
+    function start() {
+      if (loop) loop.kill();
+      gsap.set(track, { x: 0 });
+      var dist = run.getBoundingClientRect().width * copies;
+      loop = gsap.to(track, { x: -dist, duration: dist / 45, ease: "none", repeat: -1 });
+    }
+    start();
+    var resize = function () { copies = fill(); start(); };
+    var t;
+    var onResize = function () { clearTimeout(t); t = setTimeout(resize, 200); };
+    window.addEventListener("resize", onResize);
+    var band = root.querySelector(".band");
+    band.addEventListener("pointerenter", function () { gsap.to(loop, { timeScale: 0.15, duration: 0.6 }); });
+    band.addEventListener("pointerleave", function () { gsap.to(loop, { timeScale: 1, duration: 0.6 }); });
+    return function () { window.removeEventListener("resize", onResize); if (loop) loop.kill(); };
+  });
+})();
+</script>
+<style>
 #s3 .head { display: flex; flex-wrap: wrap; align-items: end; justify-content: space-between; gap: var(--space-lg); }
 #s3 .legend { display: flex; flex-wrap: wrap; gap: var(--space-xs); }
 #s3 [role="tablist"] { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); margin-top: var(--space-xl); border-bottom: 1px solid var(--color-rule-strong); }
@@ -604,10 +771,10 @@
 #s3 .panel { grid-area: 1 / 1; }
 #s3 .panel:not(.is-on) { visibility: hidden; }
 #s3 .panel h3 { font-size: var(--text-base); font-weight: 700; color: var(--color-ink-2); margin-bottom: var(--space-sm); }
-#s3 .row { display: grid; grid-template-columns: 9.5em minmax(0, 1fr) auto; gap: var(--space-md); align-items: center; padding: var(--space-sm) 0; border-bottom: 1px solid var(--color-rule); }
+#s3 .row { display: grid; grid-template-columns: 9.5em minmax(0, 1fr) auto; gap: var(--space-md); align-items: center; padding: var(--space-sm) var(--space-md); border-bottom: 1px solid var(--color-rule); }
 #s3 .row time { font-family: var(--font-mono); font-variant-numeric: tabular-nums; font-size: var(--text-sm); font-weight: 600; color: var(--color-orange-ink); }
 #s3 .row .what { font-weight: 500; }
-#s3 .row.is-key { background: var(--color-ink); color: var(--color-on-ink); padding-left: var(--space-md); padding-right: var(--space-md); border-radius: var(--radius-sm); border: 0; margin: var(--space-2xs) 0; }
+#s3 .row.is-key { background: var(--color-ink); color: var(--color-on-ink); border-radius: var(--radius-sm); }
 #s3 .row.is-key time { color: var(--color-orange); }
 #s3 .row.is-key .what { font-weight: 700; }
 #s3 .row.is-key .what span { display: block; font-weight: 400; font-size: var(--text-sm); color: var(--color-on-ink-muted); }
@@ -1612,10 +1779,149 @@
   <p>服務學校：彰化縣田中鎮新民國民小學｜活動企劃執行：中央彰友會返服籌備團隊</p>
   <p>本活動已投保特定活動平安險與公共意外責任險</p>
   <p class="follow">追蹤彰友會：<a href="https://www.facebook.com/ncuch" target="_blank" rel="noopener">Facebook</a> · <a href="https://www.instagram.com/ncu.ch/" target="_blank" rel="noopener">Instagram</a></p>
-  <a class="top" href="#top" data-scroll="top"><svg class="icon icon-sm" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14"/><path d="m19 12-7 7-7-7"/></svg>回到頂端</a>
+  <div class="top-wrap"><img class="xz-top" src="assets/mascot/xiaozhang-wave.webp" alt="" width="120" height="112"><a class="top" href="#top" data-scroll="top"><svg class="icon icon-sm" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14"/><path d="m19 12-7 7-7-7"/></svg>回到頂端</a></div>
 </footer>
-<div class="curtain" aria-hidden="true"><div class="in"><svg class="lens" viewBox="0 0 120 120" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round"><circle cx="50" cy="50" r="34"/><path d="M75 75 L106 106" stroke-width="9"/></svg><p class="k">CASE FILE</p><div style="overflow:hidden"><p class="t"></p></div></div></div>
+<div class="curtain" aria-hidden="true">
+  <div class="ink"></div><i class="drop"></i><i class="drop"></i><i class="drop"></i><i class="drop"></i>
+  <div class="in">
+    <svg class="sil" viewBox="0 0 120 150"><path d="M60 8c19 0 33 15 33 34 0 13-7 24-17 30 21 6 36 22 40 44 2 12-6 24-19 24H23c-13 0-21-12-19-24 4-22 19-38 40-44-10-6-17-17-17-30C27 23 41 8 60 8z"/><ellipse class="eye" cx="48" cy="42" rx="7" ry="4.5"/><ellipse class="eye" cx="72" cy="42" rx="7" ry="4.5"/></svg>
+    <p class="k">CASE FILE</p><div style="overflow:hidden"><p class="t"></p></div>
+  </div>
+  <img class="swim" src="assets/mascot/xiaozhang-wave.webp" alt="" width="240" height="224">
+</div>
 <div class="cursor" aria-hidden="true"><div class="ring"></div><div class="dot"></div><div class="label"></div></div>
+<style>
+/* GAME 小按鈕 */
+.game-fab { position: fixed; right: 18px; bottom: 18px; z-index: 120; display: grid; place-items: center; width: 84px; height: 84px; padding: 0; border: 1px solid rgba(255, 255, 255, 0.7); border-radius: 50%; background: rgba(255, 251, 235, 0.55); -webkit-backdrop-filter: blur(14px) saturate(1.5); backdrop-filter: blur(14px) saturate(1.5); box-shadow: 0 12px 30px rgba(15, 23, 42, 0.22), inset 0 1px 0 rgba(255, 255, 255, 0.9); cursor: pointer; }
+.game-fab img { width: 74px; height: auto; margin-top: -10px; pointer-events: none; }
+.game-fab span { position: absolute; bottom: -8px; left: 50%; transform: translateX(-50%); padding: 2px 10px; border-radius: var(--radius-pill); background: var(--color-ink-3); color: var(--color-yellow); font: 600 11px/1.6 var(--font-mono); letter-spacing: 0.16em; }
+.game-fab:focus-visible { outline: 3px solid var(--color-focus); outline-offset: 3px; }
+.game-fab .dot { position: absolute; top: 4px; right: 6px; width: 12px; height: 12px; border-radius: 50%; background: var(--color-orange); box-shadow: 0 0 0 3px rgba(255, 251, 235, 0.9); }
+.game-open .game-fab { visibility: hidden; }
+@media (max-width: 480px) { .game-fab { width: 68px; height: 68px; right: 12px; bottom: 12px; } .game-fab img { width: 60px; } }
+
+/* 遊戲視窗 */
+.game { position: fixed; inset: 0; z-index: 300; display: grid; overflow: auto; overscroll-behavior: contain; color: var(--color-ink); }
+.game[hidden] { display: none; }
+.game .g-bg { position: fixed; inset: 0; background: radial-gradient(circle at 15% 10%, rgba(248, 150, 63, 0.55), transparent 45%), radial-gradient(circle at 90% 85%, rgba(143, 180, 232, 0.6), transparent 50%), rgba(15, 23, 42, 0.72); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); }
+.game .g-shell { position: relative; width: min(1180px, 100% - 24px); margin: 12px auto; padding: clamp(16px, 2.5vw, 28px); border-radius: 24px; border: 1px solid rgba(255, 255, 255, 0.7); background: rgba(255, 251, 235, 0.86); -webkit-backdrop-filter: blur(20px) saturate(1.4); backdrop-filter: blur(20px) saturate(1.4); box-shadow: 0 30px 80px rgba(0, 0, 0, 0.35); align-self: start; }
+.game .g-head { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--space-sm) var(--space-lg); padding-bottom: var(--space-md); border-bottom: 1px solid var(--color-rule); }
+.game .g-k { font: 600 var(--text-xs)/1.5 var(--font-mono); letter-spacing: 0.16em; color: var(--color-orange-ink); }
+.game h2 { font-family: var(--font-display); font-weight: 900; font-size: var(--text-2xl); line-height: 1.25; }
+.game .g-meta { display: flex; align-items: center; gap: var(--space-sm); }
+.game .g-count { font: 600 var(--text-sm)/1 var(--font-mono); color: var(--color-ink-2); }
+.game .g-count b { color: var(--color-orange-ink); font-size: var(--text-lg); }
+.game .g-btn { display: inline-flex; align-items: center; justify-content: center; gap: 6px; min-height: 44px; padding: 0 var(--space-md); border: 1.5px solid var(--color-ink); border-radius: var(--radius-pill); background: transparent; color: var(--color-ink); font: 700 var(--text-sm)/1 var(--font-body); text-decoration: none; cursor: pointer; }
+.game .g-btn.is-main { background: var(--color-orange); border-color: var(--color-orange); color: var(--color-ink); }
+.game .g-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+.game .g-btn:focus-visible, .game .g-spot:focus-visible, .game .g-opt:focus-visible, .game .g-close:focus-visible { outline: 3px solid var(--color-focus); outline-offset: 2px; }
+.game .g-close { display: grid; place-items: center; width: 44px; height: 44px; border: 0; border-radius: 50%; background: var(--color-ink); color: var(--color-on-ink); font-size: 22px; line-height: 1; cursor: pointer; }
+.game .g-body { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); gap: var(--space-lg); margin-top: var(--space-lg); }
+
+/* 地圖 */
+.game .g-map { position: relative; display: grid; gap: var(--space-sm); align-content: start; }
+.game .g-zone { position: relative; padding: var(--space-md); border-radius: 18px; border: 1px solid rgba(255, 255, 255, 0.9); background: rgba(255, 255, 255, 0.55); box-shadow: 0 8px 24px rgba(30, 41, 59, 0.06); }
+.game .g-zone[data-zone="field"] { background: linear-gradient(135deg, rgba(134, 239, 172, 0.35), rgba(255, 255, 255, 0.6)); }
+.game .g-zone[data-zone="canteen"] { background: linear-gradient(135deg, rgba(253, 186, 116, 0.4), rgba(255, 255, 255, 0.6)); }
+.game .g-zone[data-zone="hall"] { background: linear-gradient(135deg, rgba(147, 197, 253, 0.42), rgba(255, 255, 255, 0.6)); }
+.game .g-zone h3 { display: flex; align-items: baseline; gap: var(--space-xs); font-weight: 900; font-size: var(--text-lg); }
+.game .g-zone h3 small { font: 600 var(--text-xs)/1 var(--font-mono); letter-spacing: 0.14em; color: var(--color-ink-2); }
+.game .g-zone .g-solved { margin-left: auto; padding: 2px 10px; border-radius: var(--radius-pill); background: var(--color-ink); color: var(--color-yellow); font-size: var(--text-sm); }
+.game .g-spots { display: grid; gap: var(--space-xs); margin-top: var(--space-sm); }
+.game .g-spot { display: grid; grid-template-columns: 32px minmax(0, 1fr) auto; align-items: center; gap: var(--space-sm); min-height: 52px; padding: 6px var(--space-sm); border: 1px solid var(--color-rule); border-radius: 14px; background: rgba(255, 255, 255, 0.75); color: var(--color-ink); text-align: left; font: 500 var(--text-base)/1.35 var(--font-body); cursor: pointer; transition: transform var(--dur-fast) var(--ease-out), border-color var(--dur-fast) var(--ease-out); }
+.game .g-spot:hover { transform: translateX(3px); border-color: var(--color-orange); }
+.game .g-spot .n { display: grid; place-items: center; width: 32px; height: 32px; border-radius: 50%; background: var(--color-ink); color: var(--color-on-ink); font: 600 var(--text-sm)/1 var(--font-mono); }
+.game .g-spot .pips { display: flex; gap: 4px; }
+.game .g-spot .pips i { width: 9px; height: 9px; border-radius: 50%; border: 1.5px solid var(--color-orange-ink); }
+.game .g-spot .pips i.on { background: var(--color-orange); border-color: var(--color-orange); }
+.game .g-spot.is-done { border-color: var(--color-orange); background: var(--color-orange-tint); }
+.game .g-spot.is-done .n { background: var(--color-orange); color: var(--color-ink); }
+.game .g-spot b { display: inline-block; margin-left: 0.6em; white-space: nowrap; color: var(--color-orange-ink); }
+.game .g-bigbtn { width: 100%; margin-top: var(--space-sm); }
+.game .g-final { margin-top: var(--space-xs); }
+.game .g-avatar { position: absolute; left: 0; top: 0; z-index: 3; width: 74px; height: auto; pointer-events: none; filter: drop-shadow(0 8px 10px rgba(30, 41, 59, 0.25)); }
+
+/* 推理板 */
+.game .g-board { position: sticky; top: 12px; align-self: start; padding: var(--space-md); border-radius: 18px; background: linear-gradient(160deg, rgba(30, 41, 59, 0.94), rgba(15, 23, 42, 0.96)); color: var(--color-on-ink); overflow: hidden; }
+.game .g-board h3 { display: flex; justify-content: space-between; font: 600 var(--text-xs)/1.5 var(--font-mono); letter-spacing: 0.16em; color: var(--color-yellow); }
+.game .g-strings { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1; }
+.game .g-strings path { fill: none; stroke: #EF4444; stroke-width: 2; stroke-linecap: round; filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.5)); }
+.game .g-cols { position: relative; z-index: 2; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-sm); margin-top: var(--space-sm); }
+.game .g-col > p { padding: 6px; border-radius: 10px; text-align: center; font-weight: 900; font-size: var(--text-base); border: 1.5px dashed rgba(255, 251, 235, 0.3); color: var(--color-on-ink-muted); }
+.game .g-col > p.on { border: 0; background: var(--color-yellow); color: var(--color-ink); }
+.game .g-grp { margin-top: var(--space-sm); }
+.game .g-grp .lab { display: block; margin: 0 auto 6px; width: fit-content; padding: 2px 10px; border-radius: var(--radius-pill); font-size: var(--text-sm); font-weight: 700; background: rgba(255, 251, 235, 0.1); color: var(--color-on-ink-muted); }
+.game .g-grp .lab.on { background: var(--color-orange); color: var(--color-ink); }
+.game .g-slots { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 4px; }
+.game .g-slot { display: grid; place-items: center; min-height: 40px; padding: 2px; border-radius: 6px; border: 1px dashed rgba(255, 251, 235, 0.25); font-size: 12px; font-weight: 700; line-height: 1.2; text-align: center; color: rgba(255, 251, 235, 0.35); }
+.game .g-slot.on { border: 0; background: #FFFBEB; color: var(--color-ink); box-shadow: 0 2px 0 rgba(0, 0, 0, 0.25); transform: rotate(-1.5deg); }
+.game .g-slot.on:nth-child(2) { transform: rotate(1.5deg); }
+.game .g-truth { position: relative; z-index: 2; margin-top: var(--space-md); padding: var(--space-sm); border-radius: 12px; text-align: center; font-family: var(--font-display); font-weight: 900; font-size: var(--text-xl); border: 1.5px dashed rgba(255, 251, 235, 0.3); color: var(--color-on-ink-muted); }
+.game .g-truth.on { border: 0; background: linear-gradient(90deg, var(--color-orange), var(--color-yellow)); color: var(--color-ink); }
+
+/* 題目卡 */
+.game .g-card { position: fixed; inset: 0; z-index: 5; display: grid; place-items: center; padding: 16px; background: rgba(15, 23, 42, 0.45); }
+.game .g-card[hidden] { display: none; }
+.game .g-panel { position: relative; width: min(560px, 100%); max-height: calc(100vh - 32px); overflow: auto; padding: var(--space-xl) var(--space-lg) var(--space-lg); border-radius: 22px; border: 1px solid rgba(255, 255, 255, 0.8); background: rgba(255, 251, 235, 0.95); -webkit-backdrop-filter: blur(16px); backdrop-filter: blur(16px); box-shadow: 0 24px 60px rgba(0, 0, 0, 0.35); }
+.game .g-panel .xz { display: block; width: 120px; height: auto; margin: -8px auto var(--space-xs); }
+.game .g-step { font: 600 var(--text-xs)/1.5 var(--font-mono); letter-spacing: 0.14em; color: var(--color-orange-ink); text-align: center; }
+.game .g-q { margin-top: var(--space-xs); font-weight: 700; font-size: var(--text-lg); line-height: 1.6; text-align: center; }
+.game .g-opts { display: grid; gap: var(--space-xs); margin-top: var(--space-lg); }
+.game .g-opt { min-height: 52px; padding: 8px var(--space-md); border: 1.5px solid var(--color-ink); border-radius: 14px; background: #fff; color: var(--color-ink); font: 700 var(--text-base)/1.4 var(--font-body); text-align: left; cursor: pointer; }
+.game .g-opt:hover { background: var(--color-orange-tint); }
+.game .g-opt.is-right { background: #BBF7D0; border-color: #15803D; }
+.game .g-opt.is-wrong { background: #FECACA; border-color: #B91C1C; }
+.game .g-hint { min-height: 1.6em; margin-top: var(--space-sm); text-align: center; color: var(--color-orange-ink); font-weight: 700; }
+.game .g-panel .g-row { display: flex; flex-wrap: wrap; justify-content: center; gap: var(--space-xs); margin-top: var(--space-lg); }
+.game .g-panel .g-x { position: absolute; top: 10px; right: 10px; width: 40px; height: 40px; }
+.game .g-panel input { width: 100%; min-height: 48px; margin-top: var(--space-sm); padding: 0 var(--space-md); border: 1.5px solid var(--color-ink); border-radius: 12px; font: 500 var(--text-base)/1.4 var(--font-body); }
+.game .g-panel canvas, .game .g-panel .g-cert { display: block; width: 100%; height: auto; margin-top: var(--space-md); border-radius: 12px; box-shadow: 0 6px 18px rgba(0, 0, 0, 0.18); }
+.game .g-reveal { margin-top: var(--space-sm); text-align: center; line-height: 1.8; }
+.game .g-confetti { position: fixed; inset: 0; z-index: 6; pointer-events: none; overflow: hidden; }
+.game .g-confetti i { position: absolute; top: -20px; width: 10px; height: 14px; border-radius: 2px; }
+@media (max-width: 860px) {
+  .game .g-body { grid-template-columns: minmax(0, 1fr); }
+  .game .g-board { position: relative; top: 0; }
+  .game .g-shell { width: calc(100% - 16px); margin: 8px auto; border-radius: 18px; }
+}
+@media (max-width: 420px) { .game .g-slot { font-size: 11px; min-height: 36px; } .game .g-cols { gap: 6px; } }
+</style>
+
+<button class="game-fab" type="button" aria-haspopup="dialog" aria-controls="game" data-cursor="解謎遊戲 GAME">
+  <img src="assets/mascot/xiaozhang-magnify.webp" alt="" width="120" height="112"><span>GAME</span><i class="dot" aria-hidden="true"></i>
+  <b class="sr-only">開啟解謎遊戲：小章事件簿</b>
+</button>
+
+<div class="game" id="game" role="dialog" aria-modal="true" aria-labelledby="game-title" hidden data-lenis-prevent>
+  <div class="g-bg"></div>
+  <div class="g-shell">
+    <header class="g-head">
+      <div><p class="g-k">CASE 21 · 小章事件簿</p><h2 id="game-title">消失的營火晚會</h2></div>
+      <div class="g-meta">
+        <span class="g-count">關鍵字卡 <b>0</b> / 27</span>
+        <button class="g-btn g-reset" type="button">重新開始</button>
+        <button class="g-close" type="button" aria-label="關閉遊戲">×</button>
+      </div>
+    </header>
+    <div class="g-body">
+      <section class="g-map" aria-label="新民國小地圖：操場、餐廳、禮堂">
+        <img class="g-avatar" src="assets/mascot/xiaozhang-wave.webp" alt="" width="120" height="112">
+      </section>
+      <section class="g-board" aria-label="推理板">
+        <svg class="g-strings" aria-hidden="true"></svg>
+        <h3><span>推理板 DEDUCTION BOARD</span><span class="g-pct">0%</span></h3>
+        <div class="g-cols"></div>
+        <p class="g-truth">真相只有一個：？？？？</p>
+      </section>
+    </div>
+    <div class="g-card" hidden><div class="g-panel" role="document"></div></div>
+    <p class="sr-only" aria-live="polite" data-game-status></p>
+  </div>
+</div>
+
 <script src="assets/js/site.js"></script>
+<script type="module" src="assets/js/mascot.js"></script>
+<script src="assets/js/game-data.js"></script>
+<script src="assets/js/game.js"></script>
 </body>
 </html>
