@@ -6,7 +6,7 @@
 #s6 .stat:last-child { border-right: 0; }
 #s6 .stat dt { font-size: var(--text-sm); font-weight: 700; color: var(--color-ink-2); }
 #s6 .stat dd { margin-top: var(--space-xs); font-family: var(--font-display); font-weight: 900; font-size: var(--text-stat); line-height: 1; font-variant-numeric: tabular-nums; white-space: nowrap; }
-#s6 .stat dd small { font-family: var(--font-body); font-size: var(--text-base); font-weight: 700; color: var(--color-orange-ink); margin-left: 4px; }
+#s6 .stat dd small { display: block; margin-top: var(--space-xs); font-family: var(--font-body); font-size: var(--text-base); font-weight: 700; line-height: 1.4; color: var(--color-orange-ink); }
 #s6 .stat dd .pre { font-size: 0.42em; vertical-align: 0.9em; margin-right: 4px; color: var(--color-ink-2); font-family: var(--font-body); }
 #s6 h3 { margin-top: var(--space-3xl); font-size: var(--text-lg); font-weight: 700; }
 #s6 .files { margin-top: var(--space-md); border-top: 2px solid var(--color-ink); }
@@ -21,11 +21,12 @@
 #s6 .file p { margin-top: 4px; font-size: var(--text-sm); color: var(--color-ink-2); }
 #s6 .file.is-now .yr { color: var(--color-orange-ink); }
 #s6 .file.is-now .pill { margin-left: var(--space-xs); vertical-align: 0.2em; }
-#s6 .peek { position: fixed; left: 0; top: 0; z-index: 60; width: 260px; aspect-ratio: 4 / 3; margin: -140px 0 0 24px; border-radius: var(--radius-sm); overflow: hidden; pointer-events: none; visibility: hidden; box-shadow: 0 18px 40px -16px rgba(15, 23, 42, 0.5); }
-#s6 .peek img { width: 100%; height: 100%; object-fit: cover; }
+#s6 .peek { position: fixed; left: 0; top: 0; z-index: 60; min-width: 260px; height: 195px; margin: -140px 0 0 24px; border-radius: var(--radius-sm); overflow: hidden; pointer-events: none; visibility: hidden; box-shadow: 0 18px 40px -16px rgba(15, 23, 42, 0.5); }
+#s6 .peek img { width: 260px; height: 100%; object-fit: cover; }
 #s6 .peek .card { display: grid; align-content: end; height: 100%; padding: var(--space-md); background: var(--color-ink); color: var(--color-on-ink); }
 #s6 .peek .card b { font: 600 var(--text-xs)/1.4 var(--font-mono); letter-spacing: 0.14em; color: var(--color-yellow); }
-#s6 .peek .card span { font-family: var(--font-display); font-weight: 900; font-size: var(--text-xl); line-height: 1.3; }
+#s6 .peek .card span { font-family: var(--font-display); font-weight: 900; font-size: var(--text-xl); line-height: 1.3; white-space: nowrap; }
+#s6 .album[hidden] { display: none; }
 #s6 .album-head { display: flex; flex-wrap: wrap; align-items: end; justify-content: space-between; gap: var(--space-md); margin-top: var(--space-3xl); }
 #s6 .album-head h3 { margin-top: 0; }
 #s6 .album-head p { font: 600 var(--text-xs)/1.5 var(--font-mono); letter-spacing: 0.12em; color: var(--color-ink-2); }
@@ -42,8 +43,6 @@
 #s6 .photo { position: relative; flex: none; width: min(520px, 78vw); aspect-ratio: 4 / 3; margin: 0; overflow: hidden; border-radius: var(--radius-sm); background: var(--color-paper-2); border: 1px solid var(--color-rule); user-select: none; }
 #s6 .photo img { width: 100%; height: 100%; object-fit: cover; pointer-events: none; -webkit-user-drag: none; }
 #s6 .photo figcaption { position: absolute; left: var(--space-xs); bottom: var(--space-xs); padding: 2px 8px; border-radius: var(--radius-sm); background: var(--color-ink); color: var(--color-on-ink); font: 600 var(--text-xs)/1.6 var(--font-mono); letter-spacing: 0.06em; }
-#s6 .photo.is-missing { display: grid; place-items: center; padding: var(--space-md); text-align: center; color: var(--color-ink-2); font-size: var(--text-sm); }
-#s6 .photo.is-missing .icon { width: 28px; height: 28px; margin: 0 auto var(--space-xs); color: var(--color-orange-ink); }
 #s6 .progress { height: 2px; margin-top: var(--space-md); background: var(--color-rule); }
 #s6 .progress i { display: block; height: 100%; background: var(--color-ink); transform-origin: left center; transform: scaleX(0.2); }
 @media (max-width: 860px) {
@@ -80,6 +79,7 @@
     </ol>
     <div class="peek" aria-hidden="true"></div>
 
+    <div class="album">
     <div class="album-head">
       <div>
         <h3>2026 永興國小・營期現場</h3>
@@ -87,7 +87,7 @@
       </div>
       <div class="ctrl">
         <button class="arrow prev" type="button" aria-label="上一張照片">{{icon:arrow-left icon-sm}}</button>
-        <span class="count" aria-live="polite"><b>01</b> / 05</span>
+        <span class="count" aria-live="polite"><b>01</b> / <span class="total">05</span></span>
         <button class="arrow next" type="button" aria-label="下一張照片">{{icon:arrow-right icon-sm}}</button>
       </div>
     </div>
@@ -95,38 +95,29 @@
       <div class="reel" aria-label="2026 第 20 屆營期照片"></div>
     </div>
     <div class="progress" aria-hidden="true"><i></i></div>
+    </div>
   </div>
 </section>
 
 <script>
 (function () {
-  // 照片來自第 20 屆雲端相簿（需設為「知道連結的任何人可檢視」）。換照片只要改 id。
-  var PHOTOS = [
-    { id: "1zNXTx1f30SMj77cOujF4GXGSFtOe117x", cap: "1/29 15:16" },
-    { id: "1coWBk7yB6z3Y7BEh7FH3K74MTh2bSEHU", cap: "1/29 09:47" },
-    { id: "1KTAATbPouhyjN0BJm7M6HyNojLD9DQ2K", cap: "1/29 09:58" },
-    { id: "19F3x56dJE16FXh7n4S7-vwa7WjRFXgI9", cap: "1/30 09:29" },
-    { id: "16yxD8596ZfuhNibp8NWUl8w1s59sGgEf", cap: "1/30 14:09" }
-  ];
-  // 清單滑過時浮出的預覽：有照片的屆數放照片 id，沒有的顯示檔案卡。
-  var PEEK = { 20: PHOTOS[0].id };
-  function thumb(id) { return "https://drive.google.com/thumbnail?id=" + id + "&sz=w1200"; }
+  // 營期照片放在 assets/photos/，學童臉部已用表情貼遮住。要換照片：把處理好的圖放進資料夾，再改這份清單。
+  var PHOTOS = [];
+  // 清單滑過時浮出的預覽：有照片的屆數放照片檔名，沒有的顯示檔案卡。
+  var PEEK = {};
+  function src(file) { return "assets/photos/" + file; }
 
   var root = document.getElementById("s6");
   var reel = root.querySelector(".reel");
+  if (!PHOTOS.length) root.querySelector(".album").hidden = true;
   var figs = PHOTOS.map(function (p, i) {
     var fig = document.createElement("figure");
     fig.className = "photo";
     var img = new Image();
     img.loading = "lazy";
-    img.referrerPolicy = "no-referrer";
     img.draggable = false;
-    img.alt = "2026 永興國小營期活動照片（" + p.cap + "）";
-    img.onerror = function () {
-      fig.classList.add("is-missing");
-      fig.innerHTML = '<div>{{icon:image}}照片 ' + p.cap + '<br>網站上線後顯示</div>';
-    };
-    img.src = thumb(p.id);
+    img.alt = p.alt;
+    img.src = src(p.file);
     var cap = document.createElement("figcaption");
     cap.textContent = String(i + 1).padStart(2, "0") + " · " + p.cap;
     fig.appendChild(img);
@@ -138,12 +129,13 @@
   /* Photo reel: drag with inertia, arrows, counter */
   var viewport = root.querySelector(".viewport");
   var count = root.querySelector(".count b");
+  root.querySelector(".count .total").textContent = String(PHOTOS.length).padStart(2, "0");
   var bar = root.querySelector(".progress i");
   var prev = root.querySelector(".prev"), next = root.querySelector(".next");
   var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   var index = 0;
   // Every photo can reach the left edge, so the last one leaves empty space after it.
-  function maxX() { return figs[figs.length - 1].offsetLeft; }
+  function maxX() { return figs.length ? figs[figs.length - 1].offsetLeft : 0; }
   function stops() { return figs.map(function (f) { return -f.offsetLeft; }); }
   function nearest(x) {
     var s = stops(), best = 0;
@@ -171,7 +163,7 @@
     if (e.key === "ArrowLeft") goTo(index - 1);
     if (e.key === "ArrowRight") goTo(index + 1);
   });
-  if (window.Draggable) {
+  if (window.Draggable && figs.length) {
     Draggable.create(reel, {
       type: "x", inertia: !!window.InertiaPlugin && !reduce, edgeResistance: 0.85,
       bounds: { minX: -maxX(), maxX: 0 },
@@ -181,8 +173,10 @@
       onThrowComplete: function () { paint(nearest(this.x)); }
     });
   }
-  window.addEventListener("resize", function () { goTo(index); });
-  paint(0);
+  if (figs.length) {
+    window.addEventListener("resize", function () { goTo(index); });
+    paint(0);
+  }
 
   /* Archive list: a preview follows the pointer on hover */
   var peek = root.querySelector(".peek");
@@ -197,7 +191,7 @@
       row.addEventListener("pointerenter", function (e) {
         var id = PEEK[no];
         var card = '<div class="card"><b>ARCHIVE No.' + no + '</b><span>' + row.querySelector(".camp").textContent + '</span></div>';
-        peek.innerHTML = id ? '<img alt="" referrerpolicy="no-referrer" src="' + thumb(id) + '">' : card;
+        peek.innerHTML = id ? '<img alt="" src="' + src(id) + '">' : card;
         var img = peek.querySelector("img");
         if (img) img.onerror = function () { peek.innerHTML = card; };
         gsap.set(peek, { x: e.clientX, y: e.clientY });
@@ -205,7 +199,7 @@
       });
       row.addEventListener("pointermove", function (e) {
         px(e.clientX); py(e.clientY);
-        rot(Math.max(-8, Math.min(8, (e.clientX - lastX) * 0.6)));
+        rot(Math.max(-5, Math.min(5, (e.clientX - lastX) * 0.3)));
         lastX = e.clientX;
       });
       row.addEventListener("pointerleave", function () {
