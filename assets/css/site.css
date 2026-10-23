@@ -47,20 +47,28 @@ html.lenis, html.lenis body { height: auto; }
 .pages:focus { outline: none; }
 .sec { scroll-margin-top: var(--header-h); }
 
-/* Page change: 小章 swims up and squirts ink; the ink forms a shadow suspect, then clears */
-.curtain { position: fixed; inset: 0; z-index: 200; overflow: hidden; visibility: hidden; pointer-events: none; color: var(--color-on-ink); }
-.curtain .ink { position: absolute; left: 50%; bottom: 12vh; width: 40vmax; height: 40vmax; margin-left: -20vmax; border-radius: 46% 54% 48% 52% / 55% 45% 55% 45%; background: radial-gradient(circle at 40% 35%, #1E293B, var(--color-ink-3) 60%); transform: scale(0); }
-.curtain .drop { position: absolute; left: 50%; bottom: 18vh; width: 22px; height: 22px; border-radius: 50%; background: var(--color-ink-3); opacity: 0; }
+/* Page change: a magnifying lens opens from where you clicked; inside is the case file with the shadow suspect,
+ * then a second lens opens in the middle onto the new page. */
+.curtain { position: fixed; inset: 0; z-index: 200; overflow: hidden; visibility: hidden; pointer-events: none; color: var(--color-on-ink); --hx: 50%; --hy: 50%; --hole: 0px; }
+.curtain .lens { position: absolute; inset: 0; background: radial-gradient(circle at 50% 40%, #1E293B, var(--color-ink-3) 70%); clip-path: circle(0px at 50% 50%); -webkit-mask: radial-gradient(circle at var(--hx) var(--hy), transparent var(--hole), #000 calc(var(--hole) + 1px)); mask: radial-gradient(circle at var(--hx) var(--hy), transparent var(--hole), #000 calc(var(--hole) + 1px)); }
 .curtain .in { position: absolute; inset: 0; display: grid; place-content: center; justify-items: center; text-align: center; padding: 0 var(--space-lg); }
 .curtain .sil { width: clamp(84px, 12vw, 128px); fill: #020617; filter: drop-shadow(0 0 18px rgba(245, 128, 39, 0.35)); margin-bottom: var(--space-md); }
 .curtain .sil .eye { fill: #FFFBEB; }
 .curtain .k { font: 600 var(--text-xs)/1.5 var(--font-mono); letter-spacing: 0.2em; color: var(--color-yellow); }
 .curtain .t { margin-top: var(--space-xs); font-family: var(--font-display); font-weight: 900; font-size: var(--text-display); line-height: 1.1; }
-.curtain .swim { position: absolute; left: 50%; bottom: 0; width: clamp(140px, 18vw, 220px); height: auto; margin-left: calc(clamp(140px, 18vw, 220px) / -2); transform: translateY(110%); }
+.curtain .rim { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+.curtain .rim circle { fill: none; stroke: var(--color-orange); stroke-width: 10; }
+.curtain .rim line { stroke: var(--color-ink-3); stroke-width: 22; stroke-linecap: round; }
 
 /* Scroll progress: a thin bar under the header */
 .progress-top { position: fixed; left: 0; right: 0; top: var(--header-h); z-index: 99; height: 3px; pointer-events: none; }
 .progress-top i { display: block; height: 100%; background: linear-gradient(90deg, var(--color-orange), var(--color-yellow)); transform-origin: left center; transform: scaleX(0); }
+/* 「調查進度 37%」：捲動時跟著進度條的前端出現，停下來一會兒就淡出 */
+.progress-top .ptag { position: absolute; left: 0; top: 7px; padding: 3px 8px; border-radius: var(--radius-pill); background: rgba(15, 23, 42, 0.82); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); color: var(--color-yellow); font: 600 11px/1.4 var(--font-mono); letter-spacing: 0.08em; white-space: nowrap; font-variant-numeric: tabular-nums; opacity: 0; transition: opacity var(--dur-med) var(--ease-out); }
+.progress-top.is-on .ptag { opacity: 1; }
+
+/* 區塊標題進場前先藏起來，site.js 切好行再升上來 */
+.t-reveal .sec-title:not(.is-in) { visibility: hidden; }
 
 /* Custom cursor (fine pointers, motion allowed) */
 .has-cursor, .has-cursor * { cursor: none !important; }
@@ -68,8 +76,11 @@ html.lenis, html.lenis body { height: auto; }
 .cursor { position: fixed; left: 0; top: 0; z-index: 400; pointer-events: none; mix-blend-mode: difference; color: #fff; display: none; }
 .has-cursor .cursor { display: block; }
 .cursor .dot, .cursor .ring, .cursor .label { position: absolute; left: 0; top: 0; }
-.cursor .dot { width: 8px; height: 8px; margin: -4px 0 0 -4px; border-radius: 50%; background: #fff; }
-.cursor .ring { width: 36px; height: 36px; margin: -18px 0 0 -18px; border-radius: 50%; border: 1.5px solid #fff; }
+.cursor .dot { width: 6px; height: 6px; margin: -3px 0 0 -3px; border-radius: 50%; background: #fff; }
+/* 游標是一支放大鏡：鏡片中心對準滑鼠，碰到可以點的東西就放大 */
+.cursor .ring { width: 52px; height: 52px; margin: -20px 0 0 -20px; overflow: visible; transform-origin: 20px 20px; fill: none; stroke: #fff; stroke-linecap: round; }
+.cursor .ring circle { stroke-width: 1.6; }
+.cursor .ring path { stroke-width: 3.2; }
 .cursor .label { margin-top: 30px; transform: translateX(-50%); font: 600 var(--text-xs)/1 var(--font-mono); letter-spacing: 0.14em; white-space: nowrap; opacity: 0; }
 .cursor-hidden .cursor { opacity: 0; }
 
@@ -83,6 +94,15 @@ html.lenis, html.lenis body { height: auto; }
 /* Footer */
 .site-foot { padding: var(--space-2xl) var(--space-lg); background: var(--color-ink-3); color: var(--color-on-ink-muted); font-size: var(--text-sm); text-align: center; line-height: 1.9; }
 .site-foot strong { color: var(--color-on-ink); }
+/* 頁尾上方的線索貼紙區（只有桌機、可以動畫時由 site.js 打開） */
+.site-foot .foot-play { display: none; position: relative; height: 240px; margin: calc(var(--space-2xl) * -1) calc(var(--space-lg) * -1) var(--space-xl); overflow: hidden; border-bottom: 1px solid var(--color-rule-on-ink); background: radial-gradient(ellipse at 50% 120%, rgba(245, 128, 39, 0.16), transparent 60%); }
+.has-play .site-foot .foot-play { display: block; }
+.site-foot .foot-play p { position: absolute; left: var(--space-lg); top: var(--space-md); font: 600 var(--text-xs)/1.5 var(--font-mono); letter-spacing: 0.16em; color: var(--color-on-ink-muted); }
+.site-foot .clue-tag { position: absolute; left: 0; top: 0; padding: 9px 18px; border-radius: var(--radius-pill); background: var(--color-paper); color: var(--color-ink); font: 900 16px/1.2 var(--font-display); white-space: nowrap; user-select: none; box-shadow: 0 6px 14px rgba(0, 0, 0, 0.35), inset 0 -2px 0 rgba(15, 23, 42, 0.12); will-change: transform; }
+.site-foot .clue-tag.o { background: var(--color-orange); }
+.site-foot .clue-tag.y { background: var(--color-yellow); }
+.site-foot .clue-tag.b { background: #8FB4E8; }
+.site-foot .clue-tag.m { font: 600 13px/1.4 var(--font-mono); letter-spacing: 0.1em; background: var(--color-ink); color: var(--color-yellow); border: 1px solid var(--color-rule-on-ink); }
 .site-foot .follow a { display: inline-block; padding: 10px 4px; color: var(--color-on-ink); text-underline-offset: 3px; }
 .site-foot .follow a:hover { color: var(--color-orange); }
 .site-foot .follow a:focus-visible { outline: 3px solid var(--color-focus-on-ink); outline-offset: 2px; border-radius: var(--radius-sm); }
@@ -94,7 +114,9 @@ html.lenis, html.lenis body { height: auto; }
 .site-foot .top:focus-visible { outline: 3px solid var(--color-focus-on-ink); outline-offset: 2px; }
 
 /* First-visit preloader: 調查中 → 真相只有一個 */
-.preloader { position: fixed; inset: 0; z-index: 250; display: none; grid-template-rows: auto 1fr auto; padding: var(--space-lg); background: var(--color-ink-3); color: var(--color-on-ink); }
+.preloader { position: fixed; inset: 0; z-index: 250; display: none; grid-template-rows: auto 1fr auto; padding: var(--space-lg); background: var(--color-ink-3); color: var(--color-on-ink); --hx: 50%; --hy: 50%; --hole: 0px; }
+/* 結束時從小章的放大鏡開一個洞，洞越來越大，露出網頁 */
+.preloader.is-opening { background: radial-gradient(circle at var(--hx) var(--hy), var(--color-orange) calc(var(--hole) + 9px), var(--color-ink-3) calc(var(--hole) + 10px)); -webkit-mask: radial-gradient(circle at var(--hx) var(--hy), transparent var(--hole), #000 calc(var(--hole) + 1px)); mask: radial-gradient(circle at var(--hx) var(--hy), transparent var(--hole), #000 calc(var(--hole) + 1px)); }
 .intro .preloader { display: grid; }
 .preloader .row { display: flex; justify-content: space-between; gap: var(--space-md); font: 600 var(--text-xs)/1.5 var(--font-mono); letter-spacing: 0.16em; color: var(--color-on-ink-muted); }
 .preloader .mid { display: grid; justify-items: center; align-content: center; gap: var(--space-md); text-align: center; }

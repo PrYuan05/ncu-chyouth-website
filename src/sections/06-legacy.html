@@ -101,6 +101,7 @@
 
 <script>
 (function () {
+  CC.register();
   // 營期照片放在 assets/photos/，學童臉部已用表情貼遮住。要換照片：把處理好的圖放進資料夾，再改這份清單。
   var PHOTOS = [
     { file: "camp20-01.jpg", cap: "烘焙課成果", alt: "學童圍坐長桌，手上拿著自己做的杯子蛋糕" },
@@ -166,6 +167,8 @@
   }
   function goTo(i) {
     i = Math.max(0, Math.min(figs.length - 1, i));
+    // 桌機的捲動相簿：換到第 i 張就是把頁面捲到對應的位置。
+    if (scrollMode) { var st = scrollMode.scrollTrigger; CC.scrollTo(st.start + (st.end - st.start) * i / (figs.length - 1)); return; }
     var x = stops()[i];
     if (window.gsap) gsap.to(reel, { x: x, duration: reduce ? 0 : 0.7, ease: "power3.out" });
     else reel.style.transform = "translateX(" + x + "px)";
@@ -177,19 +180,49 @@
     if (e.key === "ArrowLeft") goTo(index - 1);
     if (e.key === "ArrowRight") goTo(index + 1);
   });
+  var drag = null, scrollMode = null;
   if (window.Draggable && figs.length) {
-    Draggable.create(reel, {
+    drag = Draggable.create(reel, {
       type: "x", inertia: !!window.InertiaPlugin && !reduce, edgeResistance: 0.85,
       bounds: { minX: -maxX(), maxX: 0 },
       snap: function (x) { return stops()[nearest(x)]; },
       onPress: function () { this.applyBounds({ minX: -maxX(), maxX: 0 }); },
       onDragEnd: function () { paint(nearest(this.endX)); },
       onThrowComplete: function () { paint(nearest(this.x)); }
-    });
+    })[0];
   }
   if (figs.length) {
-    window.addEventListener("resize", function () { goTo(index); });
+    window.addEventListener("resize", function () { if (!scrollMode) goTo(index); });
     paint(0);
+  }
+
+  /* 桌機：相簿釘在畫面上，往下捲動時照片往左滑（手機維持左右拖曳） */
+  if (window.gsap && window.ScrollTrigger && figs.length > 1) {
+    var album = root.querySelector(".album");
+    gsap.matchMedia().add("(min-width: 1024px) and (prefers-reduced-motion: no-preference)", function () {
+      if (drag) drag.disable();
+      gsap.set(reel, { x: 0 });
+      viewport.dataset.cursor = "往下捲動 SCROLL";
+      function travel() { return Math.max(0, reel.scrollWidth - viewport.clientWidth); }
+      scrollMode = gsap.to(reel, {
+        x: function () { return -travel(); }, ease: "none",
+        scrollTrigger: {
+          trigger: album, pin: true, scrub: 0.6, invalidateOnRefresh: true,
+          start: function () { return "top " + (document.querySelector(".site-head").offsetHeight + 24) + "px"; },
+          end: function () { return "+=" + travel() * 0.85; },
+          onUpdate: function (self) {
+            var i = Math.round(self.progress * (figs.length - 1));
+            if (i !== index) paint(i);
+          }
+        }
+      });
+      return function () {
+        scrollMode = null;
+        if (drag) drag.enable();
+        viewport.dataset.cursor = "拖曳 DRAG";
+        goTo(index);
+      };
+    });
   }
 
   /* Archive list: a preview follows the pointer on hover */

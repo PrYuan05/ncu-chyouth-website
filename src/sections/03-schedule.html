@@ -1,4 +1,4 @@
-<!-- title: 區塊3 營期三日時程 | body: is-paper-2 | plugins: Flip -->
+<!-- title: 區塊3 營期三日時程 | body: is-paper-2 | plugins: Flip, ScrollTrigger -->
 <style>
 #s3 .head { display: flex; flex-wrap: wrap; align-items: end; justify-content: space-between; gap: var(--space-lg); }
 #s3 .legend { display: flex; flex-wrap: wrap; gap: var(--space-xs); }
@@ -27,10 +27,21 @@
 #s3 .row.is-key .what { font-weight: 700; }
 #s3 .row.is-key .what span { display: block; font-weight: 400; font-size: var(--text-sm); color: var(--color-on-ink-muted); }
 #s3 .pill-ink { background: var(--color-yellow); color: var(--color-ink); }
+/* 時程小路：每個時段一個點，捲動時虛線被畫成實線，小章沿著路走下去 */
+#s3 .panel ol { position: relative; padding-left: 46px; }
+#s3 .trail { position: absolute; left: 0; top: 0; width: 46px; height: 100%; overflow: visible; pointer-events: none; }
+#s3 .trail .base { fill: none; stroke: var(--color-rule-strong); stroke-width: 2; stroke-dasharray: 3 7; stroke-linecap: round; }
+#s3 .trail .draw { fill: none; stroke: var(--color-orange); stroke-width: 3; stroke-linecap: round; }
+#s3 .trail circle { fill: var(--color-paper-2); stroke: var(--color-rule-strong); stroke-width: 2; transition: fill var(--dur-fast) var(--ease-out), stroke var(--dur-fast) var(--ease-out); }
+#s3 .trail circle.on { fill: var(--color-orange); stroke: var(--color-orange-ink); }
+#s3 .walker { position: absolute; left: 0; top: 0; z-index: 2; width: 46px; height: auto; pointer-events: none; filter: drop-shadow(0 4px 4px rgba(30, 41, 59, 0.2)); }
 @media (max-width: 640px) {
   #s3 [role="tab"] { font-size: var(--text-base); padding-left: var(--space-xs); padding-right: var(--space-xs); }
   #s3 .row { grid-template-columns: minmax(0, 1fr) auto; row-gap: 2px; }
   #s3 .row time { grid-column: 1 / -1; }
+  #s3 .panel ol { padding-left: 34px; }
+  #s3 .trail { width: 34px; }
+  #s3 .walker { width: 36px; }
 }
 </style>
 
@@ -125,6 +136,7 @@
         { autoAlpha: 1, y: 0, duration: 0.35, stagger: 0.035, ease: "power2.out", clearProps: "transform,visibility,opacity" });
     }
     current = i;
+    root.dispatchEvent(new Event("cc:tab"));
     if (focus) tabs[i].focus();
   }
 
@@ -137,6 +149,71 @@
       select((n + tabs.length) % tabs.length, true);
     });
   });
+
+  /* 時程小路：在每天的時段左邊畫一條路，捲動時小章沿路走下去 */
+  var NS = "http://www.w3.org/2000/svg";
+  var trails = Array.prototype.map.call(root.querySelectorAll(".panel ol"), function (ol) {
+    var svg = document.createElementNS(NS, "svg");
+    svg.setAttribute("class", "trail"); svg.setAttribute("aria-hidden", "true");
+    var base = document.createElementNS(NS, "path"), draw = document.createElementNS(NS, "path");
+    base.setAttribute("class", "base"); draw.setAttribute("class", "draw");
+    svg.appendChild(base); svg.appendChild(draw);
+    ol.insertBefore(svg, ol.firstChild);
+    return { ol: ol, svg: svg, base: base, draw: draw, dots: [], len: 0, ys: [] };
+  });
+  var walker = new Image(); walker.className = "walker"; walker.alt = ""; walker.src = CC.sprite("magnify");
+  var progress = reduce ? 1 : 0;
+  // 依每一列的高度重畫路線：點在每列中間，點與點之間微微左右彎。
+  function layout(t) {
+    var rows = t.ol.querySelectorAll(".row");
+    if (!rows.length || !t.ol.offsetHeight) return;
+    // 用 offsetTop（不受進場動畫的位移影響）。
+    var x = t.svg.getBoundingClientRect().width / 2;
+    t.ys = Array.prototype.map.call(rows, function (r) { return r.offsetTop + r.offsetHeight / 2; });
+    var d = "M" + x + " " + t.ys[0];
+    for (var i = 1; i < t.ys.length; i++) {
+      var y0 = t.ys[i - 1], y1 = t.ys[i], bend = (i % 2 ? 1 : -1) * x * 0.45;
+      d += " C" + (x + bend) + " " + (y0 + (y1 - y0) * 0.35) + " " + (x + bend) + " " + (y0 + (y1 - y0) * 0.65) + " " + x + " " + y1;
+    }
+    t.base.setAttribute("d", d); t.draw.setAttribute("d", d);
+    t.len = t.draw.getTotalLength();
+    t.draw.style.strokeDasharray = t.len + " " + t.len;
+    t.dots.forEach(function (c) { c.remove(); });
+    t.dots = t.ys.map(function (y) {
+      var c = document.createElementNS(NS, "circle");
+      c.setAttribute("cx", x); c.setAttribute("cy", y); c.setAttribute("r", 5);
+      t.svg.appendChild(c);
+      return c;
+    });
+    paintTrail(t);
+  }
+  function paintTrail(t) {
+    if (!t.len) return;
+    var at = t.len * progress, pt = t.draw.getPointAtLength(at);
+    t.draw.style.strokeDashoffset = t.len - at;
+    t.dots.forEach(function (c, i) { c.classList.toggle("on", t.ys[i] <= pt.y + 1); });
+    if (walker.parentNode === t.ol) {
+      var w = walker.offsetWidth || 46;
+      // 走路時左右晃一點，像在一步一步走。
+      var sway = reduce ? 0 : Math.sin(at / 9) * 7;
+      walker.style.transform = "translate(" + (pt.x - w / 2) + "px," + (pt.y - w * 0.8) + "px) rotate(" + sway + "deg)";
+    }
+  }
+  function active() { return trails[current]; }
+  function relayout() { trails.forEach(layout); }
+  function moveWalker() { active().ol.appendChild(walker); layout(active()); }
+  moveWalker();
+  window.addEventListener("resize", relayout);
+  document.addEventListener("cc:page", function () { setTimeout(relayout, 60); });
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(relayout);
+  root.addEventListener("cc:tab", function () { moveWalker(); });
+  if (window.gsap && window.ScrollTrigger && !reduce) {
+    ScrollTrigger.create({
+      trigger: root.querySelector(".panels"), start: "top 75%", end: "bottom 55%",
+      onRefresh: relayout,
+      onUpdate: function (self) { progress = self.progress; paintTrail(active()); }
+    });
+  }
 
   CC.motion(function () {
     var rows = root.querySelectorAll(".panel.is-on .row");

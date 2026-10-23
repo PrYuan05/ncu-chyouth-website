@@ -78,42 +78,52 @@
     main.focus({ preventScroll: true });
     document.dispatchEvent(new CustomEvent("cc:page", { detail: role }));
   }
+  // 最後一次點擊的位置：換頁的放大鏡從這裡打開（用鍵盤或上一頁時從畫面中央）。
+  var tapAt = null;
+  document.addEventListener("pointerdown", function (e) { tapAt = { x: e.clientX, y: e.clientY, t: Date.now() }; }, true);
   function transition(role) {
     if (!hasGsap || reduce) { swap(role); return; }
     var k = curtain.querySelector(".k"), t = curtain.querySelector(".t"), inner = curtain.querySelector(".in");
-    var ink = curtain.querySelector(".ink"), swim = curtain.querySelector(".swim"), sil = curtain.querySelector(".sil");
-    var drops = curtain.querySelectorAll(".drop");
+    var lens = curtain.querySelector(".lens"), sil = curtain.querySelector(".sil");
+    var rim = curtain.querySelector(".rim circle"), handle = curtain.querySelector(".rim line");
     var kText = "CASE FILE " + NAMES[role][0] + " / 04";
     t.textContent = NAMES[role][1];
-    // Scale the ink until it reaches the farthest corner of the screen.
-    var W = window.innerWidth, H = window.innerHeight, size = 0.4 * Math.max(W, H);
-    var cx = W / 2, cy = H * 0.88 - size / 2;
-    var far = Math.max(Math.hypot(cx, cy), Math.hypot(cx, H - cy));
-    var cover = (2 * far / size) * 1.1;
+    var W = window.innerWidth, H = window.innerHeight;
+    var p = tapAt && Date.now() - tapAt.t < 1500 ? tapAt : { x: W / 2, y: H / 2 };
+    function reach(x, y) { return Math.max(Math.hypot(x, y), Math.hypot(W - x, y), Math.hypot(x, H - y), Math.hypot(W - x, H - y)) + 40; }
+    // 鏡框跟著半徑走；把手朝右下，鏡片越大把手越粗越長。
+    function lensAt(x, y, r) {
+      rim.setAttribute("cx", x); rim.setAttribute("cy", y); rim.setAttribute("r", Math.max(0, r));
+      var c = Math.SQRT1_2, len = 18 + r * 0.55;
+      handle.setAttribute("x1", x + (r + 8) * c); handle.setAttribute("y1", y + (r + 8) * c);
+      handle.setAttribute("x2", x + (r + 8 + len) * c); handle.setAttribute("y2", y + (r + 8 + len) * c);
+      handle.style.strokeWidth = Math.min(40, 10 + r * 0.12);
+    }
+    var a = { r: 0 }, b = { r: 0 }, open = reach(p.x, p.y), hole = reach(W / 2, H / 2);
     if (lenis) lenis.stop();
     gsap.timeline({ onComplete: function () { if (lenis) lenis.start(); } })
-      .set(curtain, { autoAlpha: 1 })
+      .set(curtain, { autoAlpha: 1, "--hole": "0px", "--hx": W / 2 + "px", "--hy": H / 2 + "px" })
       .set(inner, { autoAlpha: 0, y: 0 })
-      .set(ink, { scale: 0, rotation: 0 })
-      .fromTo(swim, { yPercent: 110, rotation: -8, scale: 1 }, { yPercent: -12, rotation: 6, duration: 0.42, ease: "back.out(1.6)" })
-      .to(swim, { scaleY: 0.8, scaleX: 1.12, transformOrigin: "50% 100%", duration: 0.12, ease: "power2.in" })
-      .addLabel("squirt")
-      .to(swim, { scaleX: 1, scaleY: 1, yPercent: 130, rotation: -10, duration: 0.45, ease: "power2.in" }, "squirt")
-      .to(ink, { scale: cover, rotation: 50, duration: 0.6, ease: "power3.in" }, "squirt")
-      .fromTo(drops, { x: 0, y: 0, scale: 0.6, autoAlpha: 1 }, {
-        x: function (i) { return [-0.32, 0.3, -0.16, 0.2][i] * W; },
-        y: function (i) { return -[0.42, 0.5, 0.7, 0.62][i] * H; },
-        scale: function (i) { return 1.4 + i * 0.5; }, duration: 0.5, ease: "power2.out"
-      }, "squirt")
-      .set(drops, { autoAlpha: 0 })
+      .set(lens, { clipPath: "circle(0px at " + p.x + "px " + p.y + "px)" })
+      .set(rim.parentNode, { autoAlpha: 1 })
+      .set(handle, { stroke: "#0F172A" })
+      // 1. 放大鏡在點擊處冒出來，接著鏡片一路撐滿整個畫面。
+      .to(a, { r: 34, duration: 0.24, ease: "back.out(2.4)", onUpdate: function () { lensAt(p.x, p.y, a.r); lens.style.clipPath = "circle(" + a.r + "px at " + p.x + "px " + p.y + "px)"; } })
+      .to(a, { r: open, duration: 0.6, ease: "power3.in", onUpdate: function () { lensAt(p.x, p.y, a.r); lens.style.clipPath = "circle(" + a.r + "px at " + p.x + "px " + p.y + "px)"; } }, "+=0.06")
+      .set(rim.parentNode, { autoAlpha: 0 })
+      // 2. 鏡片裡是案件檔案：黑色剪影和頁面名稱。
       .set(inner, { autoAlpha: 1 })
-      .fromTo(sil, { scale: 0.3, autoAlpha: 0, y: 24 }, { scale: 1, autoAlpha: 1, y: 0, duration: 0.42, ease: "back.out(2)" })
+      .fromTo(sil, { scale: 0.3, autoAlpha: 0, y: 24 }, { scale: 1, autoAlpha: 1, y: 0, duration: 0.42, ease: "back.out(2)" }, "-=0.08")
       .fromTo(t, { yPercent: 110 }, { yPercent: 0, duration: 0.45, ease: "power3.out" }, "<0.05")
       .to(k, { duration: 0.6, scrambleText: { text: kText, chars: "0123456789ABCDEF" } }, "<")
       .add(function () { swap(role); })
-      .to(inner, { autoAlpha: 0, y: -24, duration: 0.3, ease: "power2.in" }, "+=0.15")
-      .to(ink, { scale: 0, rotation: 100, duration: 0.6, ease: "power3.inOut" }, "<0.05")
-      .set(curtain, { autoAlpha: 0 });
+      // 3. 畫面中央再開一片鏡片，透過它看到新的頁面。
+      .to(inner, { autoAlpha: 0, scale: 0.92, duration: 0.28, ease: "power2.in" }, "+=0.15")
+      .set(rim.parentNode, { autoAlpha: 1 })
+      .set(handle, { stroke: "#F58027" })
+      .to(b, { r: hole, duration: 0.7, ease: "power3.inOut", onUpdate: function () { lensAt(W / 2, H / 2, b.r); curtain.style.setProperty("--hole", b.r + "px"); } }, "-=0.05")
+      .set(curtain, { autoAlpha: 0 })
+      .set(inner, { scale: 1 });
   }
   CC.go = function (role) {
     if (role === current) { CC.scrollTo(0); return; }
@@ -169,9 +179,16 @@
       .fromTo(flash, { opacity: 0 }, { opacity: 0.55, duration: 0.07, yoyo: true, repeat: 1 }, 1.35)
       .fromTo(xz, { scale: 1 }, { scale: 1.12, duration: 0.14, yoyo: true, repeat: 1, ease: "power2.out" }, 1.35)
       .to(say, { duration: 0.7, scrambleText: { text: "真相只有一個", chars: "調查中線索證據推理密碼" } }, 1.0)
-      .add(function () { CC.releaseIntro(); }, "+=0.3")
-      .to(pre, { yPercent: -100, duration: 0.75, ease: "power3.inOut" }, "<")
-      .add(endIntro);
+      // 從放大鏡的位置開洞，一路撐滿畫面。
+      .add(function () {
+        var r = xz.getBoundingClientRect(), W = window.innerWidth, H = window.innerHeight;
+        var x = r.left + r.width * 0.86, y = r.top + r.height * 0.33;
+        var far = Math.max(Math.hypot(x, y), Math.hypot(W - x, y), Math.hypot(x, H - y), Math.hypot(W - x, H - y));
+        pre.classList.add("is-opening");
+        gsap.set(pre, { "--hx": x + "px", "--hy": y + "px", "--hole": "0px" });
+        gsap.to(pre, { "--hole": far + 20 + "px", duration: 0.85, ease: "power3.in", onComplete: endIntro });
+        CC.releaseIntro();
+      }, "+=0.3");
   } else {
     endIntro();
   }
@@ -256,14 +273,24 @@
   }
 
   /* ---------- Scroll progress: a thin bar under the header ---------- */
-  var pbar = document.querySelector(".progress-top i");
+  var pwrap = document.querySelector(".progress-top"), pbar = pwrap && pwrap.querySelector("i");
+  var ptag = pwrap && pwrap.querySelector(".ptag"), pnum = ptag && ptag.querySelector("span"), pIdle = 0;
   function paintProgress() {
     var max = document.documentElement.scrollHeight - window.innerHeight;
     var p = max > 0 ? Math.min(1, Math.max(0, window.scrollY / max)) : 0;
     if (pbar) pbar.style.transform = "scaleX(" + p + ")";
+    if (ptag) {
+      // 標籤貼著進度條的前端，但不超出畫面左右。
+      pnum.textContent = Math.round(p * 100);
+      var w = ptag.offsetWidth, x = Math.min(window.innerWidth - w - 8, Math.max(8, p * window.innerWidth - w / 2));
+      ptag.style.transform = "translateX(" + x + "px)";
+    }
   }
   var pRaf = 0;
-  window.addEventListener("scroll", function () { if (!pRaf) pRaf = requestAnimationFrame(function () { pRaf = 0; paintProgress(); }); }, { passive: true });
+  window.addEventListener("scroll", function () {
+    if (!pRaf) pRaf = requestAnimationFrame(function () { pRaf = 0; paintProgress(); });
+    if (pwrap) { pwrap.classList.add("is-on"); clearTimeout(pIdle); pIdle = setTimeout(function () { pwrap.classList.remove("is-on"); }, 1200); }
+  }, { passive: true });
   document.addEventListener("cc:page", function () { setTimeout(paintProgress, 50); });
   paintProgress();
 
@@ -279,6 +306,83 @@
         .set(xzTop, { y: 30, scale: 1, rotation: 0 })
         .to(xzTop, { y: 0, autoAlpha: 1, duration: 0.5, ease: "back.out(2)", delay: 0.8 });
     });
+  }
+
+  /* ---------- 頁尾：線索貼紙從上面掉下來，可以用滑鼠抓起來丟（只有桌機） ---------- */
+  var play = document.querySelector(".foot-play");
+  if (play && finePointer && !reduce && window.CC_LIBS && window.matchMedia("(min-width: 1024px)").matches) {
+    html.classList.add("has-play");
+    var CLUES = [["木柴", "o"], ["營火", "y"], ["腳印 26cm", "m"], ["鈴鐺", ""], ["炭火", "o"], ["月亮", "b"], ["真相只有一個！", "y"], ["戲服", ""],
+      ["麥克風", "b"], ["1/28 19:00", "m"], ["新民國小", ""], ["放大鏡", "o"], ["預告信", "b"], ["CASE 21", "m"], ["小章", "y"]];
+    CC.onView(play, function () {
+      if (window.Matter) { dropClues(); return; }
+      var tag = document.createElement("script");
+      tag.src = window.CC_LIBS.matter; tag.onload = dropClues;
+      document.head.appendChild(tag);
+    }, 0.4);
+  }
+  function dropClues() {
+    var M = window.Matter;
+    if (!M) return;
+    var W = play.clientWidth, H = play.clientHeight;
+    var engine = M.Engine.create(), world = engine.world;
+    var wall = { isStatic: true };
+    var floor = M.Bodies.rectangle(W / 2, H + 40, W * 3, 80, wall);
+    var left = M.Bodies.rectangle(-40, -H, 80, H * 4, wall), right = M.Bodies.rectangle(W + 40, -H, 80, H * 4, wall);
+    M.Composite.add(world, [floor, left, right]);
+    var items = CLUES.map(function (c, i) {
+      var el = document.createElement("span");
+      el.className = "clue-tag " + c[1];
+      el.textContent = c[0];
+      play.appendChild(el);
+      var w = el.offsetWidth, h = el.offsetHeight;
+      var body = M.Bodies.rectangle(W * (0.1 + 0.8 * Math.random()), -60 - i * 55, w, h, {
+        chamfer: { radius: h / 2 - 1 }, angle: (Math.random() - 0.5) * 0.8, restitution: 0.3, friction: 0.5, frictionAir: 0.012
+      });
+      return { el: el, body: body, w: w, h: h };
+    });
+    M.Composite.add(world, items.map(function (it) { return it.body; }));
+    // 滑鼠可以抓貼紙；Matter 預設會吃掉滾輪和觸控，拿掉才不會擋住捲動頁面。
+    var mouse = M.Mouse.create(play);
+    ["wheel", "touchmove", "touchstart", "touchend"].forEach(function (n) {
+      play.removeEventListener(n, n === "wheel" ? mouse.mousewheel : n === "touchmove" ? mouse.mousemove : n === "touchstart" ? mouse.mousedown : mouse.mouseup);
+    });
+    window.addEventListener("mouseup", mouse.mouseup);
+    M.Composite.add(world, M.MouseConstraint.create(engine, { mouse: mouse, constraint: { stiffness: 0.18, damping: 0.1 } }));
+    function step() {
+      M.Engine.update(engine, 1000 / 60);
+      for (var i = 0; i < items.length; i++) {
+        var it = items[i], p = it.body.position;
+        it.el.style.transform = "translate(" + (p.x - it.w / 2).toFixed(1) + "px," + (p.y - it.h / 2).toFixed(1) + "px) rotate(" + it.body.angle.toFixed(3) + "rad)";
+      }
+    }
+    var on = false;
+    function run(yes) { if (yes === on) return; on = yes; if (yes) gsap.ticker.add(step); else gsap.ticker.remove(step); }
+    new IntersectionObserver(function (es) { run(es[0].isIntersecting); }).observe(play);
+    run(true);
+    window.addEventListener("resize", function () {
+      W = play.clientWidth;
+      M.Body.setPosition(floor, { x: W / 2, y: H + 40 });
+      M.Body.setPosition(right, { x: W + 40, y: -H });
+    });
+  }
+
+  /* ---------- 區塊標題：一行一行從遮罩裡升上來 ---------- */
+  if (!reduce && window.SplitText && "IntersectionObserver" in window) {
+    var titles = document.querySelectorAll(".sec-title");
+    html.classList.add("t-reveal");
+    var tio = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (!e.isIntersecting) return;
+        tio.unobserve(e.target);
+        var el = e.target;
+        // 進到畫面才切行（隱藏的頁面量不到行寬）。
+        var split = new SplitText(el, { type: "lines", mask: "lines", linesClass: "t-line" });
+        el.classList.add("is-in");
+        gsap.from(split.lines, { yPercent: 110, duration: 0.9, stagger: 0.12, ease: "power4.out", onComplete: function () { split.revert(); } });
+      });
+    }, { rootMargin: "0px 0px -8% 0px" });
+    titles.forEach(function (t) { tio.observe(t); });
   }
 
   /* ---------- Decoding labels ---------- */

@@ -70,6 +70,7 @@ def parse(path):
 GSAP = ["gsap", "ScrollTrigger", "ScrambleTextPlugin", "Draggable", "InertiaPlugin", "SplitText", "Flip"]
 CDN_GSAP = "https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/"
 CDN_LENIS = "https://cdn.jsdelivr.net/npm/lenis@1.3.26/dist/lenis.min.js"
+CDN_MATTER = "https://cdn.jsdelivr.net/npm/matter-js@0.20.0/build/matter.min.js"
 POSES = ["wave", "magnify", "glint", "surprise", "celebrate"]
 
 TITLE = "2027 中央大學彰友會第21屆返鄉服務隊"
@@ -100,10 +101,11 @@ SHELL_TOP = """<a class="skip" href="#main" data-scroll="#main">跳到主要內�
     </div>
   </div>
 </header>
-<div class="progress-top" aria-hidden="true"><i></i></div>
+<div class="progress-top" aria-hidden="true"><i></i><b class="ptag">調查進度 <span>0</span>%</b></div>
 """
 
 SHELL_BOTTOM = """<footer class="site-foot">
+  <div class="foot-play" aria-hidden="true" data-cursor="抓起來丟 DRAG"><p>CASE 21 · 線索散落一地，抓起來丟丟看</p></div>
   <p>© 2027 <strong>國立中央大學彰化校友會第 21 屆返鄉服務隊</strong> 版權所有</p>
   <p>服務學校：彰化縣田中鎮新民國民小學｜活動企劃執行：中央彰友會返服籌備團隊</p>
   <p>本活動已投保特定活動平安險與公共意外責任險</p>
@@ -111,14 +113,15 @@ SHELL_BOTTOM = """<footer class="site-foot">
   <div class="top-wrap"><img class="xz-top" src="{{asset:mascot/xiaozhang-wave.svg}}" alt="" width="120" height="114"><a class="top" href="#top" data-scroll="top">{{icon:arrow-down icon-sm}}回到頂端</a></div>
 </footer>
 <div class="curtain" aria-hidden="true">
-  <div class="ink"></div><i class="drop"></i><i class="drop"></i><i class="drop"></i><i class="drop"></i>
-  <div class="in">
-    <svg class="sil" viewBox="0 0 120 150"><path d="M60 8c19 0 33 15 33 34 0 13-7 24-17 30 21 6 36 22 40 44 2 12-6 24-19 24H23c-13 0-21-12-19-24 4-22 19-38 40-44-10-6-17-17-17-30C27 23 41 8 60 8z"/><ellipse class="eye" cx="48" cy="42" rx="7" ry="4.5"/><ellipse class="eye" cx="72" cy="42" rx="7" ry="4.5"/></svg>
-    <p class="k">CASE FILE</p><div style="overflow:hidden"><p class="t"></p></div>
+  <div class="lens">
+    <div class="in">
+      <svg class="sil" viewBox="0 0 120 150"><path d="M60 8c19 0 33 15 33 34 0 13-7 24-17 30 21 6 36 22 40 44 2 12-6 24-19 24H23c-13 0-21-12-19-24 4-22 19-38 40-44-10-6-17-17-17-30C27 23 41 8 60 8z"/><ellipse class="eye" cx="48" cy="42" rx="7" ry="4.5"/><ellipse class="eye" cx="72" cy="42" rx="7" ry="4.5"/></svg>
+      <p class="k">CASE FILE</p><div style="overflow:hidden"><p class="t"></p></div>
+    </div>
   </div>
-  <img class="swim" src="{{asset:mascot/xiaozhang-wave.svg}}" alt="" width="240" height="228">
+  <svg class="rim"><circle/><line/></svg>
 </div>
-<div class="cursor" aria-hidden="true"><div class="ring"></div><div class="dot"></div><div class="label"></div></div>
+<div class="cursor" aria-hidden="true"><svg class="ring" viewBox="0 0 52 52"><circle cx="20" cy="20" r="14"/><path d="M30.5 30.5 44 44"/></svg><div class="dot"></div><div class="label"></div></div>
 """
 
 INTRO_FLAG = """<script>
@@ -154,10 +157,13 @@ def icons(text):
 
 
 def lib_tags():
+    # 頁尾的線索掉落要用 Matter.js，只在桌機捲到頁尾時才載入，這裡只記下網址。
+    matter = "assets/vendor/matter.min.js" if LOCAL else CDN_MATTER
+    later = f'<script>window.CC_LIBS = {{ matter: "{matter}" }};</script>'
     if LOCAL:
-        return "\n".join(f'<script src="assets/vendor/{n}.min.js"></script>' for n in GSAP + ["lenis"])
+        return "\n".join([f'<script src="assets/vendor/{n}.min.js"></script>' for n in GSAP + ["lenis"]] + [later])
     tags = [f'<script src="{CDN_GSAP}{n}.min.js"></script>' for n in GSAP]
-    return "\n".join(tags + [f'<script src="{CDN_LENIS}"></script>'])
+    return "\n".join(tags + [f'<script src="{CDN_LENIS}"></script>', later])
 
 
 def main():

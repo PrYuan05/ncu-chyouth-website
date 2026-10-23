@@ -31,20 +31,25 @@
   CC.motion(function () {
     var loop = gsap.to(track, { xPercent: -100 / 3, duration: 22, ease: "none", repeat: -1 });
     loop.totalTime(loop.duration() * 100); // room to run backwards
-    var dir = 1;
+    var dir = 1, skew = 0, skewAim = 0;
+    var skewTo = gsap.quickSetter(track, "skewX", "deg");
+    // 捲得越快字越斜，停下來慢慢回正。
+    function lean() { skewAim *= 0.9; skew += (skewAim - skew) * 0.2; skewTo(skew); }
+    gsap.ticker.add(lean);
     // Scrolling speeds the band up and flips its direction with the scroll.
     var st = window.ScrollTrigger && ScrollTrigger.create({
       trigger: root, start: "top bottom", end: "bottom top",
       onUpdate: function (self) {
         dir = self.direction;
-        var boost = Math.min(Math.abs(self.getVelocity()) / 250, 5);
+        var v = self.getVelocity(), boost = Math.min(Math.abs(v) / 250, 5);
+        skewAim = Math.max(-10, Math.min(10, -v / 250));
         gsap.to(loop, { timeScale: dir * (1 + boost), duration: 0.2, overwrite: true,
           onComplete: function () { gsap.to(loop, { timeScale: dir, duration: 0.8 }); } });
       }
     });
     root.addEventListener("pointerenter", function () { gsap.to(loop, { timeScale: 0, duration: 0.5 }); });
     root.addEventListener("pointerleave", function () { gsap.to(loop, { timeScale: dir, duration: 0.5 }); });
-    return function () { if (st) st.kill(); loop.kill(); };
+    return function () { if (st) st.kill(); loop.kill(); gsap.ticker.remove(lean); gsap.set(track, { skewX: 0 }); };
   });
 })();
 </script>
