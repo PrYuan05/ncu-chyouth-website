@@ -255,66 +255,17 @@
     });
   }
 
-  /* ---------- Scroll progress: 小章's tentacle on wide screens, a thin bar elsewhere ---------- */
-  var tent = document.querySelector(".tentacle"), pbar = document.querySelector(".progress-top i");
-  var tentMQ = window.matchMedia("(min-width: 1240px) and (pointer: fine) and (prefers-reduced-motion: no-preference)");
-  var tPath = null, tLine = null, tTip = null, tSuck = [], tLen = 0, tLast = 0;
-  var SVGNS = "http://www.w3.org/2000/svg";
-  function buildTentacle() {
-    tPath = null;
-    if (!tent || !tentMQ.matches) return;
-    var h = tent.clientHeight;
-    if (!h) return;
-    var d = "M20 0";
-    for (var y = 12; y <= h; y += 12) d += " L" + (20 + Math.sin(y / 70) * 7).toFixed(1) + " " + y;
-    tent.innerHTML = '<svg viewBox="0 0 40 ' + h + '"><path class="o" fill="none" stroke="#7A4316" stroke-width="14" stroke-linecap="round"/>' +
-      '<path class="b" fill="none" stroke="#E88B66" stroke-width="10" stroke-linecap="round"/><g></g>' +
-      '<circle class="tip" r="7" fill="#E88B66" stroke="#7A4316" stroke-width="2"/></svg>';
-    tLine = tent.querySelector(".o"); tPath = tent.querySelector(".b"); tTip = tent.querySelector(".tip");
-    tLine.setAttribute("d", d); tPath.setAttribute("d", d);
-    tLen = tPath.getTotalLength();
-    tLine.style.strokeDasharray = tPath.style.strokeDasharray = tLen;
-    var g = tent.querySelector("g");
-    tSuck = [];
-    for (var l = 36; l < tLen - 10; l += 42) {
-      var pt = tPath.getPointAtLength(l), c = document.createElementNS(SVGNS, "circle");
-      c.setAttribute("cx", pt.x.toFixed(1)); c.setAttribute("cy", pt.y.toFixed(1)); c.setAttribute("r", "2.6");
-      c.setAttribute("fill", "#FBD3C2"); c.setAttribute("stroke", "#C9643F"); c.setAttribute("stroke-width", "1");
-      c.dataset.at = l; c.style.opacity = 0;
-      g.appendChild(c); tSuck.push(c);
-    }
-    paintProgress();
-  }
+  /* ---------- Scroll progress: a thin bar under the header ---------- */
+  var pbar = document.querySelector(".progress-top i");
   function paintProgress() {
     var max = document.documentElement.scrollHeight - window.innerHeight;
     var p = max > 0 ? Math.min(1, Math.max(0, window.scrollY / max)) : 0;
     if (pbar) pbar.style.transform = "scaleX(" + p + ")";
-    if (!tPath) return;
-    var l = Math.max(0.5, p * tLen);
-    tLine.style.strokeDashoffset = tPath.style.strokeDashoffset = tLen - l;
-    var pt = tPath.getPointAtLength(l);
-    tTip.setAttribute("cx", pt.x); tTip.setAttribute("cy", pt.y);
-    tSuck.forEach(function (c) { c.style.opacity = +c.dataset.at < l - 6 ? 1 : 0; });
-    tLast = l;
   }
   var pRaf = 0;
   window.addEventListener("scroll", function () { if (!pRaf) pRaf = requestAnimationFrame(function () { pRaf = 0; paintProgress(); }); }, { passive: true });
-  window.addEventListener("resize", function () { clearTimeout(buildTentacle.t); buildTentacle.t = setTimeout(buildTentacle, 200); });
   document.addEventListener("cc:page", function () { setTimeout(paintProgress, 50); });
-  buildTentacle();
-  // 經過每個區塊標題時，觸手尖端「吸」一下。
-  if ("IntersectionObserver" in window && !reduce) {
-    var suckIO = new IntersectionObserver(function (entries) {
-      entries.forEach(function (e) {
-        if (!e.isIntersecting || !tTip) return;
-        gsap.fromTo(tTip, { attr: { r: 7 } }, { attr: { r: 12 }, duration: 0.16, yoyo: true, repeat: 1, ease: "power2.out" });
-        tSuck.forEach(function (c) {
-          if (Math.abs(+c.dataset.at - tLast) < 90) gsap.fromTo(c, { attr: { r: 2.6 } }, { attr: { r: 4.2 }, duration: 0.16, yoyo: true, repeat: 1 });
-        });
-      });
-    }, { rootMargin: "-40% 0px -55% 0px" });
-    document.querySelectorAll(".sec-title, .sec h1, .sec h2").forEach(function (h) { suckIO.observe(h); });
-  }
+  paintProgress();
 
   /* ---------- Back to top: 小章 gets launched upward ---------- */
   var topBtn = document.querySelector(".site-foot .top"), xzTop = document.querySelector(".xz-top");

@@ -40,28 +40,9 @@ window.CC = window.CC || {
   },
   // 圖檔路徑（單檔預覽版會換成內嵌圖）。
   asset: function (path) { return (window.CC_ASSETS && window.CC_ASSETS[path]) || "assets/" + path; },
-  sprite: function (pose) { return CC.asset("mascot/xiaozhang-" + (pose || "wave") + ".webp"); },
-  // 3D 小章：模組載入後掛到 el 上；瀏覽器不支援 WebGL 時改放靜態圖。
-  mascot: function (el, opts, cb) {
-    var done = false;
-    function fallback() {
-      if (done) return; done = true;
-      var img = new Image();
-      img.src = CC.sprite(opts && opts.pose); img.alt = ""; img.className = "xz-still";
-      el.appendChild(img);
-      if (cb) cb(null);
-    }
-    function go() {
-      if (done) return; done = true;
-      try { var api = window.CCMascot.mount(el, opts || {}); if (cb) cb(api); }
-      catch (err) { done = false; fallback(); }
-    }
-    var gl = false;
-    try { var c = document.createElement("canvas"); gl = !!(c.getContext("webgl2") || c.getContext("webgl")); } catch (err) { /* no WebGL */ }
-    if (!gl) { fallback(); return; }
-    if (window.CCMascot) go();
-    else { window.addEventListener("cc:mascot", go, { once: true }); setTimeout(fallback, 8000); }
-  },
+  sprite: function (pose) { return CC.asset("mascot/xiaozhang-" + (pose || "wave") + ".svg"); },
+  // 平面小章：把頁面裡的 <svg class="xz-svg"> 交給 mascot.js 讓它動起來。
+  mascot: function (svg, opts) { return svg && window.CCMascot ? window.CCMascot.mount(svg, opts) : null; },
   // Runs fn only when motion is allowed; returns true if gsap is present.
   motion: function (fn) {
     if (!window.gsap) return false;

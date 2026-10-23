@@ -6,7 +6,8 @@ python3 build.py OUT --inline    -> one self-contained OUT/index.html (CSS/JS in
 
 Each src/sections/NN-name.html starts with a line like
 <!-- title: 主視覺 | body: is-ink | plugins: SplitText -->
-and {{icon:name}} tokens are swapped for inline Lucide SVG.
+and {{icon:name}} tokens are swapped for inline Lucide SVG. {{mascot}} inlines the flat 小章
+(src/mascot.svg); its poses are also written out as assets/mascot/xiaozhang-<pose>.svg.
 """
 import base64, json, pathlib, re, shutil, sys
 
@@ -47,10 +48,6 @@ FONTS = ("https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500;600"
          "&family=Noto+Sans+TC:wght@400;500;700&family=Noto+Serif+TC:wght@700;900&display=swap")
 
 
-FONTS = ("https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500;600"
-         "&family=Noto+Sans+TC:wght@400;500;700&family=Noto+Serif+TC:wght@700;900&display=swap")
-
-
 def icon(m):
     name, _, cls = m.group(1).partition(" ")
     cls = ("icon " + cls).strip()
@@ -66,14 +63,14 @@ def parse(path):
     )
     body = re.sub(r"\{\{icon:([a-z\- ]+)\}\}", icon, body)
     body = re.sub(r"\{\{asset:([\w./-]+)\}\}", lambda m: asset(m.group(1)), body)
+    body = body.replace("{{mascot}}", mascot("wave", inline=True))
     return meta, body
 
 
 GSAP = ["gsap", "ScrollTrigger", "ScrambleTextPlugin", "Draggable", "InertiaPlugin", "SplitText", "Flip"]
 CDN_GSAP = "https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/"
 CDN_LENIS = "https://cdn.jsdelivr.net/npm/lenis@1.3.26/dist/lenis.min.js"
-CDN_THREE = "https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.min.js"
-SPRITES = ["wave", "magnify", "glint", "surprise", "celebrate"]
+POSES = ["wave", "magnify", "glint", "surprise", "celebrate"]
 
 TITLE = "2027 中央大學彰友會第21屆返鄉服務隊"
 DESC = "名偵探柯南——真相與科學探險記｜2027/1/27–1/29 於彰化縣田中鎮新民國小，48 位大專志工陪伴 48 位學童，學員全程免費。"
@@ -83,7 +80,7 @@ LENS = """<svg class="lens" viewBox="0 0 120 120" aria-hidden="true" fill="none"
 SHELL_TOP = """<a class="skip" href="#main" data-scroll="#main">跳到主要內容</a>
 <div class="preloader" aria-hidden="true">
   <div class="row"><span>CASE No.21 · 新民國小</span><span>NCU · CHANGHUA</span></div>
-  <div class="mid"><img class="xz" src="{{asset:mascot/xiaozhang-magnify.webp}}" alt="" width="240" height="224"><div class="num">000</div><p class="say">調查中</p></div>
+  <div class="mid"><img class="xz" src="{{asset:mascot/xiaozhang-magnify.svg}}" alt="" width="240" height="228"><div class="num">000</div><p class="say">調查中</p></div>
   <div class="flash"></div>
   <div><div class="line"><i></i></div><div class="row" style="margin-top:12px"><span>INVESTIGATING</span><span>2027.01.27–29</span></div></div>
 </div>
@@ -103,7 +100,6 @@ SHELL_TOP = """<a class="skip" href="#main" data-scroll="#main">跳到主要內�
     </div>
   </div>
 </header>
-<div class="tentacle" aria-hidden="true"></div>
 <div class="progress-top" aria-hidden="true"><i></i></div>
 """
 
@@ -112,7 +108,7 @@ SHELL_BOTTOM = """<footer class="site-foot">
   <p>服務學校：彰化縣田中鎮新民國民小學｜活動企劃執行：中央彰友會返服籌備團隊</p>
   <p>本活動已投保特定活動平安險與公共意外責任險</p>
   <p class="follow">追蹤彰友會：<a href="https://www.facebook.com/ncuch" target="_blank" rel="noopener">Facebook</a> · <a href="https://www.instagram.com/ncu.ch/" target="_blank" rel="noopener">Instagram</a></p>
-  <div class="top-wrap"><img class="xz-top" src="{{asset:mascot/xiaozhang-wave.webp}}" alt="" width="120" height="112"><a class="top" href="#top" data-scroll="top">{{icon:arrow-down icon-sm}}回到頂端</a></div>
+  <div class="top-wrap"><img class="xz-top" src="{{asset:mascot/xiaozhang-wave.svg}}" alt="" width="120" height="114"><a class="top" href="#top" data-scroll="top">{{icon:arrow-down icon-sm}}回到頂端</a></div>
 </footer>
 <div class="curtain" aria-hidden="true">
   <div class="ink"></div><i class="drop"></i><i class="drop"></i><i class="drop"></i><i class="drop"></i>
@@ -120,7 +116,7 @@ SHELL_BOTTOM = """<footer class="site-foot">
     <svg class="sil" viewBox="0 0 120 150"><path d="M60 8c19 0 33 15 33 34 0 13-7 24-17 30 21 6 36 22 40 44 2 12-6 24-19 24H23c-13 0-21-12-19-24 4-22 19-38 40-44-10-6-17-17-17-30C27 23 41 8 60 8z"/><ellipse class="eye" cx="48" cy="42" rx="7" ry="4.5"/><ellipse class="eye" cx="72" cy="42" rx="7" ry="4.5"/></svg>
     <p class="k">CASE FILE</p><div style="overflow:hidden"><p class="t"></p></div>
   </div>
-  <img class="swim" src="{{asset:mascot/xiaozhang-wave.webp}}" alt="" width="240" height="224">
+  <img class="swim" src="{{asset:mascot/xiaozhang-wave.svg}}" alt="" width="240" height="228">
 </div>
 <div class="cursor" aria-hidden="true"><div class="ring"></div><div class="dot"></div><div class="label"></div></div>
 """
@@ -134,13 +130,22 @@ INTRO_FLAG = """<script>
 </script>"""
 
 
+def mascot(pose, inline=False):
+    """The flat 小章 master SVG set to one pose; inline copies are decorative (the button carries the label)."""
+    svg = (SRC / "mascot.svg").read_text().replace('data-pose="wave"', f'data-pose="{pose}"', 1)
+    if inline:
+        svg = svg.replace(' role="img" aria-label="小章"', ' aria-hidden="true" focusable="false"', 1)
+    return svg
+
+
 def asset(path):
     """assets/ path, or a data URI in the single-file preview build."""
     if not INLINE:
         return "assets/" + path
-    f = ROOT / "assets" / path
-    mime = {".webp": "image/webp", ".png": "image/png", ".jpg": "image/jpeg"}[f.suffix]
-    return f"data:{mime};base64," + base64.b64encode(f.read_bytes()).decode()
+    m = re.fullmatch(r"mascot/xiaozhang-(\w+)\.svg", path)
+    data = mascot(m.group(1)).encode() if m else (ROOT / "assets" / path).read_bytes()
+    mime = {".svg": "image/svg+xml", ".png": "image/png", ".jpg": "image/jpeg"}[pathlib.Path(path).suffix]
+    return f"data:{mime};base64," + base64.b64encode(data).decode()
 
 
 def icons(text):
@@ -167,23 +172,24 @@ def main():
 
     js_mascot = (SRC / "mascot.js").read_text()
     js_game_data = (SRC / "game-data.js").read_text()
+    js_game_zhuyin = (SRC / "game-zhuyin.js").read_text()
     js_game = (SRC / "game.js").read_text()
     game_html = icons((SRC / "game.html").read_text())
-    if LOCAL:
-        js_mascot = js_mascot.replace(CDN_THREE, "../vendor/three.module.min.js")
 
     if INLINE:
-        sprites = {f"mascot/xiaozhang-{n}.webp": asset(f"mascot/xiaozhang-{n}.webp") for n in SPRITES}
+        sprites = {f"mascot/xiaozhang-{n}.svg": asset(f"mascot/xiaozhang-{n}.svg") for n in POSES}
         styles = f"<style>\n{css_base}\n{css_site}\n</style>"
-        common = f"<script>\nwindow.CC_ASSETS = {json.dumps(sprites)};\n{js_common}\n</script>"
-        site = (f"<script>\n{js_site}\n</script>\n<script type=\"module\">\n{js_mascot}\n</script>\n"
-                f"<script>\n{js_game_data}\n</script>\n<script>\n{js_game}\n</script>")
+        common = f"<script>\nwindow.CC_ASSETS = {json.dumps(sprites)};\n{js_common}\n{js_mascot}\n</script>"
+        site = (f"<script>\n{js_site}\n</script>\n"
+                f"<script>\n{js_game_data}\n</script>\n<script>\n{js_game_zhuyin}\n</script>\n"
+                f"<script>\n{js_game}\n</script>")
     else:
         styles = ('<link rel="stylesheet" href="assets/css/base.css">\n'
                   '<link rel="stylesheet" href="assets/css/site.css">')
-        common = '<script src="assets/js/common.js"></script>'
-        site = ('<script src="assets/js/site.js"></script>\n<script type="module" src="assets/js/mascot.js"></script>\n'
-                '<script src="assets/js/game-data.js"></script>\n<script src="assets/js/game.js"></script>')
+        common = '<script src="assets/js/common.js"></script>\n<script src="assets/js/mascot.js"></script>'
+        site = ('<script src="assets/js/site.js"></script>\n'
+                '<script src="assets/js/game-data.js"></script>\n<script src="assets/js/game-zhuyin.js"></script>\n'
+                '<script src="assets/js/game.js"></script>')
 
     page = f"""<!doctype html>
 <html lang="zh-Hant">
@@ -225,7 +231,11 @@ def main():
         (OUT / "assets/js/site.js").write_text(js_site)
         (OUT / "assets/js/mascot.js").write_text(js_mascot)
         (OUT / "assets/js/game-data.js").write_text(js_game_data)
+        (OUT / "assets/js/game-zhuyin.js").write_text(js_game_zhuyin)
         (OUT / "assets/js/game.js").write_text(js_game)
+        (OUT / "assets/mascot").mkdir(parents=True, exist_ok=True)
+        for n in POSES:
+            (OUT / f"assets/mascot/xiaozhang-{n}.svg").write_text(mascot(n))
         if OUT != ROOT:
             shutil.copytree(ROOT / "assets/mascot", OUT / "assets/mascot", dirs_exist_ok=True)
         if LOCAL:

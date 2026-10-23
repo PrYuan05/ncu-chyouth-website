@@ -60,12 +60,20 @@
 .game .g-grp { margin-top: var(--space-sm); }
 .game .g-grp .lab { display: block; margin: 0 auto 6px; width: fit-content; padding: 2px 10px; border-radius: var(--radius-pill); font-size: var(--text-sm); font-weight: 700; background: rgba(255, 251, 235, 0.1); color: var(--color-on-ink-muted); }
 .game .g-grp .lab.on { background: var(--color-orange); color: var(--color-ink); }
-.game .g-slots { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 4px; }
-.game .g-slot { display: grid; place-items: center; min-height: 40px; padding: 2px; border-radius: 6px; border: 1px dashed rgba(255, 251, 235, 0.25); font-size: 12px; font-weight: 700; line-height: 1.2; text-align: center; color: rgba(255, 251, 235, 0.35); }
+.game .g-slots { display: grid; gap: 5px; }
+.game .g-slot { display: grid; place-items: center; min-height: 44px; padding: 2px 4px; border-radius: 6px; border: 1px dashed rgba(255, 251, 235, 0.25); font-size: 14px; font-weight: 700; line-height: 1.2; text-align: center; color: rgba(255, 251, 235, 0.35); }
 .game .g-slot.on { border: 0; background: #FFFBEB; color: var(--color-ink); box-shadow: 0 2px 0 rgba(0, 0, 0, 0.25); transform: rotate(-1.5deg); }
 .game .g-slot.on:nth-child(2) { transform: rotate(1.5deg); }
 .game .g-truth { position: relative; z-index: 2; margin-top: var(--space-md); padding: var(--space-sm); border-radius: 12px; text-align: center; font-family: var(--font-display); font-weight: 900; font-size: var(--text-xl); border: 1.5px dashed rgba(255, 251, 235, 0.3); color: var(--color-on-ink-muted); }
 .game .g-truth.on { border: 0; background: linear-gradient(90deg, var(--color-orange), var(--color-yellow)); color: var(--color-ink); }
+
+/* 注音：每個中文字右邊一欄直排注音，聲調在最後一個符號的右上角，輕聲點在最上面 */
+.game .zy { display: inline-flex; align-items: center; }
+.game .zy-b { display: inline-flex; flex-direction: column; align-items: center; justify-content: center; min-width: 1em; margin: 0 0.08em 0 0.02em; padding-right: 0.42em; font: 500 max(0.46em, 9px)/1 var(--font-body); font-style: normal; letter-spacing: 0; text-transform: none; }
+.game .zy-b > span { position: relative; display: block; line-height: 1.02; }
+.game .zy-b .zy-l { width: 0.24em; height: 0.24em; margin-bottom: 0.1em; border-radius: 50%; background: currentColor; }
+.game .zy-b .zy-t { position: absolute; left: 86%; top: -0.25em; width: 0.5em; height: 0.5em; }
+.game .zy-t svg { display: block; width: 100%; height: 100%; fill: none; stroke: currentColor; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
 
 /* 題目卡 */
 .game .g-card { position: fixed; inset: 0; z-index: 5; display: grid; place-items: center; padding: 16px; background: rgba(15, 23, 42, 0.45); }
@@ -73,9 +81,9 @@
 .game .g-panel { position: relative; width: min(560px, 100%); max-height: calc(100vh - 32px); overflow: auto; padding: var(--space-xl) var(--space-lg) var(--space-lg); border-radius: 22px; border: 1px solid rgba(255, 255, 255, 0.8); background: rgba(255, 251, 235, 0.95); -webkit-backdrop-filter: blur(16px); backdrop-filter: blur(16px); box-shadow: 0 24px 60px rgba(0, 0, 0, 0.35); }
 .game .g-panel .xz { display: block; width: 120px; height: auto; margin: -8px auto var(--space-xs); }
 .game .g-step { font: 600 var(--text-xs)/1.5 var(--font-mono); letter-spacing: 0.14em; color: var(--color-orange-ink); text-align: center; }
-.game .g-q { margin-top: var(--space-xs); font-weight: 700; font-size: var(--text-lg); line-height: 1.6; text-align: center; }
+.game .g-q { margin-top: var(--space-xs); font-weight: 700; font-size: 1.25rem; line-height: 1.7; text-align: center; }
 .game .g-opts { display: grid; gap: var(--space-xs); margin-top: var(--space-lg); }
-.game .g-opt { min-height: 52px; padding: 8px var(--space-md); border: 1.5px solid var(--color-ink); border-radius: 14px; background: #fff; color: var(--color-ink); font: 700 var(--text-base)/1.4 var(--font-body); text-align: left; cursor: pointer; }
+.game .g-opt { min-height: 56px; padding: 8px var(--space-md); border: 1.5px solid var(--color-ink); border-radius: 14px; background: #fff; color: var(--color-ink); font: 700 1.0625rem/1.4 var(--font-body); text-align: left; cursor: pointer; }
 .game .g-opt:hover { background: var(--color-orange-tint); }
 .game .g-opt.is-right { background: #BBF7D0; border-color: #15803D; }
 .game .g-opt.is-wrong { background: #FECACA; border-color: #B91C1C; }
@@ -92,11 +100,18 @@
   .game .g-board { position: relative; top: 0; }
   .game .g-shell { width: calc(100% - 16px); margin: 8px auto; border-radius: 18px; }
 }
-@media (max-width: 420px) { .game .g-slot { font-size: 11px; min-height: 36px; } .game .g-cols { gap: 6px; } }
+@media (max-width: 600px) {
+  /* 手機：三區上下排，每區的三個地點並排 */
+  .game .g-cols { grid-template-columns: minmax(0, 1fr); gap: var(--space-md); }
+  .game .g-col { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0 6px; }
+  .game .g-col > p { grid-column: 1 / -1; }
+  .game .g-board { padding: var(--space-sm); }
+  .game .g-slot { padding: 2px 0; font-size: 13px; }
+}
 </style>
 
 <button class="game-fab" type="button" aria-haspopup="dialog" aria-controls="game" data-cursor="解謎遊戲 GAME">
-  <img src="{{asset:mascot/xiaozhang-magnify.webp}}" alt="" width="120" height="112"><span>GAME</span><i class="dot" aria-hidden="true"></i>
+  <img src="{{asset:mascot/xiaozhang-magnify.svg}}" alt="" width="120" height="114"><span>GAME</span><i class="dot" aria-hidden="true"></i>
   <b class="sr-only">開啟解謎遊戲：小章事件簿</b>
 </button>
 
@@ -113,7 +128,7 @@
     </header>
     <div class="g-body">
       <section class="g-map" aria-label="新民國小地圖：操場、餐廳、禮堂">
-        <img class="g-avatar" src="{{asset:mascot/xiaozhang-wave.webp}}" alt="" width="120" height="112">
+        <img class="g-avatar" src="{{asset:mascot/xiaozhang-wave.svg}}" alt="" width="120" height="114">
       </section>
       <section class="g-board" aria-label="推理板">
         <svg class="g-strings" aria-hidden="true"></svg>

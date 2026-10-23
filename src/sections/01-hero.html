@@ -16,9 +16,9 @@
 #s1 .facts .pill { margin-top: 2px; }
 #s1 .main { position: relative; }
 #s1 .side { display: grid; gap: var(--space-md); }
-#s1 .stage { position: relative; width: min(100%, 360px); aspect-ratio: 1 / 0.92; margin: 0 auto; }
+#s1 .stage { position: relative; width: min(100%, 360px); aspect-ratio: 1600 / 1520; margin: 0 auto; }
 #s1 .stage::before { content: ""; position: absolute; left: 12%; right: 12%; bottom: 6%; height: 14%; border-radius: 50%; background: radial-gradient(closest-side, rgba(245, 128, 39, 0.35), transparent); filter: blur(6px); }
-#s1 .stage canvas, #s1 .stage .xz-still { position: relative; width: 100%; height: 100%; object-fit: contain; }
+#s1 .stage .xz-svg { position: relative; display: block; width: 100%; height: 100%; overflow: visible; }
 #s1 .stage button { position: absolute; inset: 8% 14%; border: 0; border-radius: 50%; background: none; cursor: pointer; }
 #s1 .stage button:focus-visible { outline: 3px solid var(--color-focus-on-ink); outline-offset: 2px; }
 #s1 .bubble { position: absolute; left: 50%; top: 2%; z-index: 2; padding: 6px 14px; border-radius: var(--radius-pill); background: rgba(255, 251, 235, 0.92); color: var(--color-ink); font: 900 var(--text-base)/1.4 var(--font-display); white-space: nowrap; transform: translateX(-50%); opacity: 0; pointer-events: none; box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25); }
@@ -50,6 +50,7 @@
       </div>
       <div class="side">
       <div class="stage">
+        {{mascot}}
         <p class="bubble" aria-live="polite"></p>
         <button type="button" aria-label="點小章：真相只有一個" data-cursor="點我 CLICK"></button>
       </div>
@@ -93,19 +94,16 @@
   var bubble = stage.querySelector(".bubble");
   var LINES = ["真相只有一個！", "線索就在營隊裡！", "1/28 營火晚會見！", "一起來當小偵探！"];
   var said = 0;
-  CC.mascot(stage, { pose: "wave" }, function (api) {
-    if (api) stage.insertBefore(api.renderer.domElement, bubble);
-    window.addEventListener("pointermove", function (e) {
-      if (!api) return;
-      var r = stage.getBoundingClientRect();
-      api.look((e.clientX - (r.left + r.width / 2)) / (window.innerWidth / 2), (e.clientY - (r.top + r.height / 2)) / (window.innerHeight / 2));
-    }, { passive: true });
-    stage.querySelector("button").addEventListener("click", function () {
-      bubble.textContent = LINES[said++ % LINES.length];
-      if (api) { api.pose("glint"); api.glint(); setTimeout(function () { api.pose("wave"); }, 1600); }
-      if (window.gsap) gsap.fromTo(bubble, { autoAlpha: 0, y: 8, xPercent: -50, x: 0 }, { autoAlpha: 1, y: 0, duration: 0.35, ease: "back.out(2)", onComplete: function () { gsap.to(bubble, { autoAlpha: 0, delay: 1.6, duration: 0.3 }); } });
-      else bubble.style.opacity = 1;
-    });
+  var api = CC.mascot(stage.querySelector(".xz-svg"), { pose: "wave" });
+  if (api) window.addEventListener("pointermove", function (e) {
+    var r = stage.getBoundingClientRect();
+    api.look((e.clientX - (r.left + r.width / 2)) / (window.innerWidth / 2), (e.clientY - (r.top + r.height * 0.45)) / (window.innerHeight / 2));
+  }, { passive: true });
+  stage.querySelector("button").addEventListener("click", function () {
+    bubble.textContent = LINES[said++ % LINES.length];
+    if (api) api.glint();
+    if (window.gsap) gsap.fromTo(bubble, { autoAlpha: 0, y: 8, xPercent: -50, x: 0 }, { autoAlpha: 1, y: 0, duration: 0.35, ease: "back.out(2)", onComplete: function () { gsap.to(bubble, { autoAlpha: 0, delay: 1.6, duration: 0.3 }); } });
+    else bubble.style.opacity = 1;
   });
 })();
 </script>
