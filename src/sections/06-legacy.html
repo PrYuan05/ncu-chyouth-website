@@ -8,6 +8,8 @@
 #s6 .stat dd { margin-top: var(--space-xs); font-family: var(--font-display); font-weight: 900; font-size: var(--text-stat); line-height: 1; font-variant-numeric: tabular-nums; white-space: nowrap; }
 #s6 .stat dd small { display: block; margin-top: var(--space-xs); font-family: var(--font-body); font-size: var(--text-base); font-weight: 700; line-height: 1.4; color: var(--color-orange-ink); }
 #s6 .stat dd .pre { font-size: 0.42em; vertical-align: 0.9em; margin-right: 4px; color: var(--color-ink-2); font-family: var(--font-body); }
+/* 「屆」跟在數字右下角，和數字同一行 */
+#s6 .stat dd .post { margin-left: 6px; font-size: 0.42em; font-weight: 700; color: var(--color-orange-ink); font-family: var(--font-body); }
 #s6 h3 { margin-top: var(--space-3xl); font-size: var(--text-lg); font-weight: 700; }
 #s6 .files { margin-top: var(--space-md); border-top: 2px solid var(--color-ink); }
 #s6 .file { position: relative; isolation: isolate; display: grid; grid-template-columns: 9em 5em minmax(0, 7em) minmax(0, 1fr); gap: var(--space-lg); align-items: baseline; padding: var(--space-lg) 0; border-bottom: 1px solid var(--color-rule-strong); }
@@ -64,7 +66,7 @@
     <h2 class="sec-title">深耕彰化・<span class="mark">歷屆服務足跡</span></h2>
 
     <dl class="stats" aria-label="服務里程碑統計">
-      <div class="stat"><dt>服務傳承</dt><dd><span class="pre">第</span><span data-to="21">21</span><small>    屆</small></dd></div>
+      <div class="stat"><dt>服務傳承</dt><dd><span class="pre">第</span><span data-to="21">21</span><span class="post">屆</span></dd></div>
       <div class="stat"><dt>累積志工</dt><dd><span data-to="500">500</span>+<small>位青年</small></dd></div>
       <div class="stat"><dt>服務學童</dt><dd><span data-to="1200">1,200</span>+<small>位孩子</small></dd></div>
       <div class="stat"><dt>堅持理念</dt><dd><span data-to="100">100</span>%<small>學員免費</small></dd></div>
