@@ -1,24 +1,25 @@
-<!-- title: 區塊5 安全防護與急救SOP | body: is-ink | plugins: -->
+<!-- title: 區塊5 安全防護與急救SOP | body: is-paper-2 | plugins: -->
 <style>
 #s5 .head { display: grid; grid-template-columns: minmax(0, 6fr) minmax(0, 4fr); gap: var(--space-2xl); align-items: end; }
-#s5 .intro { color: var(--color-on-ink-muted); }
-#s5 .intro b { color: var(--color-on-ink); font-family: var(--font-mono); font-size: var(--text-xl); }
+#s5 .intro { color: var(--color-ink-2); }
+#s5 .intro b { color: var(--color-ink); font-family: var(--font-mono); font-size: var(--text-xl); }
 #s5 .sop-title { margin-top: var(--space-2xl); font-size: var(--text-lg); font-weight: 700; display: flex; align-items: center; gap: var(--space-sm); }
+#s5 .sop-title .icon { color: var(--color-orange-ink); }
 #s5 .sop { position: relative; margin-top: var(--space-lg); }
 #s5 .steps { position: relative; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--space-lg); }
-#s5 .track { position: absolute; left: 22px; right: calc((100% - 3 * var(--space-lg)) / 4 - 22px); top: 21px; height: 2px; background: var(--color-rule-on-ink); }
+#s5 .track { position: absolute; left: 22px; right: calc((100% - 3 * var(--space-lg)) / 4 - 22px); top: 21px; height: 2px; background: var(--color-rule-strong); }
 #s5 .track i { position: absolute; inset: 0; background: var(--color-orange); transform-origin: left center; }
 #s5 .step { position: relative; }
 #s5 .dot { position: relative; z-index: 1; display: grid; place-items: center; width: 44px; height: 44px; border-radius: 50%; background: var(--color-orange); color: var(--color-ink); font: 600 var(--text-lg)/1 var(--font-mono); }
 #s5 .step h4 { margin: var(--space-md) 0 var(--space-xs); font-size: var(--text-lg); font-weight: 700; }
-#s5 .step p { color: var(--color-on-ink-muted); font-size: var(--text-sm); line-height: 1.8; }
+#s5 .step p { color: var(--color-ink-2); font-size: var(--text-sm); line-height: 1.8; }
 #s5 .hl { display: inline-block; margin: 2px 0; padding: 1px 10px; border-radius: var(--radius-pill); background: var(--color-yellow); color: var(--color-ink); font-weight: 700; white-space: nowrap; }
-#s5 .lines { margin-top: var(--space-3xl); border-top: 1px solid var(--color-rule-on-ink); }
+#s5 .lines { margin-top: var(--space-3xl); border-top: 1px solid var(--color-rule-strong); }
 #s5 .lines h3 { font-size: var(--text-lg); font-weight: 700; padding: var(--space-lg) 0 var(--space-xs); }
-#s5 .line { display: grid; grid-template-columns: 44px minmax(0, 14em) minmax(0, 1fr); gap: var(--space-lg); align-items: start; padding: var(--space-lg) 0; border-bottom: 1px solid var(--color-rule-on-ink); }
-#s5 .line .icon { width: 28px; height: 28px; color: var(--color-orange); margin-top: 2px; }
+#s5 .line { display: grid; grid-template-columns: 44px minmax(0, 14em) minmax(0, 1fr); gap: var(--space-lg); align-items: start; padding: var(--space-lg) 0; border-bottom: 1px solid var(--color-rule); }
+#s5 .line .icon { width: 28px; height: 28px; color: var(--color-orange-ink); margin-top: 2px; }
 #s5 .line h4 { font-size: var(--text-lg); font-weight: 700; }
-#s5 .line p { color: var(--color-on-ink-muted); }
+#s5 .line p { color: var(--color-ink-2); }
 @media (max-width: 900px) {
   #s5 .head { grid-template-columns: minmax(0, 1fr); gap: var(--space-md); }
   #s5 .steps { grid-template-columns: minmax(0, 1fr); gap: var(--space-xl); }
@@ -32,14 +33,14 @@
 }
 </style>
 
-<section id="s5" class="sec is-ink">
+<section id="s5" class="sec is-paper-2">
   <div class="wrap">
     <div class="head">
-      <h2 class="sec-title">最高規格<span class="mark">安全防護</span>與緊急救護機制</h2>
-      <p class="intro">全案共 <b>96</b> 人（48 位志工 ＋ 48 位學童），營隊將安全視為第一優先，落實全流程醫療與校園門禁把關。</p>
+      <h2 class="sec-title">孩子的安全，<span class="mark">我們這樣守著</span></h2>
+      <p class="intro">三天裡共有 <b>96</b> 人（48 位志工 ＋ 48 位學童）在校園裡，孩子的安全永遠排第一：從受傷處理、通知家長到門禁接送，每一步都有人負責。</p>
     </div>
 
-    <h3 class="sop-title">{{icon:shield}}緊急醫療處置 SOP 四部曲</h3>
+    <h3 class="sop-title">{{icon:shield}}萬一孩子受傷或不舒服，我們會這樣做</h3>
     <div class="sop">
     <div class="track" aria-hidden="true"><i></i></div>
     <ol class="steps">
@@ -67,7 +68,7 @@
     </div>
 
     <div class="lines">
-      <h3>全方位三大安全防線</h3>
+      <h3>每天都守好的三道防線</h3>
       <div class="line">{{icon:shield}}<h4>雙重保險防護</h4><p>全體學童與志工投保活動平安保險（意外醫療實支實付），並雙重查核教育部在校學生團體平安險資格。</p></div>
       <div class="line">{{icon:utensils}}<h4>嚴格食品衛生</h4><p>烹飪食材全數採購合格標章原料，料理全程配戴食品手套與口罩，徹底落實洗手消毒。</p></div>
       <div class="line">{{icon:lock}}<h4>校園實名門禁管制</h4><p>進出校園實施嚴格換證管制，每日放學必須由家長至校門口親筆簽名接送。</p></div>

@@ -35,6 +35,9 @@
 #s3 .trail circle { fill: var(--color-paper-2); stroke: var(--color-rule-strong); stroke-width: 2; transition: fill var(--dur-fast) var(--ease-out), stroke var(--dur-fast) var(--ease-out); }
 #s3 .trail circle.on { fill: var(--color-orange); stroke: var(--color-orange-ink); }
 #s3 .walker { position: absolute; left: 0; top: 0; z-index: 2; width: 46px; height: auto; pointer-events: none; filter: drop-shadow(0 4px 4px rgba(30, 41, 59, 0.2)); }
+/* 第三天走到最後一站：小章歡呼，最後一列下方冒出對話框 */
+#s3 .cheer { position: absolute; left: 40px; top: 0; z-index: 2; padding: 4px 14px; border: 1.5px solid var(--color-ink); border-radius: 14px 14px 14px 4px; background: var(--color-surface); color: var(--color-ink); font: 400 var(--text-sm)/1.5 var(--font-round); white-space: nowrap; pointer-events: none; opacity: 0; transform: translateY(6px); transition: opacity var(--dur-med) var(--ease-out), transform var(--dur-med) var(--ease-out); }
+#s3 .cheer.is-on { opacity: 1; transform: none; }
 @media (max-width: 640px) {
   #s3 [role="tab"] { font-size: var(--text-base); padding-left: var(--space-xs); padding-right: var(--space-xs); }
   #s3 .row { grid-template-columns: minmax(0, 1fr) auto; row-gap: 2px; }
@@ -42,7 +45,9 @@
   #s3 .panel ol { padding-left: 34px; }
   #s3 .trail { width: 34px; }
   #s3 .walker { width: 36px; }
+  #s3 .cheer { left: 30px; }
 }
+@media (prefers-reduced-motion: reduce) { #s3 .cheer { transition: none; } }
 </style>
 
 <section id="s3" class="sec is-paper-2">
@@ -162,6 +167,9 @@
     return { ol: ol, svg: svg, base: base, draw: draw, dots: [], len: 0, ys: [] };
   });
   var walker = new Image(); walker.className = "walker"; walker.alt = ""; walker.src = CC.sprite("magnify");
+  var cheer = document.createElement("span"); cheer.className = "cheer"; cheer.setAttribute("aria-hidden", "true"); cheer.textContent = "結業快樂！我們明年見～";
+  var cheering = false;
+  new Image().src = CC.sprite("celebrate");
   var progress = reduce ? 1 : 0;
   // 依每一列的高度重畫路線：點在每列中間，點與點之間微微左右彎。
   function layout(t) {
@@ -197,11 +205,20 @@
       // 走路時左右晃一點，像在一步一步走。
       var sway = reduce ? 0 : Math.sin(at / 9) * 7;
       walker.style.transform = "translate(" + (pt.x - w / 2) + "px," + (pt.y - w * 0.8) + "px) rotate(" + sway + "deg)";
+      // 第三天走到終點就歡呼。
+      var done = t === trails[trails.length - 1] && progress > 0.995;
+      if (done !== cheering) {
+        cheering = done;
+        walker.src = CC.sprite(done ? "celebrate" : "magnify");
+        cheer.classList.toggle("is-on", done);
+      }
+      var last = t.ol.querySelector(".row:last-of-type");
+      if (last) cheer.style.top = last.offsetTop + last.offsetHeight + 8 + "px";
     }
   }
   function active() { return trails[current]; }
   function relayout() { trails.forEach(layout); }
-  function moveWalker() { active().ol.appendChild(walker); layout(active()); }
+  function moveWalker() { active().ol.appendChild(walker); active().ol.appendChild(cheer); layout(active()); }
   moveWalker();
   window.addEventListener("resize", relayout);
   document.addEventListener("cc:page", function () { setTimeout(relayout, 60); });

@@ -496,5 +496,22 @@
   window.addEventListener("resize", function () { if (!root.hidden) drawStrings(); });
   if (st.seen) { var d = fab.querySelector(".dot"); if (d) d.remove(); }
   if (gs) gsap.to(fab.querySelector("img"), { y: -5, duration: 1.4, yoyo: true, repeat: -1, ease: "sine.inOut" });
+
+  // 手機上按鈕不要蓋住內容：首頁主視覺或家長查詢框在畫面上、或正在輸入文字時，先把按鈕收到畫面下方。
+  var small = window.matchMedia("(max-width: 640px)");
+  var inView = [], typing = false;
+  function tuck() { fab.classList.toggle("is-tucked", small.matches && (typing || inView.some(Boolean))); }
+  if ("IntersectionObserver" in window) {
+    var watch = Array.prototype.slice.call(document.querySelectorAll("#s1, #h-parents .ask"));
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) { inView[watch.indexOf(en.target)] = en.isIntersecting; });
+      tuck();
+    });
+    watch.forEach(function (n) { io.observe(n); });
+  }
+  function isField(n) { return n && n.matches && n.matches("input, textarea, select, [contenteditable]"); }
+  document.addEventListener("focusin", function (e) { typing = isField(e.target); tuck(); });
+  document.addEventListener("focusout", function () { typing = false; tuck(); });
+  if (small.addEventListener) small.addEventListener("change", tuck);
   CC.openGame = open;
 })();

@@ -27,6 +27,8 @@
   --font-display: "Noto Serif TC", "Songti TC", serif;
   --font-body: "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", system-ui, sans-serif;
   --font-mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", monospace;
+  /* 圓體只用在給孩子看的地方：小章的對話框、GAME */
+  --font-round: "Huninn", var(--font-body);
 
   --text-xs: 0.8125rem;
   --text-sm: 0.9375rem;

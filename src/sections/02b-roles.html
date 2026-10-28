@@ -8,7 +8,7 @@
 }
 #s11 .ic { display: grid; place-items: center; width: 56px; height: 56px; border-radius: 50%; background: var(--color-ink); color: var(--color-orange); }
 #s11 .ic .icon { width: 26px; height: 26px; }
-#s11 .who small { display: block; font: 600 var(--text-xs)/1.5 var(--font-mono); letter-spacing: 0.12em; color: var(--color-orange-ink); }
+#s11 .who small { display: block; font-size: var(--text-sm); font-weight: 700; line-height: 1.5; letter-spacing: 0.04em; color: var(--color-orange-ink); }
 #s11 .who h3 { font-family: var(--font-display); font-weight: 900; font-size: var(--text-2xl); line-height: 1.3; }
 #s11 .who p { color: var(--color-ink-2); font-size: var(--text-sm); margin-top: 2px; }
 #s11 .finds { display: flex; flex-wrap: wrap; gap: var(--space-xs); }
@@ -30,19 +30,19 @@
     <ul class="roles">
       <li class="role">
         <span class="ic">{{icon:users}}</span>
-        <div class="who"><small>FOR PARENTS</small><h3>家長專區</h3><p>報名學童的家長與照顧者</p></div>
+        <div class="who"><small>給家長</small><h3>家長專區</h3><p>報名學童的家長與照顧者</p></div>
         <ul class="finds" aria-label="家長專區內容"><li>線上同意書</li><li>每日接送時間</li><li>攜帶物品</li><li>三日課表</li><li>安全與急救</li><li>每日相簿</li></ul>
         <a class="btn" data-role="parents">進入家長專區{{icon:arrow-right icon-sm}}</a>
       </li>
       <li class="role">
         <span class="ic">{{icon:briefcase}}</span>
-        <div class="who"><small>FOR PARTNERS</small><h3>企業夥伴專區</h3><p>贊助企業、基金會與承辦窗口</p></div>
+        <div class="who"><small>給企業與基金會</small><h3>企業夥伴專區</h3><p>贊助企業、基金會與承辦窗口</p></div>
         <ul class="finds" aria-label="企業夥伴專區內容"><li>曝光回饋承諾</li><li>經費收支明細</li><li>專款專用說明</li><li>歷屆服務成果</li><li>合作聯絡窗口</li></ul>
         <a class="btn" data-role="sponsor">進入企業夥伴專區{{icon:arrow-right icon-sm}}</a>
       </li>
       <li class="role">
         <span class="ic">{{icon:school}}</span>
-        <div class="who"><small>FOR SCHOOLS</small><h3>校方專區</h3><p>新民國小師長與指導單位</p></div>
+        <div class="who"><small>給學校師長</small><h3>校方專區</h3><p>新民國小師長與指導單位</p></div>
         <ul class="finds" aria-label="校方專區內容"><li>三日活動流程</li><li>課程模組</li><li>安全與醫療後送</li><li>門禁與保險</li><li>經費公示</li></ul>
         <a class="btn" data-role="school">進入校方專區{{icon:arrow-right icon-sm}}</a>
       </li>

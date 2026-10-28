@@ -10,16 +10,15 @@ html.lenis, html.lenis body { height: auto; }
 .skip:focus { top: var(--space-md); outline: 3px solid var(--color-ink); outline-offset: 2px; }
 
 /* Header: brand, page nav, live status */
-.site-head { position: sticky; top: 0; z-index: 100; background: rgba(15, 23, 42, 0.82); -webkit-backdrop-filter: blur(16px) saturate(1.5); backdrop-filter: blur(16px) saturate(1.5); color: var(--color-on-ink); border-bottom: 1px solid var(--color-rule-on-ink); }
+.site-head { position: sticky; top: 0; z-index: 100; background: rgba(15, 23, 42, 0.94); -webkit-backdrop-filter: blur(16px) saturate(1.5); backdrop-filter: blur(16px) saturate(1.5); color: var(--color-on-ink); border-bottom: 1px solid var(--color-rule-on-ink); }
 .site-head .bar { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: var(--space-lg); max-width: 1160px; height: 60px; margin: 0 auto; padding: 0 var(--space-lg); }
 .brand { display: inline-flex; align-items: center; gap: var(--space-xs); min-height: 44px; color: var(--color-on-ink); text-decoration: none; font-weight: 700; font-size: var(--text-sm); white-space: nowrap; border-radius: var(--radius-sm); }
 .brand .icon { color: var(--color-orange); }
-.brand b { font-family: var(--font-mono); font-weight: 600; color: var(--color-yellow); letter-spacing: 0.08em; }
+.brand b { font-weight: 700; color: var(--color-yellow); letter-spacing: 0.04em; }
 .brand:focus-visible { outline: 3px solid var(--color-focus-on-ink); outline-offset: 2px; }
 .site-nav ul { display: flex; justify-content: center; gap: var(--space-2xs); overflow-x: auto; scrollbar-width: none; }
 .site-nav ul::-webkit-scrollbar { display: none; }
 .site-nav a { position: relative; display: inline-flex; align-items: center; gap: 6px; min-height: 44px; padding: 0 var(--space-md); color: var(--color-on-ink-muted); text-decoration: none; font-weight: 700; font-size: var(--text-sm); white-space: nowrap; border-radius: var(--radius-sm); transition: color var(--dur-fast) var(--ease-out); }
-.site-nav a .n { font: 600 var(--text-xs)/1 var(--font-mono); color: var(--color-yellow); opacity: 0.7; }
 .site-nav a::after { content: ""; position: absolute; left: var(--space-md); right: var(--space-md); bottom: 4px; height: 2px; background: var(--color-orange); transform: scaleX(0); transform-origin: left center; transition: transform var(--dur-med) var(--ease-out); }
 .site-nav a:hover { color: var(--color-on-ink); }
 .site-nav a[aria-current="page"] { color: var(--color-on-ink); }
@@ -84,6 +83,14 @@ html.lenis, html.lenis body { height: auto; }
 .cursor .label { margin-top: 30px; transform: translateX(-50%); font: 600 var(--text-xs)/1 var(--font-mono); letter-spacing: 0.14em; white-space: nowrap; opacity: 0; }
 .cursor-hidden .cursor { opacity: 0; }
 
+/* 小章說話：小章站在按鈕或卡片上面，左邊一個對話框（家長專區的同意書、每日相簿） */
+.xz-say { position: relative; z-index: 1; display: flex; align-items: flex-end; justify-content: flex-end; gap: 4px; margin-bottom: -8px; pointer-events: none; }
+.xz-say[hidden] { display: none; }
+.xz-say img { flex: none; width: 76px; height: auto; }
+.xz-say p { position: relative; max-width: 16em; margin-bottom: 40px; padding: 8px 14px; border: 1.5px solid var(--color-ink); border-radius: 16px; background: var(--color-surface); color: var(--color-ink); font: 400 var(--text-sm)/1.5 var(--font-round); box-shadow: 0 8px 18px -10px rgba(30, 41, 59, 0.45); }
+.xz-say p::after { content: ""; position: absolute; right: -7px; bottom: 14px; width: 12px; height: 12px; border-top: 1.5px solid var(--color-ink); border-right: 1.5px solid var(--color-ink); background: inherit; transform: rotate(45deg); }
+@media (max-width: 480px) { .xz-say img { width: 64px; } .xz-say p { margin-bottom: 32px; } }
+
 /* Click ripple */
 .ripple { position: fixed; z-index: 390; width: 72px; height: 72px; margin: -36px 0 0 -36px; border-radius: 50%; border: 2px solid var(--color-orange); pointer-events: none; }
 
@@ -94,6 +101,8 @@ html.lenis, html.lenis body { height: auto; }
 /* Footer */
 .site-foot { padding: var(--space-2xl) var(--space-lg); background: var(--color-ink-3); color: var(--color-on-ink-muted); font-size: var(--text-sm); text-align: center; line-height: 1.9; }
 .site-foot strong { color: var(--color-on-ink); }
+/* 手機上 GAME 按鈕固定在右下角，頁尾多留一段空間，最後幾行連結才不會被蓋住 */
+@media (max-width: 640px) { .site-foot { padding-bottom: 96px; } }
 /* 頁尾上方的線索貼紙區（只有桌機、可以動畫時由 site.js 打開） */
 .site-foot .foot-play { display: none; position: relative; height: 240px; margin: calc(var(--space-2xl) * -1) calc(var(--space-lg) * -1) var(--space-xl); overflow: hidden; border-bottom: 1px solid var(--color-rule-on-ink); background: radial-gradient(ellipse at 50% 120%, rgba(245, 128, 39, 0.16), transparent 60%); }
 .has-play .site-foot .foot-play { display: block; }
@@ -127,8 +136,13 @@ html.lenis, html.lenis body { height: auto; }
 .preloader .line { height: 2px; background: var(--color-rule-on-ink); }
 .preloader .line i { display: block; height: 100%; background: var(--color-orange); transform-origin: left center; transform: scaleX(0); }
 @media (max-width: 480px) {
-  .site-nav ul { justify-content: space-between; padding: 0 var(--space-2xs); }
+  /* 分頁列兩側和內容一樣留 16px（6px 加上連結本身的 10px） */
+  .site-nav ul { justify-content: space-between; padding: 0 6px; }
   .site-nav a { padding: 0 10px; }
-  .site-nav a .n { display: none; }
   .site-nav a::after { left: 10px; right: 10px; }
+}
+
+/* 系統設定「減少透明度」或「增加對比」時，毛玻璃一律換成實色（GAME 按鈕、夥伴卡片在各自的檔案裡） */
+@media (prefers-reduced-transparency: reduce), (prefers-contrast: more) {
+  .site-head, .progress-top .ptag { background: var(--color-ink-3); -webkit-backdrop-filter: none; backdrop-filter: none; }
 }

@@ -45,7 +45,7 @@ ICONS = {
 }
 
 FONTS = ("https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500;600"
-         "&family=Noto+Sans+TC:wght@400;500;700&family=Noto+Serif+TC:wght@700;900&display=swap")
+         "&family=Noto+Sans+TC:wght@400;500;700&family=Noto+Serif+TC:wght@700;900&family=Huninn&display=swap")
 
 
 def icon(m):
@@ -87,12 +87,12 @@ SHELL_TOP = """<a class="skip" href="#main" data-scroll="#main">跳到主要內�
 </div>
 <header class="site-head">
   <div class="bar">
-    <a class="brand" data-role="home">{{icon:search icon-sm}}中央彰友會返服 <b>21ST</b></a>
+    <a class="brand" data-role="home">{{icon:search icon-sm}}中央彰友會返服 <b>第21屆</b></a>
     <nav class="site-nav" aria-label="網站頁面"><ul>
-      <li><a data-role="home"><span class="n">01</span>首頁</a></li>
-      <li><a data-role="parents"><span class="n">02</span>家長專區</a></li>
-      <li><a data-role="sponsor"><span class="n">03</span>企業夥伴</a></li>
-      <li><a data-role="school"><span class="n">04</span>校方專區</a></li>
+      <li><a data-role="home">首頁</a></li>
+      <li><a data-role="parents">家長專區</a></li>
+      <li><a data-role="sponsor">企業夥伴</a></li>
+      <li><a data-role="school">校方專區</a></li>
     </ul></nav>
     <div class="status">
       <span class="live" aria-hidden="true"><i></i>TPE <span data-clock>--:--:--</span></span>

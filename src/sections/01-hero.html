@@ -1,39 +1,40 @@
-<!-- title: 區塊1 主視覺橫幅 | body: is-ink | plugins: SplitText, ScrollTrigger -->
+<!-- title: 區塊1 主視覺橫幅 | body: is-paper | plugins: SplitText, ScrollTrigger -->
 <style>
-#s1 { position: relative; overflow: clip; padding-top: var(--space-3xl); padding-bottom: var(--space-2xl); }
+/* 首頁主視覺用暖色紙底，小章放大當主角；深藍只留給頁首和頁尾 */
+#s1 { position: relative; overflow: clip; padding-top: var(--space-3xl); padding-bottom: var(--space-2xl); background: radial-gradient(ellipse at 78% 38%, #FFE7CC, transparent 58%), var(--color-paper); }
 #s1 .hero-grid { position: relative; display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 4fr); gap: var(--space-2xl); align-items: end; }
-#s1 .kicker { font-size: var(--text-xs); letter-spacing: 0.18em; color: var(--color-yellow); margin-bottom: var(--space-lg); }
+#s1 .kicker { font-size: var(--text-sm); font-weight: 700; letter-spacing: 0.08em; color: var(--color-orange-ink); margin-bottom: var(--space-lg); }
 #s1 h1 { font-family: var(--font-display); font-weight: 900; line-height: 1.08; letter-spacing: 0.02em; min-width: 0; overflow-wrap: anywhere; }
-#s1 h1 .t1 { display: block; font-size: var(--text-display); color: var(--color-on-ink); }
+#s1 h1 .t1 { display: block; font-size: var(--text-display); color: var(--color-ink); }
 #s1 h1 .dash { display: block; width: 3.2em; height: 6px; margin: 0.32em 0 0.38em; background: var(--color-orange); transform-origin: left center; font-size: var(--text-display); }
-#s1 h1 .t2 { display: block; font-size: calc(var(--text-display) * 0.6); color: var(--color-orange); }
-#s1 .sub { margin-top: var(--space-xl); font-size: var(--text-lg); font-weight: 700; color: var(--color-on-ink); max-width: 34em; }
-#s1 .tag { margin-top: var(--space-xs); color: var(--color-on-ink-muted); max-width: 34em; }
-#s1 .facts { position: relative; z-index: 1; border-top: 1px solid var(--color-rule-on-ink); }
-#s1 .facts div { display: grid; grid-template-columns: 4.5em minmax(0, 1fr); gap: var(--space-sm); padding: var(--space-sm) 0; border-bottom: 1px solid var(--color-rule-on-ink); }
-#s1 .facts dt { font-family: var(--font-mono); font-size: var(--text-xs); letter-spacing: 0.12em; color: var(--color-on-ink-muted); padding-top: 3px; }
+#s1 h1 .t2 { display: block; font-size: calc(var(--text-display) * 0.6); color: #D9620F; }
+#s1 .sub { margin-top: var(--space-xl); font-size: var(--text-lg); font-weight: 700; color: var(--color-ink); max-width: 34em; }
+#s1 .tag { margin-top: var(--space-xs); color: var(--color-ink-2); max-width: 34em; }
+#s1 .facts { position: relative; z-index: 1; border-top: 1px solid var(--color-rule-strong); }
+#s1 .facts div { display: grid; grid-template-columns: 4.5em minmax(0, 1fr); gap: var(--space-sm); padding: var(--space-sm) 0; border-bottom: 1px solid var(--color-rule); }
+#s1 .facts dt { font-size: var(--text-sm); font-weight: 700; letter-spacing: 0.08em; color: var(--color-ink-2); padding-top: 1px; }
 #s1 .facts dd { font-weight: 500; }
 #s1 .facts .pill { margin-top: 2px; }
 #s1 .main { position: relative; }
 #s1 .side { display: grid; gap: var(--space-md); }
-#s1 .stage { position: relative; width: min(100%, 360px); aspect-ratio: 1600 / 1520; margin: 0 auto; }
+#s1 .stage { position: relative; width: min(100%, 420px); aspect-ratio: 1600 / 1520; margin: 0 auto; }
 #s1 .stage::before { content: ""; position: absolute; left: 12%; right: 12%; bottom: 6%; height: 14%; border-radius: 50%; background: radial-gradient(closest-side, rgba(245, 128, 39, 0.35), transparent); filter: blur(6px); }
 #s1 .stage .xz-svg { position: relative; display: block; width: 100%; height: 100%; overflow: visible; }
 #s1 .stage button { position: absolute; inset: 8% 14%; border: 0; border-radius: 50%; background: none; cursor: pointer; }
-#s1 .stage button:focus-visible { outline: 3px solid var(--color-focus-on-ink); outline-offset: 2px; }
-#s1 .bubble { position: absolute; left: 50%; top: 2%; z-index: 2; padding: 6px 14px; border-radius: var(--radius-pill); background: rgba(255, 251, 235, 0.92); color: var(--color-ink); font: 900 var(--text-base)/1.4 var(--font-display); white-space: nowrap; transform: translateX(-50%); opacity: 0; pointer-events: none; box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25); }
-#s1 .cta { display: flex; flex-wrap: wrap; gap: var(--space-sm); margin-top: var(--space-2xl); padding-top: var(--space-xl); border-top: 1px solid var(--color-rule-on-ink); }
+#s1 .stage button:focus-visible { outline: 3px solid var(--color-focus); outline-offset: 2px; }
+#s1 .bubble { position: absolute; left: 50%; top: 2%; z-index: 2; padding: 6px 16px; border: 1.5px solid var(--color-ink); border-radius: var(--radius-pill); background: var(--color-surface); color: var(--color-ink); font: 400 var(--text-lg)/1.4 var(--font-round); white-space: nowrap; transform: translateX(-50%); opacity: 0; pointer-events: none; box-shadow: 0 8px 24px -8px rgba(30, 41, 59, 0.35); }
+#s1 .cta { display: flex; flex-wrap: wrap; gap: var(--space-sm); margin-top: var(--space-2xl); padding-top: var(--space-xl); border-top: 1px solid var(--color-rule); }
 #s1 .cta .btn { gap: var(--space-sm); }
-#s1 .cta small { font-size: var(--text-xs); font-weight: 700; opacity: 0.85; }
+#s1 .cta small { font-size: var(--text-xs); font-weight: 700; }
 /* 手電筒：滑鼠移到主視覺上，光圈照到的地方會浮出藏起來的線索字 */
 #s1 > .wrap { position: relative; z-index: 1; }
-#s1 .clues { position: absolute; inset: 0; z-index: 0; pointer-events: none; --fx: -999px; --fy: -999px; --fr: 0px; background: radial-gradient(circle at var(--fx) var(--fy), rgba(255, 236, 179, 0.14), transparent 62%); -webkit-mask: radial-gradient(circle var(--fr) at var(--fx) var(--fy), #000 0%, rgba(0, 0, 0, 0.55) 55%, transparent 100%); mask: radial-gradient(circle var(--fr) at var(--fx) var(--fy), #000 0%, rgba(0, 0, 0, 0.55) 55%, transparent 100%); }
-#s1 .clues span { position: absolute; white-space: nowrap; color: rgba(253, 224, 138, 0.75); font: 600 var(--text-sm)/1 var(--font-mono); letter-spacing: 0.14em; }
-#s1 .clues span.big { font: 900 clamp(1.5rem, 1rem + 1.6vw, 2.5rem)/1 var(--font-display); letter-spacing: 0.04em; color: rgba(253, 224, 138, 0.45); }
-#s1 .clues span.print { width: 26px; height: 40px; border-radius: 50% 50% 46% 46%; background: rgba(253, 224, 138, 0.35); }
+#s1 .clues { position: absolute; inset: 0; z-index: 0; pointer-events: none; --fx: -999px; --fy: -999px; --fr: 0px; background: radial-gradient(circle at var(--fx) var(--fy), rgba(245, 128, 39, 0.12), transparent 62%); -webkit-mask: radial-gradient(circle var(--fr) at var(--fx) var(--fy), #000 0%, rgba(0, 0, 0, 0.55) 55%, transparent 100%); mask: radial-gradient(circle var(--fr) at var(--fx) var(--fy), #000 0%, rgba(0, 0, 0, 0.55) 55%, transparent 100%); }
+#s1 .clues span { position: absolute; white-space: nowrap; color: rgba(163, 74, 11, 0.6); font: 600 var(--text-sm)/1 var(--font-mono); letter-spacing: 0.14em; }
+#s1 .clues span.big { font: 900 clamp(1.5rem, 1rem + 1.6vw, 2.5rem)/1 var(--font-display); letter-spacing: 0.04em; color: rgba(163, 74, 11, 0.3); }
+#s1 .clues span.print { width: 26px; height: 40px; border-radius: 50% 50% 46% 46%; background: rgba(163, 74, 11, 0.2); }
 @media (max-width: 860px) {
   #s1 .hero-grid { grid-template-columns: minmax(0, 1fr); gap: var(--space-xl); }
-  #s1 .stage { width: min(72%, 280px); }
+  #s1 .stage { width: min(80%, 320px); }
 }
 @media (max-width: 480px) {
   #s1 .cta { flex-direction: column; }
@@ -41,7 +42,7 @@
 }
 </style>
 
-<section id="s1" class="sec is-ink">
+<section id="s1" class="sec is-paper">
   <div class="clues" aria-hidden="true">
     <span style="left:6%;top:9%">EVIDENCE No.21</span>
     <span class="big" style="left:38%;top:6%">木柴去哪了？</span>
@@ -59,7 +60,7 @@
   <div class="wrap">
     <div class="hero-grid">
       <div class="main">
-        <p class="kicker mono">NCU · CHANGHUA · 21ST · 2027</p>
+        <p class="kicker">中央大學彰友會・第 21 屆・2027 寒假</p>
         <h1 aria-label="名偵探柯南——真相與科學探險記">
           <span class="t1" aria-hidden="true">名偵探柯南</span>
           <span class="dash" aria-hidden="true"></span>
@@ -84,8 +85,8 @@
     </div>
     <nav class="cta" aria-label="依身分進入專區">
       <a class="btn btn-orange" data-role="parents"><small>我是家長</small>家長專區{{icon:arrow-right icon-sm}}</a>
-      <a class="btn btn-ghost-ink" data-role="sponsor"><small>企業・基金會</small>企業夥伴專區{{icon:arrow-right icon-sm}}</a>
-      <a class="btn btn-ghost-ink" data-role="school"><small>學校師長</small>校方專區{{icon:arrow-right icon-sm}}</a>
+      <a class="btn btn-ghost" data-role="sponsor"><small>企業・基金會</small>企業夥伴專區{{icon:arrow-right icon-sm}}</a>
+      <a class="btn btn-ghost" data-role="school"><small>學校師長</small>校方專區{{icon:arrow-right icon-sm}}</a>
     </nav>
   </div>
 </section>

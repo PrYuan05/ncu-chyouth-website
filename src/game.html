@@ -2,11 +2,18 @@
 /* GAME 小按鈕 */
 .game-fab { position: fixed; right: 18px; bottom: 18px; z-index: 120; display: grid; place-items: center; width: 84px; height: 84px; padding: 0; border: 1px solid rgba(255, 255, 255, 0.7); border-radius: 50%; background: rgba(255, 251, 235, 0.55); -webkit-backdrop-filter: blur(14px) saturate(1.5); backdrop-filter: blur(14px) saturate(1.5); box-shadow: 0 12px 30px rgba(15, 23, 42, 0.22), inset 0 1px 0 rgba(255, 255, 255, 0.9); cursor: pointer; }
 .game-fab img { width: 74px; height: auto; margin-top: -10px; pointer-events: none; }
-.game-fab span { position: absolute; bottom: -8px; left: 50%; transform: translateX(-50%); padding: 2px 10px; border-radius: var(--radius-pill); background: var(--color-ink-3); color: var(--color-yellow); font: 600 11px/1.6 var(--font-mono); letter-spacing: 0.16em; }
+.game-fab span { position: absolute; bottom: -8px; left: 50%; transform: translateX(-50%); padding: 2px 10px; border-radius: var(--radius-pill); background: var(--color-ink-3); color: var(--color-yellow); font: 400 12px/1.5 var(--font-round); letter-spacing: 0.12em; }
 .game-fab:focus-visible { outline: 3px solid var(--color-focus); outline-offset: 3px; }
 .game-fab .dot { position: absolute; top: 4px; right: 6px; width: 12px; height: 12px; border-radius: 50%; background: var(--color-orange); box-shadow: 0 0 0 3px rgba(255, 251, 235, 0.9); }
 .game-open .game-fab { visibility: hidden; }
-@media (max-width: 480px) { .game-fab { width: 68px; height: 68px; right: 12px; bottom: 12px; } .game-fab img { width: 60px; } }
+/* 手機：按鈕縮小；首頁主視覺、家長查詢框在畫面上或正在打字時先收起來（game.js 加 is-tucked） */
+.game-fab { transition: transform var(--dur-med) var(--ease-out), opacity var(--dur-med) var(--ease-out), visibility 0s; }
+.game-fab.is-tucked { transform: translateY(calc(100% + 32px)); opacity: 0; visibility: hidden; pointer-events: none; transition: transform var(--dur-med) var(--ease-out), opacity var(--dur-med) var(--ease-out), visibility 0s var(--dur-med); }
+@media (max-width: 640px) { .game-fab { width: 56px; height: 56px; right: 12px; bottom: 16px; } .game-fab img { width: 50px; margin-top: -6px; } .game-fab span { bottom: -7px; padding: 1px 7px; font-size: 9px; } .game-fab .dot { top: 1px; right: 2px; width: 10px; height: 10px; } }
+@media (prefers-reduced-motion: reduce) { .game-fab, .game-fab.is-tucked { transition: none; } }
+@media (prefers-reduced-transparency: reduce), (prefers-contrast: more) {
+  .game-fab { background: var(--color-paper); border-color: var(--color-rule-strong); -webkit-backdrop-filter: none; backdrop-filter: none; }
+}
 
 /* 遊戲視窗 */
 .game { position: fixed; inset: 0; z-index: 300; display: grid; overflow: auto; overscroll-behavior: contain; color: var(--color-ink); }
@@ -107,6 +114,10 @@
   .game .g-col > p { grid-column: 1 / -1; }
   .game .g-board { padding: var(--space-sm); }
   .game .g-slot { padding: 2px 0; font-size: 13px; }
+}
+@media (prefers-reduced-transparency: reduce), (prefers-contrast: more) {
+  .game .g-bg { background: rgba(15, 23, 42, 0.94); -webkit-backdrop-filter: none; backdrop-filter: none; }
+  .game .g-shell, .game .g-panel { background: var(--color-paper); -webkit-backdrop-filter: none; backdrop-filter: none; }
 }
 </style>
 
