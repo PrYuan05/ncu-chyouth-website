@@ -47,8 +47,8 @@ window.CC = window.CC || {
   // layout 8 以上由 build.py 在 <html> 加 class="l-bold"，套用 site.css 最後一段的不對稱版面（只有桌機）。
   // density 6 以上加 class="d-dense"，區塊上下間距收緊一點。
   // motion 分級：6 以上有常駐小動態（遊戲按鈕漂浮）；7 以上有捲動故事（釘住區塊、橫向滑動、相簿）；
-  // 8 以上再加主視覺視差和跑馬燈隨捲動變速變斜。
-  TASTE: { layout: 8, motion: 7, density: 6 },
+  // 8 以上再加主視覺視差和跑馬燈隨捲動變速變斜；9 以上按鈕磁吸；10 再加卡片立體傾斜和區塊標題捲動視差。
+  TASTE: { layout: 7, motion: 10, density: 6 },
   // 被嵌進會自動撐高的 iframe（例如某些預覽器）時，視窗高度會等於整頁高度、頁面不會捲動，
   // 這時捲動連動的效果會卡在錯的位置，所以一律關掉。
   embedded: function () { return window.innerHeight > (window.screen && screen.height ? screen.height : 1200) * 1.5; },

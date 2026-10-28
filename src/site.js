@@ -416,4 +416,37 @@
       }, 1);
     });
   }
+
+  /* ---------- Motion 9 以上：按鈕磁吸；Motion 10：卡片立體傾斜、區塊標題捲動視差（只有滑鼠、桌機） ---------- */
+  if (hasGsap && !reduce && finePointer && CC.motionAt(9)) {
+    document.querySelectorAll(".btn").forEach(function (btn) {
+      var mx = gsap.quickTo(btn, "x", { duration: 0.5, ease: "elastic.out(1, 0.4)" });
+      var my = gsap.quickTo(btn, "y", { duration: 0.5, ease: "elastic.out(1, 0.4)" });
+      btn.addEventListener("pointermove", function (e) {
+        var r = btn.getBoundingClientRect();
+        mx((e.clientX - r.left - r.width / 2) * 0.28);
+        my((e.clientY - r.top - r.height / 2) * 0.4);
+      });
+      btn.addEventListener("pointerleave", function () { mx(0); my(0); });
+    });
+  }
+  if (hasGsap && !reduce && finePointer && CC.motionAt(10)) {
+    document.querySelectorAll(".pages .card, .pages .box").forEach(function (card) {
+      gsap.set(card, { transformPerspective: 900 });
+      var rx = gsap.quickTo(card, "rotationX", { duration: 0.6, ease: "power3" });
+      var ry = gsap.quickTo(card, "rotationY", { duration: 0.6, ease: "power3" });
+      card.addEventListener("pointermove", function (e) {
+        var r = card.getBoundingClientRect();
+        ry(((e.clientX - r.left) / r.width - 0.5) * 8);
+        rx(-((e.clientY - r.top) / r.height - 0.5) * 8);
+      });
+      card.addEventListener("pointerleave", function () { rx(0); ry(0); });
+    });
+    if (window.ScrollTrigger && window.matchMedia("(min-width: 1024px)").matches) {
+      document.querySelectorAll(".pages .sec-title").forEach(function (t) {
+        gsap.fromTo(t, { y: 36 }, { y: -36, ease: "none", scrollTrigger: { trigger: t, start: "top bottom", end: "bottom top", scrub: 0.8 } });
+      });
+    }
+  }
+
 })();
