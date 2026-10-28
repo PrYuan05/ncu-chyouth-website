@@ -1,7 +1,7 @@
 <!-- title: 家長專區頁首 | body: is-paper | plugins: -->
 <style>
 /* 各專區頁首用暖色紙底，和首頁一樣；深藍只留給最上面的頁首列和頁尾 */
-#h-parents { padding-top: var(--space-2xl); padding-bottom: var(--space-2xl); background: radial-gradient(ellipse at 85% 0%, #FFE7CC, transparent 55%), var(--color-paper); border-bottom: 1px solid var(--color-rule); }
+#h-parents { padding-top: var(--space-2xl); padding-bottom: var(--space-2xl); background: radial-gradient(ellipse at 85% 0%, #EBD8C4, transparent 55%), var(--color-paper); border-bottom: 1px solid var(--color-rule); }
 #h-parents .back { display: inline-flex; align-items: center; gap: 6px; min-height: 40px; font-size: var(--text-sm); color: var(--color-ink-2); text-decoration: none; border-radius: var(--radius-sm); transition: color var(--dur-fast) var(--ease-out); }
 #h-parents .back:hover { color: var(--color-orange-ink); }
 #h-parents .back:focus-visible { outline: 3px solid var(--color-focus); outline-offset: 2px; transition: none; }
@@ -21,7 +21,7 @@
 #h-parents .toc a:focus-visible { outline: 3px solid var(--color-focus); outline-offset: 2px; }
 #h-parents .toc li::before { content: counter(toc, decimal-leading-zero) " "; font-family: var(--font-mono); color: var(--color-orange-ink); }
 /* 小章從查詢框右上角探出頭：上方留出比探出高度更多的空間，才不會蓋到上面的接送時間 */
-#h-parents .ask { position: relative; margin-top: var(--space-3xl); padding: var(--space-lg); border-radius: var(--radius-md); background: var(--color-surface); border: 1.5px solid var(--color-rule-strong); box-shadow: 0 18px 40px -28px rgba(30, 41, 59, 0.45); }
+#h-parents .ask { position: relative; margin-top: var(--space-3xl); padding: var(--space-lg); border-radius: var(--radius-md); background: var(--color-surface); border: 1.5px solid var(--color-rule-strong); box-shadow: 0 18px 40px -28px rgba(28, 33, 34, 0.45); }
 #h-parents .ask .xz { position: absolute; right: var(--space-md); top: -52px; width: 88px; height: auto; pointer-events: none; transform-origin: 50% 90%; }
 #h-parents .ask-label { padding-right: 96px; }
 #h-parents .ask-label { display: flex; align-items: center; gap: var(--space-xs); font-weight: 700; }

@@ -95,7 +95,6 @@ SHELL_TOP = """<a class="skip" href="#main" data-scroll="#main">跳到主要內�
       <li><a data-role="school">校方專區</a></li>
     </ul></nav>
     <div class="status">
-      <span class="live" aria-hidden="true"><i></i>TPE <span data-clock>--:--:--</span></span>
       <span class="form">同意書 1/15 截止</span>
       <span class="dday" data-dday title="距離營期開始">D-97</span>
     </div>
@@ -204,7 +203,7 @@ def main():
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>{TITLE}</title>
 <meta name="description" content="{DESC}">
-<meta name="theme-color" content="#0F172A">
+<meta name="theme-color" content="#1C2122">
 <link rel="icon" type="image/png" href="{asset("mascot/favicon.png")}">
 <meta property="og:type" content="website">
 <meta property="og:title" content="{TITLE}">

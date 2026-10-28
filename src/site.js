@@ -57,12 +57,21 @@
     for (var r in CC.PAGES) if (CC.PAGES[r] && CC.PAGES[r] === h) return r;
     return null;
   }
+  // 一般區塊依這頁的順序輪流換底色（沙色、灰綠、淡綠），相鄰兩段一定不同色；
+  // 每頁開頭、跑馬燈、合作夥伴帶有自己的底色，不參與輪替。
+  var TONES = ["sand", "paper", "sage"];
   function show(role) {
     var list = PAGES[role];
     sections.forEach(function (sec) {
       var i = list.indexOf(sec.id);
       sec.hidden = i < 0;
       sec.style.order = i;
+    });
+    var k = 0;
+    list.forEach(function (id, i) {
+      var sec = document.getElementById(id);
+      if (!sec || i === 0 || id === "s13" || !sec.classList.contains("sec")) return;
+      sec.dataset.tone = TONES[k++ % TONES.length];
     });
     navLinks.forEach(function (a) {
       if (a.dataset.role === role) a.setAttribute("aria-current", "page");
@@ -106,7 +115,7 @@
       .set(inner, { autoAlpha: 0, y: 0 })
       .set(lens, { clipPath: "circle(0px at " + p.x + "px " + p.y + "px)" })
       .set(rim.parentNode, { autoAlpha: 1 })
-      .set(handle, { stroke: "#0F172A" })
+      .set(handle, { stroke: "#121617" })
       // 1. 放大鏡在點擊處冒出來，接著鏡片一路撐滿整個畫面。
       .to(a, { r: 34, duration: 0.24, ease: "back.out(2.4)", onUpdate: function () { lensAt(p.x, p.y, a.r); lens.style.clipPath = "circle(" + a.r + "px at " + p.x + "px " + p.y + "px)"; } })
       .to(a, { r: open, duration: 0.6, ease: "power3.in", onUpdate: function () { lensAt(p.x, p.y, a.r); lens.style.clipPath = "circle(" + a.r + "px at " + p.x + "px " + p.y + "px)"; } }, "+=0.06")
@@ -120,7 +129,7 @@
       // 3. 畫面中央再開一片鏡片，透過它看到新的頁面。
       .to(inner, { autoAlpha: 0, scale: 0.92, duration: 0.28, ease: "power2.in" }, "+=0.15")
       .set(rim.parentNode, { autoAlpha: 1 })
-      .set(handle, { stroke: "#F58027" })
+      .set(handle, { stroke: "#C28757" })
       .to(b, { r: hole, duration: 0.7, ease: "power3.inOut", onUpdate: function () { lensAt(W / 2, H / 2, b.r); curtain.style.setProperty("--hole", b.r + "px"); } }, "-=0.05")
       .set(curtain, { autoAlpha: 0 })
       .set(inner, { scale: 1 });
@@ -137,10 +146,9 @@
   CC.roleLinks(document.querySelector(".site-head"));
   show(roleFromHash() || "home");
 
-  /* ---------- Live status: Taipei time and camp countdown ---------- */
+  /* ---------- Status: camp countdown and consent deadline ---------- */
   var CAMP = Date.UTC(2027, 0, 27) / 864e5; // 營期第一天（台灣日期）
   var FORM_DUE = Date.UTC(2027, 0, 15) / 864e5;
-  var clock = document.querySelector("[data-clock]");
   var dday = document.querySelector("[data-dday]");
   var formTag = document.querySelector(".status .form");
   function tick() {
@@ -148,7 +156,6 @@
     var tw = new Date(now.getTime() + 8 * 36e5);
     var day = Math.floor(tw.getTime() / 864e5);
     var diff = CAMP - day;
-    if (clock) clock.textContent = tw.toISOString().slice(11, 19);
     if (dday) dday.textContent = diff > 0 ? "D-" + diff : diff > -3 ? "營期 DAY " + (1 - diff) : "第 21 屆圓滿結束";
     if (formTag) formTag.hidden = day > FORM_DUE;
   }

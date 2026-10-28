@@ -1,9 +1,9 @@
 <!-- title: 合作夥伴跑馬燈 | body: is-paper-2 | plugins: -->
 <style>
-#s13 { position: relative; padding: var(--space-2xl) 0; overflow: hidden; background: linear-gradient(120deg, #FDF1D3 0%, #FFE7CC 45%, #E6EEF9 100%); }
+#s13 { position: relative; padding: var(--space-2xl) 0; overflow: hidden; background: linear-gradient(120deg, #F2E8DC 0%, #EBD8C4 45%, #DCE8D6 100%); }
 #s13::before, #s13::after { content: ""; position: absolute; border-radius: 50%; filter: blur(48px); opacity: 0.55; pointer-events: none; }
-#s13::before { width: 340px; height: 340px; left: -80px; top: -140px; background: #F8963F; }
-#s13::after { width: 300px; height: 300px; right: -60px; bottom: -160px; background: #8FB4E8; }
+#s13::before { width: 340px; height: 340px; left: -80px; top: -140px; background: #C28757; }
+#s13::after { width: 300px; height: 300px; right: -60px; bottom: -160px; background: #94BF88; }
 #s13 > .wrap { width: calc(100% - 2 * var(--space-lg)); }
 @media (max-width: 640px) { #s13 > .wrap { width: calc(100% - 2 * var(--space-md)); } }
 #s13 .head { position: relative; z-index: 1; display: flex; flex-wrap: wrap; align-items: end; justify-content: space-between; gap: var(--space-sm) var(--space-lg); }
@@ -18,7 +18,7 @@
   display: flex; align-items: center; gap: var(--space-sm); flex: none; min-height: 84px; padding: var(--space-sm) var(--space-lg);
   border-radius: 18px; border: 1px solid rgba(255, 255, 255, 0.85);
   background: rgba(255, 255, 255, 0.5); -webkit-backdrop-filter: blur(14px) saturate(1.4); backdrop-filter: blur(14px) saturate(1.4);
-  box-shadow: 0 10px 30px rgba(30, 41, 59, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.9);
+  box-shadow: 0 10px 30px rgba(28, 33, 34, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.9);
   color: var(--color-ink); text-decoration: none; transition: background-color var(--dur-med) var(--ease-out), transform var(--dur-med) var(--ease-out);
 }
 #s13 a.chip:hover { background: rgba(255, 255, 255, 0.8); transform: translateY(-3px); }
@@ -30,7 +30,7 @@
 #s13 .chip .mark { display: grid; place-items: center; width: 48px; height: 48px; flex: none; border-radius: 14px; background: linear-gradient(140deg, var(--color-orange-soft), var(--color-orange)); color: var(--color-ink); font: 900 var(--text-xl)/1 var(--font-display); }
 #s13 .chip b { display: block; font-weight: 700; font-size: var(--text-base); white-space: nowrap; }
 #s13 .chip small { display: block; margin-top: 2px; font: 600 var(--text-xs)/1.4 var(--font-mono); letter-spacing: 0.1em; color: var(--color-ink-2); white-space: nowrap; }
-#s13 .chip.is-open { border-style: dashed; border-color: rgba(163, 74, 11, 0.45); background: rgba(255, 244, 230, 0.55); }
+#s13 .chip.is-open { border-style: dashed; border-color: rgba(130, 51, 41, 0.45); background: rgba(242, 232, 220, 0.55); }
 #s13 .chip.is-open .mark { background: transparent; border: 1.5px dashed var(--color-orange-ink); color: var(--color-orange-ink); }
 #s13 .list { position: relative; z-index: 1; display: flex; flex-wrap: wrap; gap: var(--space-sm); margin-top: var(--space-lg); }
 @media (prefers-reduced-motion: reduce) { #s13 .band { -webkit-mask-image: none; mask-image: none; } }

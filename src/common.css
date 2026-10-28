@@ -1,28 +1,30 @@
-/* Hallmark · macrostructure: Manifesto + Stat-Led hybrid (per spec) · tone: editorial-warm · anchor hue: orange #F58027
- * theme: custom (vibe: "detective night, hometown warmth, archive index") · paper #FFFBEB · ink #1E293B · accent #F58027 / #D69E2E
+/* 配色：暖色系的冷調（2026-10 依配色表 #823329 #C28757 #94BF88 #E8EDE8 #1C2122）
+ * 底色三種交替：灰綠 paper #E8EDE8、沙色 paper-2 #F2E8DC、淡綠 sage #DCE8D6（site.js 依各頁區塊順序輪流套用）
+ * 重點色：駝色 --color-orange #C28757（按鈕、色塊）、磚紅 --color-orange-ink #823329（淺底上的強調文字）、鼠尾草綠 --color-yellow #94BF88
+ * 變數名稱沿用舊的 orange / yellow，避免動到各區塊的寫法。
  * display: Noto Serif TC 900 · body: Noto Sans TC · data: IBM Plex Mono
- * Hallmark · pre-emit critique: P4 H5 E4 S5 R4 V4
- * contrast: ink on orange 5.57 · ink on yellow 6.12 · orange on ink 5.57 · orange-ink on paper 5.72 · muted on paper 7.31
+ * contrast: ink on tan 5.35 · ink on sage 7.80 · tan on ink 5.35 · brick on paper 7.21 · ink-2 on paper 6.52
  */
 :root {
-  --color-paper: #FFFBEB;
-  --color-paper-2: #FDF1D3;
-  --color-surface: #FFFFFF;
-  --color-ink: #1E293B;
-  --color-ink-2: #475569;
-  --color-ink-3: #0F172A;
-  --color-on-ink: #FFFBEB;
-  --color-on-ink-muted: #CBD5E1;
-  --color-orange: #F58027;
-  --color-yellow: #D69E2E;
-  --color-orange-ink: #A34A0B;
-  --color-orange-soft: #F8963F;
-  --color-orange-tint: #FFF4E6;
-  --color-rule: rgba(30, 41, 59, 0.16);
-  --color-rule-strong: rgba(30, 41, 59, 0.42);
-  --color-rule-on-ink: rgba(255, 251, 235, 0.18);
-  --color-focus: #1E293B;
-  --color-focus-on-ink: #D69E2E;
+  --color-paper: #E8EDE8;
+  --color-paper-2: #F2E8DC;
+  --color-sage: #DCE8D6;
+  --color-surface: #FAFBF9;
+  --color-ink: #1C2122;
+  --color-ink-2: #4A5553;
+  --color-ink-3: #121617;
+  --color-on-ink: #E8EDE8;
+  --color-on-ink-muted: #B4BEBB;
+  --color-orange: #C28757;
+  --color-yellow: #94BF88;
+  --color-orange-ink: #823329;
+  --color-orange-soft: #D4A37A;
+  --color-orange-tint: #F2E8DC;
+  --color-rule: rgba(28, 33, 34, 0.16);
+  --color-rule-strong: rgba(28, 33, 34, 0.42);
+  --color-rule-on-ink: rgba(232, 237, 232, 0.18);
+  --color-focus: #1C2122;
+  --color-focus-on-ink: #94BF88;
 
   --font-display: "Noto Serif TC", "Songti TC", serif;
   --font-body: "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", system-ui, sans-serif;
@@ -82,6 +84,11 @@ img, svg { display: block; }
 .sec.is-ink { background: var(--color-ink); color: var(--color-on-ink); }
 .sec.is-paper { background: var(--color-paper); }
 .sec.is-paper-2 { background: var(--color-paper-2); }
+.sec.is-sage { background: var(--color-sage); }
+/* 每頁的一般區塊依出現順序輪流換底色（site.js 設 data-tone），相鄰兩段一定不同色 */
+.pages > section.sec[data-tone="sand"] { background: var(--color-paper-2); }
+.pages > section.sec[data-tone="paper"] { background: var(--color-paper); }
+.pages > section.sec[data-tone="sage"] { background: var(--color-sage); }
 .wrap { max-width: 1160px; margin: 0 auto; }
 @media (max-width: 640px) { .sec { padding: var(--space-2xl) var(--space-md); } }
 

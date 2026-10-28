@@ -1,10 +1,10 @@
 <style>
 /* GAME 小按鈕 */
-.game-fab { position: fixed; right: 18px; bottom: 18px; z-index: 120; display: grid; place-items: center; width: 84px; height: 84px; padding: 0; border: 1px solid rgba(255, 255, 255, 0.7); border-radius: 50%; background: rgba(255, 251, 235, 0.55); -webkit-backdrop-filter: blur(14px) saturate(1.5); backdrop-filter: blur(14px) saturate(1.5); box-shadow: 0 12px 30px rgba(15, 23, 42, 0.22), inset 0 1px 0 rgba(255, 255, 255, 0.9); cursor: pointer; }
+.game-fab { position: fixed; right: 18px; bottom: 18px; z-index: 120; display: grid; place-items: center; width: 84px; height: 84px; padding: 0; border: 1px solid rgba(255, 255, 255, 0.7); border-radius: 50%; background: rgba(250, 251, 249, 0.55); -webkit-backdrop-filter: blur(14px) saturate(1.5); backdrop-filter: blur(14px) saturate(1.5); box-shadow: 0 12px 30px rgba(18, 22, 23, 0.22), inset 0 1px 0 rgba(255, 255, 255, 0.9); cursor: pointer; }
 .game-fab img { width: 74px; height: auto; margin-top: -10px; pointer-events: none; }
 .game-fab span { position: absolute; bottom: -8px; left: 50%; transform: translateX(-50%); padding: 2px 10px; border-radius: var(--radius-pill); background: var(--color-ink-3); color: var(--color-yellow); font: 400 12px/1.5 var(--font-round); letter-spacing: 0.12em; }
 .game-fab:focus-visible { outline: 3px solid var(--color-focus); outline-offset: 3px; }
-.game-fab .dot { position: absolute; top: 4px; right: 6px; width: 12px; height: 12px; border-radius: 50%; background: var(--color-orange); box-shadow: 0 0 0 3px rgba(255, 251, 235, 0.9); }
+.game-fab .dot { position: absolute; top: 4px; right: 6px; width: 12px; height: 12px; border-radius: 50%; background: var(--color-orange); box-shadow: 0 0 0 3px rgba(250, 251, 249, 0.9); }
 .game-open .game-fab { visibility: hidden; }
 /* 手機：按鈕縮小；首頁主視覺、家長查詢框在畫面上或正在打字時先收起來（game.js 加 is-tucked） */
 .game-fab { transition: transform var(--dur-med) var(--ease-out), opacity var(--dur-med) var(--ease-out), visibility 0s; }
@@ -18,8 +18,8 @@
 /* 遊戲視窗 */
 .game { position: fixed; inset: 0; z-index: 300; display: grid; overflow: auto; overscroll-behavior: contain; color: var(--color-ink); }
 .game[hidden] { display: none; }
-.game .g-bg { position: fixed; inset: 0; background: radial-gradient(circle at 15% 10%, rgba(248, 150, 63, 0.55), transparent 45%), radial-gradient(circle at 90% 85%, rgba(143, 180, 232, 0.6), transparent 50%), rgba(15, 23, 42, 0.72); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); }
-.game .g-shell { position: relative; width: min(1180px, 100% - 24px); margin: 12px auto; padding: clamp(16px, 2.5vw, 28px); border-radius: 24px; border: 1px solid rgba(255, 255, 255, 0.7); background: rgba(255, 251, 235, 0.86); -webkit-backdrop-filter: blur(20px) saturate(1.4); backdrop-filter: blur(20px) saturate(1.4); box-shadow: 0 30px 80px rgba(0, 0, 0, 0.35); align-self: start; }
+.game .g-bg { position: fixed; inset: 0; background: radial-gradient(circle at 15% 10%, rgba(248, 150, 63, 0.55), transparent 45%), radial-gradient(circle at 90% 85%, rgba(143, 180, 232, 0.6), transparent 50%), rgba(18, 22, 23, 0.72); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); }
+.game .g-shell { position: relative; width: min(1180px, 100% - 24px); margin: 12px auto; padding: clamp(16px, 2.5vw, 28px); border-radius: 24px; border: 1px solid rgba(255, 255, 255, 0.7); background: rgba(250, 251, 249, 0.86); -webkit-backdrop-filter: blur(20px) saturate(1.4); backdrop-filter: blur(20px) saturate(1.4); box-shadow: 0 30px 80px rgba(0, 0, 0, 0.35); align-self: start; }
 .game .g-head { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--space-sm) var(--space-lg); padding-bottom: var(--space-md); border-bottom: 1px solid var(--color-rule); }
 .game .g-k { font: 600 var(--text-xs)/1.5 var(--font-mono); letter-spacing: 0.16em; color: var(--color-orange-ink); }
 .game h2 { font-family: var(--font-display); font-weight: 900; font-size: var(--text-2xl); line-height: 1.25; }
@@ -35,7 +35,7 @@
 
 /* 地圖 */
 .game .g-map { position: relative; display: grid; gap: var(--space-sm); align-content: start; }
-.game .g-zone { position: relative; padding: var(--space-md); border-radius: 18px; border: 1px solid rgba(255, 255, 255, 0.9); background: rgba(255, 255, 255, 0.55); box-shadow: 0 8px 24px rgba(30, 41, 59, 0.06); }
+.game .g-zone { position: relative; padding: var(--space-md); border-radius: 18px; border: 1px solid rgba(255, 255, 255, 0.9); background: rgba(255, 255, 255, 0.55); box-shadow: 0 8px 24px rgba(28, 33, 34, 0.06); }
 .game .g-zone[data-zone="field"] { background: linear-gradient(135deg, rgba(134, 239, 172, 0.35), rgba(255, 255, 255, 0.6)); }
 .game .g-zone[data-zone="canteen"] { background: linear-gradient(135deg, rgba(253, 186, 116, 0.4), rgba(255, 255, 255, 0.6)); }
 .game .g-zone[data-zone="hall"] { background: linear-gradient(135deg, rgba(147, 197, 253, 0.42), rgba(255, 255, 255, 0.6)); }
@@ -54,24 +54,24 @@
 .game .g-spot b { display: inline-block; margin-left: 0.6em; white-space: nowrap; color: var(--color-orange-ink); }
 .game .g-bigbtn { width: 100%; margin-top: var(--space-sm); }
 .game .g-final { margin-top: var(--space-xs); }
-.game .g-avatar { position: absolute; left: 0; top: 0; z-index: 3; width: 74px; height: auto; pointer-events: none; filter: drop-shadow(0 8px 10px rgba(30, 41, 59, 0.25)); }
+.game .g-avatar { position: absolute; left: 0; top: 0; z-index: 3; width: 74px; height: auto; pointer-events: none; filter: drop-shadow(0 8px 10px rgba(28, 33, 34, 0.25)); }
 
 /* 推理板 */
-.game .g-board { position: sticky; top: 12px; align-self: start; padding: var(--space-md); border-radius: 18px; background: linear-gradient(160deg, rgba(30, 41, 59, 0.94), rgba(15, 23, 42, 0.96)); color: var(--color-on-ink); overflow: hidden; }
+.game .g-board { position: sticky; top: 12px; align-self: start; padding: var(--space-md); border-radius: 18px; background: linear-gradient(160deg, rgba(28, 33, 34, 0.94), rgba(18, 22, 23, 0.96)); color: var(--color-on-ink); overflow: hidden; }
 .game .g-board h3 { display: flex; justify-content: space-between; font: 600 var(--text-xs)/1.5 var(--font-mono); letter-spacing: 0.16em; color: var(--color-yellow); }
 .game .g-strings { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1; }
 .game .g-strings path { fill: none; stroke: #EF4444; stroke-width: 2; stroke-linecap: round; filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.5)); }
 .game .g-cols { position: relative; z-index: 2; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-sm); margin-top: var(--space-sm); }
-.game .g-col > p { padding: 6px; border-radius: 10px; text-align: center; font-weight: 900; font-size: var(--text-base); border: 1.5px dashed rgba(255, 251, 235, 0.3); color: var(--color-on-ink-muted); }
+.game .g-col > p { padding: 6px; border-radius: 10px; text-align: center; font-weight: 900; font-size: var(--text-base); border: 1.5px dashed rgba(250, 251, 249, 0.3); color: var(--color-on-ink-muted); }
 .game .g-col > p.on { border: 0; background: var(--color-yellow); color: var(--color-ink); }
 .game .g-grp { margin-top: var(--space-sm); }
-.game .g-grp .lab { display: block; margin: 0 auto 6px; width: fit-content; padding: 2px 10px; border-radius: var(--radius-pill); font-size: var(--text-sm); font-weight: 700; background: rgba(255, 251, 235, 0.1); color: var(--color-on-ink-muted); }
+.game .g-grp .lab { display: block; margin: 0 auto 6px; width: fit-content; padding: 2px 10px; border-radius: var(--radius-pill); font-size: var(--text-sm); font-weight: 700; background: rgba(250, 251, 249, 0.1); color: var(--color-on-ink-muted); }
 .game .g-grp .lab.on { background: var(--color-orange); color: var(--color-ink); }
 .game .g-slots { display: grid; gap: 5px; }
-.game .g-slot { display: grid; place-items: center; min-height: 44px; padding: 2px 4px; border-radius: 6px; border: 1px dashed rgba(255, 251, 235, 0.25); font-size: 14px; font-weight: 700; line-height: 1.2; text-align: center; color: rgba(255, 251, 235, 0.35); }
-.game .g-slot.on { border: 0; background: #FFFBEB; color: var(--color-ink); box-shadow: 0 2px 0 rgba(0, 0, 0, 0.25); transform: rotate(-1.5deg); }
+.game .g-slot { display: grid; place-items: center; min-height: 44px; padding: 2px 4px; border-radius: 6px; border: 1px dashed rgba(250, 251, 249, 0.25); font-size: 14px; font-weight: 700; line-height: 1.2; text-align: center; color: rgba(250, 251, 249, 0.35); }
+.game .g-slot.on { border: 0; background: #E8EDE8; color: var(--color-ink); box-shadow: 0 2px 0 rgba(0, 0, 0, 0.25); transform: rotate(-1.5deg); }
 .game .g-slot.on:nth-child(2) { transform: rotate(1.5deg); }
-.game .g-truth { position: relative; z-index: 2; margin-top: var(--space-md); padding: var(--space-sm); border-radius: 12px; text-align: center; font-family: var(--font-display); font-weight: 900; font-size: var(--text-xl); border: 1.5px dashed rgba(255, 251, 235, 0.3); color: var(--color-on-ink-muted); }
+.game .g-truth { position: relative; z-index: 2; margin-top: var(--space-md); padding: var(--space-sm); border-radius: 12px; text-align: center; font-family: var(--font-display); font-weight: 900; font-size: var(--text-xl); border: 1.5px dashed rgba(250, 251, 249, 0.3); color: var(--color-on-ink-muted); }
 .game .g-truth.on { border: 0; background: linear-gradient(90deg, var(--color-orange), var(--color-yellow)); color: var(--color-ink); }
 
 /* 注音：每個中文字右邊一欄直排注音，聲調在最後一個符號的右上角，輕聲點在最上面 */
@@ -83,9 +83,9 @@
 .game .zy-t svg { display: block; width: 100%; height: 100%; fill: none; stroke: currentColor; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
 
 /* 題目卡 */
-.game .g-card { position: fixed; inset: 0; z-index: 5; display: grid; place-items: center; padding: 16px; background: rgba(15, 23, 42, 0.45); }
+.game .g-card { position: fixed; inset: 0; z-index: 5; display: grid; place-items: center; padding: 16px; background: rgba(18, 22, 23, 0.45); }
 .game .g-card[hidden] { display: none; }
-.game .g-panel { position: relative; width: min(560px, 100%); max-height: calc(100vh - 32px); overflow: auto; padding: var(--space-xl) var(--space-lg) var(--space-lg); border-radius: 22px; border: 1px solid rgba(255, 255, 255, 0.8); background: rgba(255, 251, 235, 0.95); -webkit-backdrop-filter: blur(16px); backdrop-filter: blur(16px); box-shadow: 0 24px 60px rgba(0, 0, 0, 0.35); }
+.game .g-panel { position: relative; width: min(560px, 100%); max-height: calc(100vh - 32px); overflow: auto; padding: var(--space-xl) var(--space-lg) var(--space-lg); border-radius: 22px; border: 1px solid rgba(255, 255, 255, 0.8); background: rgba(250, 251, 249, 0.95); -webkit-backdrop-filter: blur(16px); backdrop-filter: blur(16px); box-shadow: 0 24px 60px rgba(0, 0, 0, 0.35); }
 .game .g-panel .xz { display: block; width: 120px; height: auto; margin: -8px auto var(--space-xs); }
 .game .g-step { font: 600 var(--text-xs)/1.5 var(--font-mono); letter-spacing: 0.14em; color: var(--color-orange-ink); text-align: center; }
 .game .g-q { margin-top: var(--space-xs); font-weight: 700; font-size: 1.25rem; line-height: 1.7; text-align: center; }
@@ -116,7 +116,7 @@
   .game .g-slot { padding: 2px 0; font-size: 13px; }
 }
 @media (prefers-reduced-transparency: reduce), (prefers-contrast: more) {
-  .game .g-bg { background: rgba(15, 23, 42, 0.94); -webkit-backdrop-filter: none; backdrop-filter: none; }
+  .game .g-bg { background: rgba(18, 22, 23, 0.94); -webkit-backdrop-filter: none; backdrop-filter: none; }
   .game .g-shell, .game .g-panel { background: var(--color-paper); -webkit-backdrop-filter: none; backdrop-filter: none; }
 }
 </style>

@@ -10,7 +10,7 @@
 #s2 .to-contact:focus-visible { outline: 3px solid var(--color-focus); outline-offset: 2px; }
 #s2 .values { display: grid; gap: var(--space-lg); }
 /* 三張核心價值卡：左上角一個標籤 */
-#s2 .value { position: relative; margin-top: 14px; padding: var(--space-lg) var(--space-lg) var(--space-md); border: 1px solid var(--color-rule); border-radius: 0 14px 14px 14px; background: linear-gradient(180deg, #FFFFFF, #FFFDF5); box-shadow: 0 1px 0 rgba(30, 41, 59, 0.04), 0 14px 30px -18px rgba(30, 41, 59, 0.35); }
+#s2 .value { position: relative; margin-top: 14px; padding: var(--space-lg) var(--space-lg) var(--space-md); border: 1px solid var(--color-rule); border-radius: 0 14px 14px 14px; background: linear-gradient(180deg, #FFFFFF, #F6F8F5); box-shadow: 0 1px 0 rgba(28, 33, 34, 0.04), 0 14px 30px -18px rgba(28, 33, 34, 0.35); }
 #s2 .value::before { content: ""; position: absolute; left: 0; right: 0; top: 0; height: 4px; border-radius: 0 14px 0 0; background: var(--color-orange); }
 #s2 .value:nth-child(2) { margin-left: 6%; }
 #s2 .value:nth-child(3) { margin-left: 12%; }
@@ -20,7 +20,7 @@
 /* 桌機：三張卡疊成一疊，捲動時一張張蓋上來（由下面的程式加上 is-stack） */
 #s2 .values.is-stack { position: relative; display: block; }
 #s2 .values.is-stack .value { position: absolute; left: 0; right: 0; top: 0; margin: 14px 0 0; transform-origin: 50% 0; }
-#s2 .values.is-stack .value:not(:last-child) { background: linear-gradient(180deg, #FFFDF5, #FBF3DD); }
+#s2 .values.is-stack .value:not(:last-child) { background: linear-gradient(180deg, #F6F8F5, #E9EEE8); }
 @media (max-width: 860px) {
   #s2 .grid { grid-template-columns: minmax(0, 1fr); gap: var(--space-2xl); }
   #s2 .value:nth-child(n) { margin-left: 0; }

@@ -32,9 +32,9 @@
 #s3 .trail { position: absolute; left: 0; top: 0; width: 46px; height: 100%; overflow: visible; pointer-events: none; }
 #s3 .trail .base { fill: none; stroke: var(--color-rule-strong); stroke-width: 2; stroke-dasharray: 3 7; stroke-linecap: round; }
 #s3 .trail .draw { fill: none; stroke: var(--color-orange); stroke-width: 3; stroke-linecap: round; }
-#s3 .trail circle { fill: var(--color-paper-2); stroke: var(--color-rule-strong); stroke-width: 2; transition: fill var(--dur-fast) var(--ease-out), stroke var(--dur-fast) var(--ease-out); }
+#s3 .trail circle { fill: var(--color-surface); stroke: var(--color-rule-strong); stroke-width: 2; transition: fill var(--dur-fast) var(--ease-out), stroke var(--dur-fast) var(--ease-out); }
 #s3 .trail circle.on { fill: var(--color-orange); stroke: var(--color-orange-ink); }
-#s3 .walker { position: absolute; left: 0; top: 0; z-index: 2; width: 46px; height: auto; pointer-events: none; filter: drop-shadow(0 4px 4px rgba(30, 41, 59, 0.2)); }
+#s3 .walker { position: absolute; left: 0; top: 0; z-index: 2; width: 46px; height: auto; pointer-events: none; filter: drop-shadow(0 4px 4px rgba(28, 33, 34, 0.2)); }
 /* 第三天走到最後一站：小章歡呼，最後一列下方冒出對話框 */
 #s3 .cheer { position: absolute; left: 40px; top: 0; z-index: 2; padding: 4px 14px; border: 1.5px solid var(--color-ink); border-radius: 14px 14px 14px 4px; background: var(--color-surface); color: var(--color-ink); font: 400 var(--text-sm)/1.5 var(--font-round); white-space: nowrap; pointer-events: none; opacity: 0; transform: translateY(6px); transition: opacity var(--dur-med) var(--ease-out), transform var(--dur-med) var(--ease-out); }
 #s3 .cheer.is-on { opacity: 1; transform: none; }
