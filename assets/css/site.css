@@ -45,7 +45,7 @@ html.lenis, html.lenis body { height: auto; }
 .curtain { position: fixed; inset: 0; z-index: 200; overflow: hidden; visibility: hidden; pointer-events: none; color: var(--color-on-ink); --hx: 50%; --hy: 50%; --hole: 0px; }
 .curtain .lens { position: absolute; inset: 0; background: radial-gradient(circle at 50% 40%, #1E293B, var(--color-ink-3) 70%); clip-path: circle(0px at 50% 50%); -webkit-mask: radial-gradient(circle at var(--hx) var(--hy), transparent var(--hole), #000 calc(var(--hole) + 1px)); mask: radial-gradient(circle at var(--hx) var(--hy), transparent var(--hole), #000 calc(var(--hole) + 1px)); }
 .curtain .in { position: absolute; inset: 0; display: grid; place-content: center; justify-items: center; text-align: center; padding: 0 var(--space-lg); }
-.curtain .sil { width: clamp(84px, 12vw, 128px); fill: #0B0E0F; filter: drop-shadow(0 0 18px rgba(194, 135, 87, 0.35)); margin-bottom: var(--space-md); }
+.curtain .sil { width: clamp(84px, 12vw, 128px); fill: #0B0E0F; filter: drop-shadow(0 0 18px rgba(245, 128, 39, 0.35)); margin-bottom: var(--space-md); }
 .curtain .sil .eye { fill: #E8EDE8; }
 .curtain .k { font: 600 var(--text-xs)/1.5 var(--font-mono); letter-spacing: 0.2em; color: var(--color-yellow); }
 .curtain .t { margin-top: var(--space-xs); font-family: var(--font-display); font-weight: 900; font-size: var(--text-display); line-height: 1.1; }
@@ -98,7 +98,7 @@ html.lenis, html.lenis body { height: auto; }
 /* 手機上 GAME 按鈕固定在右下角，頁尾多留一段空間，最後幾行連結才不會被蓋住 */
 @media (max-width: 640px) { .site-foot { padding-bottom: 96px; } }
 /* 頁尾上方的線索貼紙區（只有桌機、可以動畫時由 site.js 打開） */
-.site-foot .foot-play { display: none; position: relative; height: 240px; margin: calc(var(--space-2xl) * -1) calc(var(--space-lg) * -1) var(--space-xl); overflow: hidden; border-bottom: 1px solid var(--color-rule-on-ink); background: radial-gradient(ellipse at 50% 120%, rgba(194, 135, 87, 0.16), transparent 60%); }
+.site-foot .foot-play { display: none; position: relative; height: 240px; margin: calc(var(--space-2xl) * -1) calc(var(--space-lg) * -1) var(--space-xl); overflow: hidden; border-bottom: 1px solid var(--color-rule-on-ink); background: radial-gradient(ellipse at 50% 120%, rgba(245, 128, 39, 0.16), transparent 60%); }
 .has-play .site-foot .foot-play { display: block; }
 .site-foot .foot-play p { position: absolute; left: var(--space-lg); top: var(--space-md); font: 600 var(--text-xs)/1.5 var(--font-mono); letter-spacing: 0.16em; color: var(--color-on-ink-muted); }
 .site-foot .clue-tag { position: absolute; left: 0; top: 0; padding: 9px 18px; border-radius: var(--radius-pill); background: var(--color-paper); color: var(--color-ink); font: 900 16px/1.2 var(--font-display); white-space: nowrap; user-select: none; box-shadow: 0 6px 14px rgba(0, 0, 0, 0.35), inset 0 -2px 0 rgba(18, 22, 23, 0.12); will-change: transform; }

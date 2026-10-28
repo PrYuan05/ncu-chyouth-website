@@ -1,6 +1,6 @@
 /* 配色：暖色系的冷調（2026-10 依配色表 #823329 #C28757 #94BF88 #E8EDE8 #1C2122）
  * 底色三種交替：灰綠 paper #E8EDE8、沙色 paper-2 #F2E8DC、淡綠 sage #DCE8D6（site.js 依各頁區塊順序輪流套用）
- * 重點色：駝色 --color-orange #C28757（按鈕、色塊）、磚紅 --color-orange-ink #823329（淺底上的強調文字）、鼠尾草綠 --color-yellow #94BF88
+ * 重點色：亮橘 --color-orange #F58027（按鈕、色塊）、磚紅 --color-orange-ink #823329（淺底上的強調文字）、鼠尾草綠 --color-yellow #94BF88
  * 變數名稱沿用舊的 orange / yellow，避免動到各區塊的寫法。
  * display: Noto Serif TC 900 · body: Noto Sans TC · data: IBM Plex Mono
  * contrast: ink on tan 5.35 · ink on sage 7.80 · tan on ink 5.35 · brick on paper 7.21 · ink-2 on paper 6.52
@@ -15,10 +15,10 @@
   --color-ink-3: #121617;
   --color-on-ink: #E8EDE8;
   --color-on-ink-muted: #B4BEBB;
-  --color-orange: #C28757;
+  --color-orange: #F58027;
   --color-yellow: #94BF88;
   --color-orange-ink: #823329;
-  --color-orange-soft: #D4A37A;
+  --color-orange-soft: #F8963F;
   --color-orange-tint: #F2E8DC;
   --color-rule: rgba(28, 33, 34, 0.16);
   --color-rule-strong: rgba(28, 33, 34, 0.42);

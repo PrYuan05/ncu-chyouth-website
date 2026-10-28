@@ -129,7 +129,7 @@
       // 3. 畫面中央再開一片鏡片，透過它看到新的頁面。
       .to(inner, { autoAlpha: 0, scale: 0.92, duration: 0.28, ease: "power2.in" }, "+=0.15")
       .set(rim.parentNode, { autoAlpha: 1 })
-      .set(handle, { stroke: "#C28757" })
+      .set(handle, { stroke: "#F58027" })
       .to(b, { r: hole, duration: 0.7, ease: "power3.inOut", onUpdate: function () { lensAt(W / 2, H / 2, b.r); curtain.style.setProperty("--hole", b.r + "px"); } }, "-=0.05")
       .set(curtain, { autoAlpha: 0 })
       .set(inner, { scale: 1 });
