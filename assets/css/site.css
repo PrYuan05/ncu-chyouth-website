@@ -140,3 +140,31 @@ html.lenis, html.lenis body { height: auto; }
 @media (prefers-reduced-transparency: reduce), (prefers-contrast: more) {
   .site-head, .progress-top .ptag { background: var(--color-ink-3); -webkit-backdrop-filter: none; backdrop-filter: none; }
 }
+
+/* ---------- Taste Layout 8：不對稱版面（只在桌機；手機一律單欄） ----------
+ * 由 common.js 的 CC.TASTE.layout 決定，8 以上 build.py 會在 <html> 加 l-bold。 */
+@media (min-width: 1024px) {
+  /* 區塊左右交錯留白：灰綠底的內容往右推，淡藍底的往左收 */
+  html.l-bold .pages > section.sec[data-tone="paper"] > .wrap { padding-left: clamp(0px, 13vw, 210px); }
+  html.l-bold .pages > section.sec[data-tone="sage"] > .wrap { padding-right: clamp(0px, 9vw, 150px); }
+  html.l-bold .sec-title { font-size: calc(var(--text-3xl, 2.5rem) * 1.18); letter-spacing: -0.01em; }
+  /* 主視覺：標題更大、左右比例拉開 */
+  html.l-bold #s1 .hero-grid { grid-template-columns: minmax(0, 2fr) minmax(0, 1fr); }
+  html.l-bold #s1 .t1 { font-size: calc(var(--text-display) * 1.2); }
+  /* 身分入口：三列往右階梯錯開 */
+  html.l-bold #s11 .role:nth-child(2) { margin-left: 7%; }
+  html.l-bold #s11 .role:nth-child(3) { margin-left: 14%; }
+  /* 歷屆數據：第一格加寬加大 */
+  html.l-bold .pages > #s6.sec > .wrap { padding-left: 0; padding-right: 0; }
+  html.l-bold #s6 .stats { grid-template-columns: minmax(0, 1.4fr) repeat(3, minmax(0, 1fr)); }
+  html.l-bold #s6 .stat:first-child dd { font-size: calc(var(--text-stat) * 1.35); }
+  /* 家長區、企業區、聯絡區：兩欄改成一寬一窄，窄欄往下錯開 */
+  html.l-bold #s9 .two { grid-template-columns: minmax(0, 2fr) minmax(0, 1fr); align-items: start; }
+  html.l-bold #s9 .two > :last-child { margin-top: var(--space-3xl); }
+  html.l-bold #s8 .cols { grid-template-columns: minmax(0, 3fr) minmax(0, 2fr); align-items: start; }
+  html.l-bold #s8 .cols > :last-child { margin-top: var(--space-3xl); }
+  html.l-bold #s10 .orgs { grid-template-columns: minmax(0, 2fr) minmax(0, 1fr); }
+  html.l-bold #s10 .people { grid-template-columns: minmax(0, 3fr) minmax(0, 2fr); }
+  /* 安全區：三道防線往右縮排 */
+  html.l-bold #s5 .lines { margin-left: 22%; }
+}
