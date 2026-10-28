@@ -23,14 +23,15 @@
 #s7 th, #s7 td { text-align: left; vertical-align: top; padding: var(--space-md) var(--space-sm); border-bottom: 1px solid var(--color-rule); line-height: 1.7; }
 #s7 thead th { font-size: var(--text-xs); font-weight: 700; color: var(--color-ink-2); border-bottom: 2px solid var(--color-ink); white-space: nowrap; }
 #s7 .r { text-align: right; font-family: var(--font-mono); font-variant-numeric: tabular-nums; white-space: nowrap; }
-#s7 tbody th { font-weight: 700; min-width: 9em; }
+#s7 tbody th, #s7 tfoot th { font-weight: 700; white-space: nowrap; }
+#s7 .kind { white-space: nowrap; }
 #s7 tbody th small { display: block; font-weight: 400; color: var(--color-ink-2); }
 #s7 .sponsor td, #s7 .sponsor th { background: var(--color-orange-tint); border-top: 2px dashed var(--color-orange); border-bottom: 2px dashed var(--color-orange); }
 #s7 .sponsor .pill { display: table; margin-bottom: var(--space-xs); }
 #s7 tfoot th, #s7 tfoot td { font-weight: 700; border-bottom: 0; border-top: 2px solid var(--color-ink); }
 #s7 .kind { color: var(--color-ink-2); }
 
-@media (max-width: 760px) {
+@media (max-width: 900px) {
   #s7 .panel { padding: var(--space-lg); }
   #s7 .legend { grid-template-columns: minmax(0, 1fr); gap: var(--space-xs); }
   #s7 table, #s7 caption, #s7 tbody, #s7 tfoot, #s7 tr, #s7 th, #s7 td { display: block; }
