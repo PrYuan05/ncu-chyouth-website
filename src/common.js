@@ -43,6 +43,10 @@ window.CC = window.CC || {
   sprite: function (pose) { return CC.asset("mascot/xiaozhang-" + (pose || "wave") + ".svg"); },
   // 平面小章：把頁面裡的 <svg class="xz-svg"> 交給 mascot.js 讓它動起來。
   mascot: function (svg, opts) { return svg && window.CCMascot ? window.CCMascot.mount(svg, opts) : null; },
+  // Taste 旋鈕（1–10）：layout 版面變化、motion 動態強度、density 資訊密度。
+  // motion 7 以上才開重動態（釘住區塊捲動、視差、捲動速度連動、常駐漂浮）；改回 8 就是原本的效果。
+  TASTE: { layout: 5, motion: 4, density: 5 },
+  rich: function () { return CC.TASTE.motion >= 7; },
   // Runs fn only when motion is allowed; returns true if gsap is present.
   motion: function (fn) {
     if (!window.gsap) return false;

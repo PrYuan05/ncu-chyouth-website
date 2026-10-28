@@ -99,7 +99,7 @@
       gsap.to(cards, { autoAlpha: 1, y: 0, duration: 0.6, stagger: 0.1, ease: "power3.out", clearProps: "transform" });
     }, 0.15);
   });
-  if (!window.gsap || !window.ScrollTrigger) return;
+  if (!window.gsap || !window.ScrollTrigger || !CC.rich()) return;
   var mm = gsap.matchMedia();
   mm.add("(min-width: 1024px) and (prefers-reduced-motion: no-preference)", function () {
     root.classList.add("is-h");

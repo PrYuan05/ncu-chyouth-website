@@ -57,7 +57,7 @@
     for (var r in CC.PAGES) if (CC.PAGES[r] && CC.PAGES[r] === h) return r;
     return null;
   }
-  // 一般區塊依這頁的順序輪流換底色（沙色、灰綠、淡綠），相鄰兩段一定不同色；
+  // 一般區塊依這頁的順序輪流換底色（沙色、灰綠、淡藍），相鄰兩段一定不同色；
   // 每頁開頭、跑馬燈、合作夥伴帶有自己的底色，不參與輪替。
   var TONES = ["sand", "paper", "sage"];
   function show(role) {

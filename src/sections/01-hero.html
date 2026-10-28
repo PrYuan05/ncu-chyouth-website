@@ -109,10 +109,12 @@
     CC.intro(function () { tl.play(); });
 
     // 往下捲時小章往上游走、慢慢淡出。
-    var svg = root.querySelector(".stage .xz-svg");
-    var out = gsap.timeline({ scrollTrigger: { trigger: root, start: "top top", end: "bottom top", scrub: 0.6 } });
-    out.to(svg, { yPercent: -45, rotation: -12, scale: 0.82, ease: "none", duration: 1 }, 0)
-      .to(svg, { autoAlpha: 0, ease: "none", duration: 0.4 }, 0.6);
+    if (CC.rich()) {
+      var svg = root.querySelector(".stage .xz-svg");
+      var out = gsap.timeline({ scrollTrigger: { trigger: root, start: "top top", end: "bottom top", scrub: 0.6 } });
+      out.to(svg, { yPercent: -45, rotation: -12, scale: 0.82, ease: "none", duration: 1 }, 0)
+        .to(svg, { autoAlpha: 0, ease: "none", duration: 0.4 }, 0.6);
+    }
 
     // 手電筒（只有滑鼠才有）：光圈跟著滑鼠，照出藏起來的線索字。
     var clues = root.querySelector(".clues");

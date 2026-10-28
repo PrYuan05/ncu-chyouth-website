@@ -199,7 +199,7 @@
   }
 
   /* 桌機：相簿釘在畫面上，往下捲動時照片往左滑（手機維持左右拖曳） */
-  if (window.gsap && window.ScrollTrigger && figs.length > 1) {
+  if (window.gsap && window.ScrollTrigger && figs.length > 1 && CC.rich()) {
     var album = root.querySelector(".album");
     gsap.matchMedia().add("(min-width: 1024px) and (prefers-reduced-motion: no-preference)", function () {
       if (drag) drag.disable();

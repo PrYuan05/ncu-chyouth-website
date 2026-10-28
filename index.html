@@ -463,10 +463,12 @@
     CC.intro(function () { tl.play(); });
 
     // 往下捲時小章往上游走、慢慢淡出。
-    var svg = root.querySelector(".stage .xz-svg");
-    var out = gsap.timeline({ scrollTrigger: { trigger: root, start: "top top", end: "bottom top", scrub: 0.6 } });
-    out.to(svg, { yPercent: -45, rotation: -12, scale: 0.82, ease: "none", duration: 1 }, 0)
-      .to(svg, { autoAlpha: 0, ease: "none", duration: 0.4 }, 0.6);
+    if (CC.rich()) {
+      var svg = root.querySelector(".stage .xz-svg");
+      var out = gsap.timeline({ scrollTrigger: { trigger: root, start: "top top", end: "bottom top", scrub: 0.6 } });
+      out.to(svg, { yPercent: -45, rotation: -12, scale: 0.82, ease: "none", duration: 1 }, 0)
+        .to(svg, { autoAlpha: 0, ease: "none", duration: 0.4 }, 0.6);
+    }
 
     // 手電筒（只有滑鼠才有）：光圈跟著滑鼠，照出藏起來的線索字。
     var clues = root.querySelector(".clues");
@@ -585,6 +587,11 @@
   var mm = gsap.matchMedia();
   mm.add({ desk: "(min-width: 1024px)", motion: "(prefers-reduced-motion: no-preference)" }, function (ctx) {
     if (!ctx.conditions.motion) return;
+    if (!CC.rich()) {
+      gsap.from(lead, { autoAlpha: 0, y: 16, duration: 0.6, ease: "power3.out", scrollTrigger: { trigger: lead, start: "top 85%", once: true } });
+      gsap.from(items, { autoAlpha: 0, y: 28, duration: 0.6, stagger: 0.12, ease: "power3.out", scrollTrigger: { trigger: list, start: "top 82%", once: true } });
+      return;
+    }
     var chars = fillChars();
     if (!ctx.conditions.desk) {
       gsap.fromTo(chars, { opacity: 0.16 }, { opacity: 1, stagger: 0.05, ease: "none", scrollTrigger: { trigger: lead, start: "top 85%", end: "bottom 55%", scrub: 0.6 } });
@@ -714,9 +721,10 @@
     var skewTo = gsap.quickSetter(track, "skewX", "deg");
     // 捲得越快字越斜，停下來慢慢回正。
     function lean() { skewAim *= 0.9; skew += (skewAim - skew) * 0.2; skewTo(skew); }
-    gsap.ticker.add(lean);
+    var rich = CC.rich();
+    if (rich) gsap.ticker.add(lean);
     // Scrolling speeds the band up and flips its direction with the scroll.
-    var st = window.ScrollTrigger && ScrollTrigger.create({
+    var st = rich && window.ScrollTrigger && ScrollTrigger.create({
       trigger: root, start: "top bottom", end: "bottom top",
       onUpdate: function (self) {
         dir = self.direction;
@@ -733,10 +741,10 @@
 })();
 </script>
 <style>
-#s13 { position: relative; padding: var(--space-2xl) 0; overflow: hidden; background: linear-gradient(120deg, #F2E8DC 0%, #EBD8C4 45%, #DCE8D6 100%); }
+#s13 { position: relative; padding: var(--space-2xl) 0; overflow: hidden; background: linear-gradient(120deg, #F2E8DC 0%, #EBD8C4 45%, #E6EEF9 100%); }
 #s13::before, #s13::after { content: ""; position: absolute; border-radius: 50%; filter: blur(48px); opacity: 0.55; pointer-events: none; }
 #s13::before { width: 340px; height: 340px; left: -80px; top: -140px; background: #F8963F; }
-#s13::after { width: 300px; height: 300px; right: -60px; bottom: -160px; background: #94BF88; }
+#s13::after { width: 300px; height: 300px; right: -60px; bottom: -160px; background: #8FB4E8; }
 #s13 > .wrap { width: calc(100% - 2 * var(--space-lg)); }
 @media (max-width: 640px) { #s13 > .wrap { width: calc(100% - 2 * var(--space-md)); } }
 #s13 .head { position: relative; z-index: 1; display: flex; flex-wrap: wrap; align-items: end; justify-content: space-between; gap: var(--space-sm) var(--space-lg); }
@@ -1199,7 +1207,7 @@
       gsap.to(cards, { autoAlpha: 1, y: 0, duration: 0.6, stagger: 0.1, ease: "power3.out", clearProps: "transform" });
     }, 0.15);
   });
-  if (!window.gsap || !window.ScrollTrigger) return;
+  if (!window.gsap || !window.ScrollTrigger || !CC.rich()) return;
   var mm = gsap.matchMedia();
   mm.add("(min-width: 1024px) and (prefers-reduced-motion: no-preference)", function () {
     root.classList.add("is-h");
@@ -1522,7 +1530,7 @@
   }
 
   /* 桌機：相簿釘在畫面上，往下捲動時照片往左滑（手機維持左右拖曳） */
-  if (window.gsap && window.ScrollTrigger && figs.length > 1) {
+  if (window.gsap && window.ScrollTrigger && figs.length > 1 && CC.rich()) {
     var album = root.querySelector(".album");
     gsap.matchMedia().add("(min-width: 1024px) and (prefers-reduced-motion: no-preference)", function () {
       if (drag) drag.disable();

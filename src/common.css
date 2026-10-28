@@ -1,14 +1,14 @@
-/* 配色：暖色系的冷調（2026-10 依配色表 #823329 #C28757 #94BF88 #E8EDE8 #1C2122）
- * 底色三種交替：灰綠 paper #E8EDE8、沙色 paper-2 #F2E8DC、淡綠 sage #DCE8D6（site.js 依各頁區塊順序輪流套用）
- * 重點色：亮橘 --color-orange #F58027（按鈕、色塊）、磚紅 --color-orange-ink #823329（淺底上的強調文字）、鼠尾草綠 --color-yellow #94BF88
+/* 配色：暖色系的冷調（2026-10 依配色表 #823329 #E8EDE8 #1C2122，加回原本的亮橘 #F58027 與小章帽子的天空藍 #8FB4E8）
+ * 底色三種交替：灰綠 paper #E8EDE8、沙色 paper-2 #F2E8DC、淡藍 sage #E6EEF9（變數名沿用 sage）（site.js 依各頁區塊順序輪流套用）
+ * 重點色：亮橘 --color-orange #F58027（按鈕、色塊）、磚紅 --color-orange-ink #823329（淺底上的強調文字）、天空藍 --color-yellow #8FB4E8
  * 變數名稱沿用舊的 orange / yellow，避免動到各區塊的寫法。
  * display: Noto Serif TC 900 · body: Noto Sans TC · data: IBM Plex Mono
- * contrast: ink on tan 5.35 · ink on sage 7.80 · tan on ink 5.35 · brick on paper 7.21 · ink-2 on paper 6.52
+ * contrast: ink on orange 6.20 · ink on sky 7.64 · orange on ink 6.94 · brick on paper 7.21 · ink-2 on paper 6.52
  */
 :root {
   --color-paper: #E8EDE8;
   --color-paper-2: #F2E8DC;
-  --color-sage: #DCE8D6;
+  --color-sage: #E6EEF9;
   --color-surface: #FAFBF9;
   --color-ink: #1C2122;
   --color-ink-2: #4A5553;
@@ -16,7 +16,7 @@
   --color-on-ink: #E8EDE8;
   --color-on-ink-muted: #B4BEBB;
   --color-orange: #F58027;
-  --color-yellow: #94BF88;
+  --color-yellow: #8FB4E8;
   --color-orange-ink: #823329;
   --color-orange-soft: #F8963F;
   --color-orange-tint: #F2E8DC;
@@ -24,7 +24,7 @@
   --color-rule-strong: rgba(28, 33, 34, 0.42);
   --color-rule-on-ink: rgba(232, 237, 232, 0.18);
   --color-focus: #1C2122;
-  --color-focus-on-ink: #94BF88;
+  --color-focus-on-ink: #8FB4E8;
 
   --font-display: "Noto Serif TC", "Songti TC", serif;
   --font-body: "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", system-ui, sans-serif;
