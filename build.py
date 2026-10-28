@@ -196,9 +196,10 @@ def main():
                 '<script src="assets/js/game-data.js"></script>\n<script src="assets/js/game-zhuyin.js"></script>\n'
                 '<script src="assets/js/game.js"></script>')
 
-    # Taste 旋鈕在 common.js 的 CC.TASTE；layout 8 以上在 <html> 加 l-bold，桌機改用不對稱版面。
-    m = re.search(r"TASTE: \{ layout: (\d+)", js_common)
-    html_class = ' class="l-bold"' if m and int(m.group(1)) >= 8 else ""
+    # Taste 旋鈕在 common.js 的 CC.TASTE；layout 8 以上在 <html> 加 l-bold（桌機不對稱版面），density 6 以上加 d-dense。
+    m = re.search(r"TASTE: \{ layout: (\d+), motion: (\d+), density: (\d+)", js_common)
+    classes = [c for c, on in (("l-bold", m and int(m.group(1)) >= 8), ("d-dense", m and int(m.group(3)) >= 6)) if on]
+    html_class = f' class="{" ".join(classes)}"' if classes else ""
     page = f"""<!doctype html>
 <html lang="zh-Hant"{html_class}>
 <head>

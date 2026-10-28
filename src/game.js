@@ -495,7 +495,7 @@
   });
   window.addEventListener("resize", function () { if (!root.hidden) drawStrings(); });
   if (st.seen) { var d = fab.querySelector(".dot"); if (d) d.remove(); }
-  if (gs && window.CC && CC.rich && CC.rich()) gsap.to(fab.querySelector("img"), { y: -5, duration: 1.4, yoyo: true, repeat: -1, ease: "sine.inOut" });
+  if (gs && window.CC && CC.motionAt && CC.motionAt(6)) gsap.to(fab.querySelector("img"), { y: -5, duration: 1.4, yoyo: true, repeat: -1, ease: "sine.inOut" });
 
   // 手機上按鈕不要蓋住內容：首頁主視覺或家長查詢框在畫面上、或正在輸入文字時，先把按鈕收到畫面下方。
   var small = window.matchMedia("(max-width: 640px)");

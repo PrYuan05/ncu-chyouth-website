@@ -168,3 +168,7 @@ html.lenis, html.lenis body { height: auto; }
   /* 安全區：三道防線往右縮排 */
   html.l-bold #s5 .lines { margin-left: 22%; }
 }
+
+/* ---------- Taste Density 6：區塊上下間距收緊（72→60px，手機 48→40px） ---------- */
+html.d-dense .sec { padding-top: 60px; padding-bottom: 60px; }
+@media (max-width: 640px) { html.d-dense .sec { padding-top: 40px; padding-bottom: 40px; } }

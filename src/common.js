@@ -45,9 +45,15 @@ window.CC = window.CC || {
   mascot: function (svg, opts) { return svg && window.CCMascot ? window.CCMascot.mount(svg, opts) : null; },
   // Taste 旋鈕（1–10）：layout 版面變化、motion 動態強度、density 資訊密度。
   // layout 8 以上由 build.py 在 <html> 加 class="l-bold"，套用 site.css 最後一段的不對稱版面（只有桌機）。
-  // motion 7 以上才開重動態（釘住區塊捲動、視差、捲動速度連動、常駐漂浮）；改回 8 就是原本的效果。
-  TASTE: { layout: 8, motion: 8, density: 5 },
-  rich: function () { return CC.TASTE.motion >= 7; },
+  // density 6 以上加 class="d-dense"，區塊上下間距收緊一點。
+  // motion 分級：6 以上有常駐小動態（遊戲按鈕漂浮）；7 以上有捲動故事（釘住區塊、橫向滑動、相簿）；
+  // 8 以上再加主視覺視差和跑馬燈隨捲動變速變斜。
+  TASTE: { layout: 8, motion: 7, density: 6 },
+  // 被嵌進會自動撐高的 iframe（例如某些預覽器）時，視窗高度會等於整頁高度、頁面不會捲動，
+  // 這時捲動連動的效果會卡在錯的位置，所以一律關掉。
+  embedded: function () { return window.innerHeight > (window.screen && screen.height ? screen.height : 1200) * 1.5; },
+  motionAt: function (n) { return CC.TASTE.motion >= n && !CC.embedded(); },
+  rich: function () { return CC.motionAt(7); },
   // Runs fn only when motion is allowed; returns true if gsap is present.
   motion: function (fn) {
     if (!window.gsap) return false;
@@ -59,3 +65,4 @@ window.CC = window.CC || {
 
 // 單檔預覽版會拿掉 <html> 標籤上的 class，這裡再補一次。
 if (CC.TASTE.layout >= 8) document.documentElement.classList.add("l-bold");
+if (CC.TASTE.density >= 6) document.documentElement.classList.add("d-dense");

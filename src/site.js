@@ -87,6 +87,20 @@
     main.focus({ preventScroll: true });
     document.dispatchEvent(new CustomEvent("cc:page", { detail: role }));
   }
+  // 字型晚到、圖片撐開或版面換了，頁面高度一變就重算捲動觸發點，
+  // 不然釘住的區塊會用舊位置，提早蓋到主視覺上。
+  if (window.ScrollTrigger) {
+    var stTimer = null, lastH = 0;
+    var restick = function () { clearTimeout(stTimer); stTimer = setTimeout(function () { ScrollTrigger.refresh(); }, 120); };
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(restick);
+    window.addEventListener("load", restick);
+    if ("ResizeObserver" in window) {
+      new ResizeObserver(function () {
+        var h = main.offsetHeight;
+        if (Math.abs(h - lastH) > 24) { lastH = h; restick(); }
+      }).observe(main);
+    }
+  }
   // 最後一次點擊的位置：換頁的放大鏡從這裡打開（用鍵盤或上一頁時從畫面中央）。
   var tapAt = null;
   document.addEventListener("pointerdown", function (e) { tapAt = { x: e.clientX, y: e.clientY, t: Date.now() }; }, true);

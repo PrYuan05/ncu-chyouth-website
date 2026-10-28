@@ -35,7 +35,7 @@
     var skewTo = gsap.quickSetter(track, "skewX", "deg");
     // 捲得越快字越斜，停下來慢慢回正。
     function lean() { skewAim *= 0.9; skew += (skewAim - skew) * 0.2; skewTo(skew); }
-    var rich = CC.rich();
+    var rich = CC.motionAt(8);
     if (rich) gsap.ticker.add(lean);
     // Scrolling speeds the band up and flips its direction with the scroll.
     var st = rich && window.ScrollTrigger && ScrollTrigger.create({

@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="zh-Hant" class="l-bold">
+<html lang="zh-Hant" class="l-bold d-dense">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -463,7 +463,7 @@
     CC.intro(function () { tl.play(); });
 
     // 往下捲時小章往上游走、慢慢淡出。
-    if (CC.rich()) {
+    if (CC.motionAt(8)) {
       var svg = root.querySelector(".stage .xz-svg");
       var out = gsap.timeline({ scrollTrigger: { trigger: root, start: "top top", end: "bottom top", scrub: 0.6 } });
       out.to(svg, { yPercent: -45, rotation: -12, scale: 0.82, ease: "none", duration: 1 }, 0)
@@ -721,7 +721,7 @@
     var skewTo = gsap.quickSetter(track, "skewX", "deg");
     // 捲得越快字越斜，停下來慢慢回正。
     function lean() { skewAim *= 0.9; skew += (skewAim - skew) * 0.2; skewTo(skew); }
-    var rich = CC.rich();
+    var rich = CC.motionAt(8);
     if (rich) gsap.ticker.add(lean);
     // Scrolling speeds the band up and flips its direction with the scroll.
     var st = rich && window.ScrollTrigger && ScrollTrigger.create({
