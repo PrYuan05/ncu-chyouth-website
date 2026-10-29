@@ -415,7 +415,7 @@
     <div class="hero-grid">
       <div class="main">
         <p class="kicker">中央大學彰友會・第 21 屆・2027 寒假</p>
-        <h1 aria-label="名偵探柯南——真相與科學探險記">
+        <h1 data-nowbr aria-label="名偵探柯南——真相與科學探險記">
           <span class="t1" aria-hidden="true">名偵探柯南</span>
           <span class="dash" aria-hidden="true"></span>
           <span class="t2" aria-hidden="true">真相與科學探險記</span>
@@ -430,7 +430,7 @@
         <button type="button" aria-label="點小章：真相只有一個" data-cursor="點我 CLICK"></button>
       </div>
       <dl class="facts" aria-label="營隊資訊">
-        <div><dt>營期</dt><dd class="num">2027／1／27（三）～ 1／29（五）</dd></div>
+        <div><dt>營期</dt><dd class="num"><span class="nw">2027／1／27（三）</span>～ <span class="nw">1／29（五）</span></dd></div>
         <div><dt>地點</dt><dd>彰化縣田中鎮新民國民小學</dd></div>
         <div><dt>陪伴</dt><dd class="num">48 位大專志工 × 48 位學童</dd></div>
         <div><dt>費用</dt><dd><span class="pill pill-orange">學員全程免費</span></dd></div>
@@ -1743,7 +1743,7 @@
 #s8 .cols { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-lg); margin-top: var(--space-xl); }
 #s8 .col { padding: var(--space-xl); border: 1.5px solid var(--color-ink); border-radius: var(--radius-md); background: var(--color-surface); }
 #s8 .col h3 { display: flex; align-items: center; justify-content: space-between; gap: var(--space-sm); padding-bottom: var(--space-md); border-bottom: 1.5px solid var(--color-ink); font-size: var(--text-xl); font-weight: 700; }
-#s8 .col h3 .mono { font-size: var(--text-xs); letter-spacing: 0.14em; color: var(--color-ink-2); font-weight: 600; }
+#s8 .col h3 .mono { white-space: nowrap; font-size: var(--text-xs); letter-spacing: 0.14em; color: var(--color-ink-2); font-weight: 600; }
 #s8 li { display: grid; grid-template-columns: 28px minmax(0, 1fr); gap: var(--space-md); padding: var(--space-md) 0; border-bottom: 1px solid var(--color-rule); }
 #s8 li:last-child { border-bottom: 0; padding-bottom: 0; }
 #s8 .tick { display: grid; place-items: center; width: 28px; height: 28px; border-radius: 50%; background: var(--color-yellow); color: var(--color-ink); margin-top: 2px; }
@@ -2084,7 +2084,8 @@
 .game .g-k { font: 600 var(--text-xs)/1.5 var(--font-mono); letter-spacing: 0.16em; color: var(--color-orange-ink); }
 .game h2 { font-family: var(--font-display); font-weight: 900; font-size: var(--text-2xl); line-height: 1.25; }
 .game .g-meta { display: flex; align-items: center; gap: var(--space-sm); }
-.game .g-count { font: 600 var(--text-sm)/1 var(--font-mono); color: var(--color-ink-2); }
+@media (max-width: 480px) { .game .g-meta { gap: 6px; margin-left: auto; } .game .g-reset { padding-left: 12px; padding-right: 12px; } }
+.game .g-count { text-align: right; font: 600 var(--text-sm)/1 var(--font-mono); color: var(--color-ink-2); }
 .game .g-count b { color: var(--color-orange-ink); font-size: var(--text-lg); }
 .game .g-btn { display: inline-flex; align-items: center; justify-content: center; gap: 6px; min-height: 44px; padding: 0 var(--space-md); border: 1.5px solid var(--color-ink); border-radius: var(--radius-pill); background: transparent; color: var(--color-ink); font: 700 var(--text-sm)/1 var(--font-body); text-decoration: none; cursor: pointer; }
 .game .g-btn.is-main { background: var(--color-orange); border-color: var(--color-orange); color: var(--color-ink); }
@@ -2136,6 +2137,7 @@
 
 /* 注音：每個中文字右邊一欄直排注音，聲調在最後一個符號的右上角，輕聲點在最上面 */
 .game .zy { display: inline-flex; align-items: center; }
+.game .zy-w, .game .g-reset, .game .g-num { white-space: nowrap; }
 .game .zy-b { display: inline-flex; flex-direction: column; align-items: center; justify-content: center; min-width: 1em; margin: 0 0.08em 0 0.02em; padding-right: 0.42em; font: 500 max(0.46em, 9px)/1 var(--font-body); font-style: normal; letter-spacing: 0; text-transform: none; }
 .game .zy-b > span { position: relative; display: block; line-height: 1.02; }
 .game .zy-b .zy-l { width: 0.24em; height: 0.24em; margin-bottom: 0.1em; border-radius: 50%; background: currentColor; }
@@ -2192,7 +2194,7 @@
     <header class="g-head">
       <div><p class="g-k">CASE 21 · 小章事件簿</p><h2 id="game-title">消失的營火晚會</h2></div>
       <div class="g-meta">
-        <span class="g-count">關鍵字卡 <b>0</b> / 27</span>
+        <span class="g-count">關鍵字卡 <span class="g-num"><b>0</b> / 27</span></span>
         <button class="g-btn g-reset" type="button">重新開始</button>
         <button class="g-close" type="button" aria-label="關閉遊戲">×</button>
       </div>

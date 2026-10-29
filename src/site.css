@@ -172,3 +172,12 @@ html.lenis, html.lenis body { height: auto; }
 /* ---------- Taste Density 6：區塊上下間距收緊（72→60px，手機 48→40px） ---------- */
 html.d-dense .sec { padding-top: 60px; padding-bottom: 60px; }
 @media (max-width: 640px) { html.d-dense .sec { padding-top: 40px; padding-bottom: 40px; } }
+
+/* ---------- 手機：中文只在詞和詞之間換行（site.js 插入 <wbr> 後才加 html.wbr） ---------- */
+@media (max-width: 640px) {
+  html.wbr body { word-break: keep-all; overflow-wrap: break-word; }
+  html.wbr p, html.wbr dd, html.wbr li, html.wbr td, html.wbr .what { text-wrap: pretty; }
+  /* 標題的強調色那段整段一起換行，斷點落在「・」或強調詞前面 */
+  html.wbr .sec-title .mark { display: inline-block; }
+  html.wbr h2, html.wbr h3, html.wbr .sub, html.wbr .tag, html.wbr .site-foot p { text-wrap: balance; }
+}

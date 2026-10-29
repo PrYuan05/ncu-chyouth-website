@@ -6,6 +6,8 @@
   var finePointer = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
   var hasGsap = !!window.gsap;
   CC.register();
+  // 手機：中文照詞換行（見 common.js 的 CC.words）
+  if (window.matchMedia("(max-width: 640px)").matches) CC.wordsLive();
 
   /* ---------- Smooth scroll ---------- */
   var lenis = null;

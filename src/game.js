@@ -12,7 +12,7 @@
   var strings = root.querySelector(".g-strings"), truth = root.querySelector(".g-truth");
   var card = root.querySelector(".g-card"), panel = root.querySelector(".g-panel");
   var avatar = root.querySelector(".g-avatar"), status = root.querySelector("[data-game-status]");
-  var count = root.querySelector(".g-count > b"), pct = root.querySelector(".g-pct");
+  var count = root.querySelector(".g-count b"), pct = root.querySelector(".g-pct");
   var lastFocus = null, avatarAt = null, lastSpot = null;
 
   var spots = {};
@@ -77,18 +77,31 @@
   function zyText(text) {
     if (!ZY || !HAN.test(text)) return document.createTextNode(text);
     var out = node("span", "zy-run"), at = readings(text), buf = "", pre = "", unit = null;
-    function flush() { if (buf) out.appendChild(document.createTextNode(buf)); buf = ""; }
+    // 一個詞包成一個 .zy-w（不換行），換行只會發生在詞和詞之間或標點後面。
+    var cut = {}, word = null;
+    (window.CC && CC.wordCuts ? CC.wordCuts(text) : []).forEach(function (p) { cut[p] = 1; });
+    var PUNCT = "，。！？、；：」』）…";
+    for (var c = 1; c < text.length; c++) {
+      if (/\s/.test(text[c - 1]) && !/\s/.test(text[c])) cut[c] = 1;
+      else if (PUNCT.indexOf(text[c - 1]) >= 0 && PUNCT.indexOf(text[c]) < 0) cut[c] = 1;
+    }
+    function cur() { if (!word) { word = node("span", "zy-w"); out.appendChild(word); } return word; }
+    function flush() { if (buf) cur().appendChild(document.createTextNode(buf)); buf = ""; }
     for (var i = 0; i < text.length; i++) {
       var ch = text[i];
+      if (cut[i] && !pre) { flush(); word = null; }
       if (HAN.test(ch)) {
         flush();
         unit = node("span", "zy", pre + ch); pre = "";
         if (at[i]) unit.appendChild(bopomofo(at[i]));
-        out.appendChild(unit);
+        cur().appendChild(unit);
       } else if (unit && CLOSE.indexOf(ch) >= 0) {
         unit.appendChild(document.createTextNode(ch));
       } else if (OPEN.indexOf(ch) >= 0 && HAN.test(text[i + 1] || "")) {
         flush(); pre += ch;
+      } else if (/\s/.test(ch)) {
+        // 空白放在詞的外面，才是可以換行的地方
+        flush(); word = null; unit = null; out.appendChild(document.createTextNode(ch));
       } else {
         unit = null; buf += ch;
       }
