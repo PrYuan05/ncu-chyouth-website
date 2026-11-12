@@ -74,7 +74,7 @@ CDN_MATTER = "https://cdn.jsdelivr.net/npm/matter-js@0.20.0/build/matter.min.js"
 POSES = ["wave", "magnify", "glint", "surprise", "celebrate"]
 
 TITLE = "2027 中央大學彰友會第21屆返鄉服務隊"
-DESC = "名偵探柯南——真相與科學探險記｜2027/1/27–1/29 於彰化縣田中鎮新民國小，48 位大專志工陪伴 48 位學童，學員全程免費。"
+DESC = "名偵探柯南——新民偵探團出道！怪盜基德在哪裡｜2027/1/27–1/29 於彰化縣田中鎮新民國小，48 位大專志工陪伴 48 位學童，學員全程免費。"
 
 LENS = """<svg class="lens" viewBox="0 0 120 120" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round"><circle cx="50" cy="50" r="34"/><path d="M75 75 L106 106" stroke-width="9"/></svg>"""
 
